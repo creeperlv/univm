@@ -30,7 +30,6 @@
 #define MAX_REGISTER_COUNT 64
 #endif
 
-
 #ifndef MemBlockSize
 #define MemBlockSize 16
 #endif
@@ -51,4 +50,5 @@ void WriteLine(char *str);
 void SetPanicHandler(void (*Func)(int));
 void Panic(int ID);
 void DefaultPanicHandler(int ID);
+void InterruptiveStdOutPanicHandler(int ID);
 #endif

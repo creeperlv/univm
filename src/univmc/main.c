@@ -1,6 +1,6 @@
 #include "univmc_cli.h"
 int main(int argc, char **argv) {
-  SetPanicHandler(DefaultPanicHandler);
+  SetPanicHandler(InterruptiveStdOutPanicHandler);
   SetInternalOutput(stdout);
   cliOptions options;
   if (!ParseOptions(&options, argc, argv)) {

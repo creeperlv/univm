@@ -55,22 +55,27 @@ typedef struct _syscallMap {
 typedef syscallMap *SysCallMap;
 typedef struct _syscallMapDict {
   uint32 *IDs;
-  SysCallMap *Calls;
+  SysCallMap *Maps;
   uint32 DictBufSize;
   uint32 DictCount;
 } syscallMapDict;
+typedef syscallMapDict *SysCallMapDict;
 typedef struct _vm {
-  SysCallMap Calls;
+  SysCallMapDict CallMap;
   Runtime CurrentRuntime;
 } vm;
 typedef vm *VM;
 Runtime CreateRT();
 SysCallMap CreateSysCallMap();
+SysCallMapDict CreateSysCallMapDict();
+bool ExpandSysCallMapDict(SysCallMapDict dict);
 bool InitRT(Runtime runtime);
+bool InitSysCallMapDict(SysCallMapDict dict);
 bool InitSysCallMap(SysCallMap map);
 bool ExpandSysCallMap(SysCallMap map);
-bool SetSysCall(SysCallMap map, Syscall, int ID);
-// Internal Memory Use, DO NOT use when data exchange with other arch machines.
+bool SetSysCall(SysCallMapDict dict, Syscall call, uint32 Namespace, uint32 ID);
+bool SetSysCallInMap(SysCallMap map, Syscall, uint32 ID);
+//  Internal Memory Use, DO NOT use when data exchange with other arch machines.
 int32 GetInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 uint32 GetUInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 int64 GetInt64FromMemoryPtr(Runtime rt, memoryPtr ptr);

@@ -34,3 +34,7 @@ void Panic(int ID) {
 void DefaultPanicHandler(int ID) {
   printf("PANIC:%s\n", QueryPanicMessage(ID));
 }
+void InterruptiveStdOutPanicHandler(int ID) {
+  printf("PANIC:%s\n", QueryPanicMessage(ID));
+  exit(ID);
+}
