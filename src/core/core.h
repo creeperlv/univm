@@ -75,10 +75,12 @@ int32 GetInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 uint32 GetUInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 int64 GetInt64FromMemoryPtr(Runtime rt, memoryPtr ptr);
 uint64 GetUInt64FromMemoryPtr(Runtime rt, memoryPtr ptr);
-
+int32 GetInt32FromRegister(Runtime rt, uint32 startIndex);
+uint32 GetUInt32FromRegister(Runtime rt, uint32 startIndex);
+bool WriteInt32ToRegister(Runtime rt, int32 Data, uint32 startIndex);
+bool WriteUInt32ToRegister(Runtime rt, uint32 Data, uint32 startIndex);
 int32 GetInt32FromLE(byte *buffer, int offset);
 uint32 GetUInt32FromLE(byte *buffer, int offset);
-
 int64 GetInt64FromLE(byte *buffer, int offset);
 uint64 GetUInt64FromLE(byte *buffer, int offset);
 

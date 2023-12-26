@@ -11,6 +11,29 @@ uint32 GetUInt32FromMemoryPtr(Runtime rt, memoryPtr ptr) {
   return ((uint32 *)base)[0];
 }
 
+int32 GetInt32FromRegister(Runtime rt, uint32 startIndex) {
+  uint8_t *base = rt->Registers;
+  base += startIndex;
+  return ((int32 *)base)[0];
+}
+uint32 GetUInt32FromRegister(Runtime rt, uint32 startIndex) {
+  uint8_t *base = rt->Registers;
+  base += startIndex;
+  return ((uint32 *)base)[0];
+}
+
+bool WriteInt32ToRegister(Runtime rt, int32 Data, uint32 startIndex) {
+  uint8_t *base = rt->Registers;
+  base += startIndex;
+  ((int32 *)base)[0] = Data;
+  return true;
+}
+bool WriteUInt32ToRegister(Runtime rt, uint32 Data, uint32 startIndex) {
+  uint8_t *base = rt->Registers;
+  base += startIndex;
+  ((uint32 *)base)[0] = Data;
+  return true;
+}
 int64 GetInt64FromMemoryPtr(Runtime rt, memoryPtr ptr) {
   byte *base = rt->Mem[ptr.MemID].Ptr;
   base += ptr.Offset;
