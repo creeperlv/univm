@@ -1,6 +1,7 @@
 #ifndef UNIVM_CORE
 #define UNIVM_CORE
 #include "base.h"
+#include "basedata.h"
 #include "inst.h"
 typedef struct __instruction {
   uint32_t Inst;
