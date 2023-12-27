@@ -1,5 +1,65 @@
 #include "advstr.h"
 
+bool InitVStr(VStr str) {
+  str->HEAD = malloc(sizeof(char) * VSTR_BLOCK_SIZE);
+  if (IsNull(str->HEAD)) {
+    Panic(ID_MALLOC_FAIL);
+    return false;
+  }
+  str->Size = VSTR_BLOCK_SIZE;
+  str->Count = 0;
+  return true;
+}
+bool ExpandVStr(VStr str) {
+  uint32 Size = str->Size + VSTR_BLOCK_SIZE;
+  char *HEAD = realloc(str->HEAD, sizeof(char) * Size);
+  if (IsNull(HEAD)) {
+    Panic(ID_REALLOC_FAIL);
+    return false;
+  }
+  str->HEAD = HEAD;
+  str->Size = Size;
+  return true;
+}
+bool AppendVStr(VStr str, char c) {
+  if (str->Count >= str->Size) {
+    if (!ExpandVStr(str)) {
+      return false;
+    }
+  }
+  str->HEAD[str->Count] = c;
+  str->Count++;
+  return true;
+}
+bool FreeVStr(VStr str) {
+  free(str->HEAD);
+  free(str);
+  return true;
+}
+
+bool VStrIsEqualsToCStr(VStr L, char *R) {
+  uint32 RLen = strlen(R);
+  if (L->Count != RLen) {
+    return false;
+  }
+  for (uint32 i = 0; i < RLen; i++) {
+    if (L->HEAD[i] != R[i])
+      return false;
+  }
+  return true;
+}
+bool VStrIsStartWithCStr(VStr L, char *R) {
+  uint32 RLen = strlen(R);
+  if (L->Count < RLen) {
+    return false;
+  }
+  for (uint32 i = 0; i < RLen; i++) {
+    if (L->HEAD[i] != R[i])
+      return false;
+  }
+  return true;
+}
+
 StrPtrArr AllocStrPtrArr() {
   StrPtrArr arr = malloc(sizeof(strPtrArr));
   if (IsNull(arr)) {

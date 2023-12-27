@@ -67,6 +67,7 @@ typedef struct _vm {
 } vm;
 typedef vm *VM;
 Runtime CreateRT();
+Program CreateProgram();
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
 bool ExpandSysCallMapDict(SysCallMapDict dict);

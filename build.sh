@@ -40,6 +40,10 @@ if [ -z "$ASMC_SRC" ];
 then
 	ASMC_SRC="./src/univmc/*.c"
 fi
+if [ -z "$FUNC_TEST_SRC" ];
+then
+	FUNC_TEST_SRC="./src/functest/*.c"
+fi
 
 if [ -z "$VMRT_SRC" ];
 then
@@ -49,6 +53,10 @@ fi
 if [ -z "$ASMC_EXE" ];
 then
 	ASMC_EXE="univmc"
+fi
+if [ -z "$FUNC_TEST_EXE" ];
+then
+	FUNC_TEST_EXE="functest"
 fi
 if [ -z "$VMRT_EXE" ];
 then
@@ -67,11 +75,35 @@ fi
 
 INDEX=0
 
+if [ -z "$SKIP_FUNC_TEST" ];
+then
+	COMPILE="$CC $C_FLAGS $CORE_SRC $FUNC_TEST_SRC -o $OUTPUT_DIR/$FUNC_TEST_EXE"
+	echo "[$INDEX]$COMPILE"
+	$COMPILE
+	if [  $? != 0 ];
+	then 
+		echo "\e[91mCompilation Failed!\e[0m"
+		exit 1
+	fi
+	$OUTPUT_DIR/$FUNC_TEST_EXE 
+	if [ $?  != 0 ] ;
+	then
+		echo "\e[91mFunction Test Failed!\e[0m"
+		exit 1
+	fi
+	
+fi
+INDEX=$(($INDEX+1))
 if [ -z "$SKIP_ASMC" ];
 then
 	COMPILE="$CC $C_FLAGS $CORE_SRC $ASMC_SRC -o $OUTPUT_DIR/$ASMC_EXE"
 	echo "[$INDEX]$COMPILE"
 	$COMPILE
+	if [  $? != 0 ];
+	then 
+		echo "\e[91mCompilation Failed!\e[0m"
+		exit 1
+	fi
 fi
 INDEX=$(($INDEX+1))
 if [ -z "$SKIP_VMRT" ];
@@ -79,6 +111,11 @@ then
 	COMPILE="$CC $C_FLAGS $CORE_SRC $VMRT_SRC -o $OUTPUT_DIR/$VMRT_EXE"
 	echo "[$INDEX]$COMPILE"
 	$COMPILE
+	if [  $? != 0 ];
+	then 
+		echo "\e[91mCompilation Failed!\e[0m"
+		exit 1
+	fi
 fi
 INDEX=$(($INDEX+1))
 if [ -z "$SKIP_COPYSAMPLES" ];

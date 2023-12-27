@@ -7,6 +7,23 @@ typedef struct _strPtrArr {
   uint32 Count;
   uint32 Size;
 } strPtrArr;
+typedef struct _vStr {
+  char *HEAD;
+  uint32 Count;
+  uint32 Size;
+} vStr;
+typedef vStr *VStr;
+
+#ifndef VSTR_BLOCK_SIZE
+#define VSTR_BLOCK_SIZE 32
+#endif
+
+bool InitVStr(VStr str);
+bool ExpandVStr(VStr str);
+bool AppendVStr(VStr str, char c);
+bool FreeVStr(VStr str);
+bool VStrIsEqualsToCStr(VStr L, char *R);
+bool VStrIsStartWithCStr(VStr L, char *R);
 typedef strPtrArr *StrPtrArr;
 #ifndef STR_PTR_ARR_BLOCK_SIZE
 #define STR_PTR_ARR_BLOCK_SIZE 4

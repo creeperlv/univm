@@ -136,7 +136,7 @@ bool ExpandStrStrDict(StrStrDict dict) {
 }
 
 bool SetNameInt32Dict(NameInt32Dict dict, char *Name, int32 Data) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Names[i], Name)) {
       dict->Data[i] = Data;
       return true;
@@ -153,7 +153,7 @@ bool SetNameInt32Dict(NameInt32Dict dict, char *Name, int32 Data) {
   return true;
 }
 bool SetNameUInt32Dict(NameUInt32Dict dict, char *Name, uint32 Data) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Names[i], Name)) {
       dict->Data[i] = Data;
       return true;
@@ -170,7 +170,7 @@ bool SetNameUInt32Dict(NameUInt32Dict dict, char *Name, uint32 Data) {
   return true;
 }
 bool SetStrStrDict(StrStrDict dict, char *Key, char *Value) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Keys[i], Key)) {
       dict->Values[i] = Value;
       return true;
@@ -188,7 +188,7 @@ bool SetStrStrDict(StrStrDict dict, char *Key, char *Value) {
 }
 
 bool NameInt32Dict_ContainsKey(NameInt32Dict dict, char *Name) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Names[i], Name)) {
       return true;
     }
@@ -196,7 +196,7 @@ bool NameInt32Dict_ContainsKey(NameInt32Dict dict, char *Name) {
   return false;
 }
 bool NameUInt32Dict_ContainsKey(NameUInt32Dict dict, char *Name) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Names[i], Name)) {
       return true;
     }
@@ -204,7 +204,7 @@ bool NameUInt32Dict_ContainsKey(NameUInt32Dict dict, char *Name) {
   return false;
 }
 bool StrStrDict_ContainsKey(StrStrDict dict, char *Key) {
-  for (uint i = 0; i < dict->Size; i++) {
+  for (uint32 i = 0; i < dict->Size; i++) {
     if (CStrIsEqualCStr(dict->Keys[i], Key)) {
       return true;
     }
@@ -213,20 +213,20 @@ bool StrStrDict_ContainsKey(StrStrDict dict, char *Key) {
 }
 
 void FreeNameInt32DictWithoutContent(NameInt32Dict dict) {
-  for (uint i = 0; i < dict->Count; i++) {
+  for (uint32 i = 0; i < dict->Count; i++) {
     dict->Names[i] = null;
   }
   free(dict);
 }
 void FreeNameUInt32DictWithoutContent(NameUInt32Dict dict) {
 
-  for (uint i = 0; i < dict->Count; i++) {
+  for (uint32 i = 0; i < dict->Count; i++) {
     dict->Names[i] = null;
   }
   free(dict);
 }
 void FreeStrStrDictWithoutContent(StrStrDict dict) {
-  for (uint i = 0; i < dict->Count; i++) {
+  for (uint32 i = 0; i < dict->Count; i++) {
     dict->Keys[i] = null;
     dict->Values[i] = null;
   }

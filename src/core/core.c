@@ -8,6 +8,14 @@ Runtime CreateRT() {
   }
   return rt;
 }
+Program CreateProgram() {
+  Program prog = malloc(sizeof(program));
+  if (IsNull(prog)) {
+    Panic(ID_MALLOC_FAIL);
+    return null;
+  }
+  return prog;
+}
 SysCallMap CreateSysCallMap() {
   SysCallMap map = malloc(sizeof(syscallMap));
   if (IsNull(map)) {
