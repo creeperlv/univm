@@ -38,6 +38,9 @@
 #define SysCallMapBlockSize 32
 #endif
 
+typedef float Single;
+typedef double Double;
+
 typedef uint8_t byte;
 typedef uint32_t uint32;
 typedef int32_t int32;

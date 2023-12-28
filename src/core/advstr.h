@@ -17,7 +17,8 @@ typedef vStr *VStr;
 #ifndef VSTR_BLOCK_SIZE
 #define VSTR_BLOCK_SIZE 32
 #endif
-
+VStr CreateVStr();
+VStr CreateVStrValue(char *Value);
 bool InitVStr(VStr str);
 bool ExpandVStr(VStr str);
 bool AppendVStr(VStr str, char c);
