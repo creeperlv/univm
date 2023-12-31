@@ -109,6 +109,32 @@
 #define BSAE_S64 0x00001006
 #define BSAE_LD 0x00001007
 #define BSAE_L64 0x00001007
+
+#define BASE_CALL 0x00001100
+#define BASE_CALLI 0x00001101
+#define BASE_RET 0x00001102
+// Jump to relative address
+#define BASE_J 0x00001110
+#define BASE_JR 0x00001111
+// Jump And Link
+// JAL $RD Offset
+#define BASE_JAL 0x00001112
+#define BASE_JALR 0x00001113
+// Jump to absolute address
+#define BASE_JA 0x00001114
+#define BASE_JAR 0x00001115
+// Jump to Absolute address And Link
+#define BASE_JAAL 0x00001116
+#define BASE_JAALR 0x00001117
+
+#define BASE_BEQ 0x00001118
+#define BASE_BEQI 0x00001119
+
+#define BASE_BLT 0x0000111A
+#define BASE_BLTI 0x0000111B
+#define BASE_BGT 0x0000111C
+#define BASE_BGTI 0x0000111D
+
 // ALLOC = malloc(size_t)
 // alloc $rd(64bit) $rs
 #define HL_ALLOC 0x00002000
@@ -118,11 +144,79 @@
 // Relative Resize
 // rresize $rd(64bit) $rs
 #define HL_RRESIZE 0x00002002
+
+// Expand a memory allocation
+#define HL_EXPAND 0x00002003
+// Shrink a memory allocation
+// shrink $rs $value
+#define HL_SHRINK 0x00002004
+#define HL_EXPANDI 0x00002005
+#define HL_SHRINKI 0x00002006
 // Query Data From Text Section
 // qtext $rd(64-bit) $rs
-#define HL_QUERY_TEXT 0x00002003
+#define HL_QTEXT 0x00002007
+#define HL_QTEXTA 0x00002008
 
-#define BSAE_SYSCALL 0x00000000
+// Push a data to end of a memory.
+// PUSHD $SRC_REG $MEM_PTR_REG $SIZE_REG
+#define HL_PUSHD 0x00002100
+// Push a data to end of a memory
+// PUSHDI $SRC_REG $MEM_PTR_REG Size
+#define HL_PUSHDI 0x00002101
+// Pop a data out
+#define HL_POPD 0x00002102
+#define HL_POPDI 0x00002103
+
+// Push direct data 8
+// pushdd8 $MemPtrReg DirectValue
+#define HL_PUSHDD8 0x00002110
+// Push direct data 16
+// pushdd8 $MemPtrReg DirectValue
+#define HL_PUSHDD16 0x00002111
+// Push direct data 32
+// pushdd8 $MemPtrReg DirectValue
+#define HL_PUSHDD32 0x00002112
+// Push direct data 64
+// pushdd8 $MemPtrReg DirectValue
+#define HL_PUSHDD64 0x00002113
+// Pop and push
+// PP $SRC_PTR_REGISTER $DEST_PTR_REGISTER $SIZE
+#define HL_PP 0x00002104
+// Pop and push immediate
+// PPI $SRC_PTR_REGISTER $DEST_PTR_REGISTER Size
+#define HL_PPI 0x00002105
+
+// Copy and push
+// cp $SrcMemPtr $DestMemPtr $SizePtr
+#define HL_CP 0x00002106
+// Copy and push
+// cp $SrcMemPtr $DestMemPtr Size
+#define HL_CPI 0x00002107
+
+// Get the mapped global memory address of current assembly.
+// mapglbmem $reg_to_store_memptr
+#define HL_MAP_GLBMEM 0x00002200
+// Get the mapped global memory address of a assembly.
+// mapaglbmem $reg_to_store_memptr $AssemblyID
+#define HL_MAP_AGLBMEM 0x00002201
+// mapaglbmemi $reg_to_store_memptr AssemblyID
+#define HL_MAP_AGLBMEMI 0x00002202
+// Load assembly (Memory will be copied)
+// loadasm $MemPtr $Size
+#define HL_LOADASM 0x00002210
+// Load Assembly (Memory will be copied)
+// loadasm $MemPtr Size
+#define HL_LOADASMI 0x00002211
+// Load Assembly from a file
+// loadasmf $ResourceID
+#define HL_LOADASMF 0x00002212
+
+// syscalltest namespace id
+#define BASE_SYSCALL_TEST 0x00001200
+// syscall namespace id
+#define BSAE_SYSCALL 0x00001201
+// syscallr $namespace $id
+#define BSAE_SYSCALLR 0x00001202
 
 #define RegisterOffset_00 0x00
 #define RegisterOffset_01 0x08

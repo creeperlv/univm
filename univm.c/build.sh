@@ -122,7 +122,7 @@ if [ -z "$SKIP_COPYSAMPLES" ];
 then
 	OUTPUT_SAMPLE="$OUTPUT_DIR/samples/"
 	mkdir -p $OUTPUT_SAMPLE 
-	CMD="cp -r ./samples/* $OUTPUT_SAMPLE"
+	CMD="cp -r ../samples/* $OUTPUT_SAMPLE"
 	echo "[$INDEX]$CMD"
 	$CMD
 fi
