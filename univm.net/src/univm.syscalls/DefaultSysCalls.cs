@@ -13,10 +13,10 @@ namespace univm.syscalls
         {
             return false;
         }
-        public static void SetupSysCall(CoreData data)
+        public static void SetupSysCall(VM vm)
         {
-            data.SetSysCall(0, 63, read);
-            data.SetSysCall(0, 64, write);
+            vm.SetSysCall(0, 63, read);
+            vm.SetSysCall(0, 64, write);
         }
     }
 }

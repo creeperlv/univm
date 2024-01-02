@@ -7,19 +7,31 @@ namespace univm.core
 {
     public sealed class VM : IDisposable
     {
-        MachineData machineData = new MachineData();
+        public MachineData machineData = new MachineData();
         public List<VMCore> Cores = new List<VMCore>();
+        public void SetSysCall(uint Namespace, uint ID, SysCall call)
+        {
+            machineData.SetSysCall(Namespace, ID, call);
+        }
         public void Dispose()
         {
             machineData.Dispose();
+        }
+        public VMCore NewCore()
+        {
+            VMCore core = new VMCore(this);
+            Cores.Add(core);
+            return core;
         }
         public void DumpText(TextWriter writer, int Width = 80)
         {
             writer.WriteLine("Cores");
             writer.WriteLine(Cores.Count);
             int _w = 0;
+            int ID = 0;
             foreach (var item in Cores)
             {
+                writer.WriteLine($"Core {ID}");
                 writer.WriteLine(item.coreData.RegisterData.Length);
                 for (int i = 0; i < item.coreData.RegisterData.Length; i++)
                 {
@@ -32,7 +44,7 @@ namespace univm.core
                     }
                 }
                 writer.WriteLine();
-
+                ID++;
             }
             writer.WriteLine("Memory");
             writer.WriteLine(machineData.MemBlocks.Count);
@@ -83,7 +95,16 @@ namespace univm.core
     public sealed class VMCore : IDisposable
     {
         public CoreData coreData = new CoreData();
-        public MachineData sharedData = new MachineData();
+        public MachineData machineData = new MachineData();
+        public VM HostMachine;
+
+        public VMCore(VM hostMachine)
+        {
+            HostMachine = hostMachine;
+            machineData = hostMachine.machineData;
+            coreData.SharedCoreData = machineData;
+        }
+
         public void Dispose()
         {
         }
@@ -117,30 +138,30 @@ namespace univm.core
                     break;
                 case InstOPCodes.HL_ALLOC:
                     {
-                        var id = coreData.SharedCoreData.Alloc(coreData.GetDataFromRegister<uint>(inst.Data1), coreData);
+                        var id = machineData.Alloc(coreData.GetDataFromRegister<uint>(inst.Data1), coreData);
                         MemPtr ptr = new MemPtr(id, 0);
                         coreData.SetDataToRegister(inst.Data0, ptr);
                     }
                     break;
                 case InstOPCodes.HL_FREE:
                     {
-                        coreData.SharedCoreData.Free(coreData.GetDataFromRegister<uint>(inst.Data0));
+                        machineData.Free(coreData.GetDataFromRegister<uint>(inst.Data0));
                     }
                     break;
                 case InstOPCodes.HL_MEASURE:
-                    coreData.SetDataToRegister(inst.Data1, coreData.SharedCoreData.GetMemBlockSize(coreData.GetDataFromRegister<uint>(inst.Data0), coreData));
+                    coreData.SetDataToRegister(inst.Data1, machineData.GetMemBlockSize(coreData.GetDataFromRegister<uint>(inst.Data0), coreData));
                     break;
                 case InstOPCodes.BASE_SYSCALL:
-                    coreData.SharedCoreData.SysCall(inst.Data0, inst.Data1, coreData);
+                    machineData.SysCall(inst.Data0, inst.Data1, coreData);
                     break;
                 case InstOPCodes.BASE_SYSCALLR:
-                    coreData.SharedCoreData.SysCall(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0), coreData);
+                    machineData.SysCall(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0), coreData);
                     break;
                 case InstOPCodes.BASE_SYSCALL_TEST:
-                    coreData.SetDataToRegister(inst.Data2, coreData.SharedCoreData.IsSysCallExist(inst.Data0, inst.Data1) ? 1 : 0);
+                    coreData.SetDataToRegister(inst.Data2, machineData.IsSysCallExist(inst.Data0, inst.Data1) ? 1 : 0);
                     break;
                 case InstOPCodes.BASE_SYSCALL_TESTR:
-                    coreData.SetDataToRegister(inst.Data2, coreData.SharedCoreData.IsSysCallExist(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0)) ? 1 : 0);
+                    coreData.SetDataToRegister(inst.Data2, machineData.IsSysCallExist(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0)) ? 1 : 0);
                     break;
                 default:
                     break;
@@ -158,12 +179,12 @@ namespace univm.core
 
                 var frame = coreData.CallStack[coreData.CallStack.Count - 1];
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                var inst = sharedData.assemblies[(int)frame.AssemblyID].Instructions[frame.PCInAssembly];
+                var inst = machineData.assemblies[(int)frame.AssemblyID].Instructions[frame.PCInAssembly];
                 frame.PCInAssembly++;
                 coreData.CallStack[coreData.CallStack.Count - 1] = (frame);
                 Execute(inst);
                 frame = coreData.CallStack[coreData.CallStack.Count - 1];
-                if (sharedData.assemblies[(int)frame.AssemblyID].Instructions.Length >= frame.PCInAssembly)
+                if (machineData.assemblies[(int)frame.AssemblyID].Instructions.Length >= frame.PCInAssembly)
                 {
                     return;
                 }

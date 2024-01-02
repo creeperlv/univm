@@ -7,38 +7,41 @@ class Program
 {
     static void Main(string[] args)
     {
-        using CoreData runtimeData = new CoreData();
-        DefaultSysCalls.SetupSysCall(runtimeData);
-        runtimeData.SetDataToRegister(0, 123);
-        Console.WriteLine(runtimeData.GetDataFromRegister<int>(0));
-        runtimeData.SetDataToRegister(1, 123);
-        Console.WriteLine(runtimeData.GetDataFromRegister<int>(0));
-        runtimeData.SetDataToRegister(0, 1.025f);
-        Console.WriteLine(runtimeData.GetDataFromRegister<float>(0));
-        var ID = runtimeData.Alloc(4);
-        var ID2 = runtimeData.Alloc(4);
+        VM vm = new VM();
+        MachineData machine = vm.machineData;
+        VMCore vMCore=vm.NewCore();
+        CoreData coredata = vMCore.coreData;
+        DefaultSysCalls.SetupSysCall(vm);
+        coredata.SetDataToRegister(0, 123);
+        Console.WriteLine(coredata.GetDataFromRegister<int>(0));
+        coredata.SetDataToRegister(1, 123);
+        Console.WriteLine(coredata.GetDataFromRegister<int>(0));
+        coredata.SetDataToRegister(0, 1.025f);
+        Console.WriteLine(coredata.GetDataFromRegister<float>(0));
+        var ID = machine.Alloc(4, coredata);
+        var ID2 = machine.Alloc(4, coredata);
         MemPtr L = new MemPtr() { MemID = ID, Offset = 0 };
         MemPtr R = new MemPtr() { MemID = ID2, Offset = 0 };
         unsafe
         {
             Console.WriteLine("Sizeof(MemPtr):" + sizeof(MemPtr));
         }
-        runtimeData.SetDataToRegister(RegisterDefinition.RegisterOffset_00, L);
-        runtimeData.SetDataToRegister(RegisterDefinition.RegisterOffset_01, R);
-        runtimeData.SetDataToMemPtr(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), 1.234f);
-        runtimeData.MemCpy(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00),
-                           runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01),
-                           4);
-        Console.WriteLine(runtimeData.GetDataFromMemPtr<float>(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00)));
-        Console.WriteLine(runtimeData.GetDataFromMemPtr<float>(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01)));
-        runtimeData.Realloc((int)ID,8);
-        Console.WriteLine(runtimeData.GetDataFromMemPtr<float>(L));
-        L.Offset+=4;
-        runtimeData.SetDataToMemPtr(L, 117);
-        Console.WriteLine(runtimeData.GetDataFromMemPtr<int>(L));
+        coredata.SetDataToRegister(RegisterDefinition.RegisterOffset_00, L);
+        coredata.SetDataToRegister(RegisterDefinition.RegisterOffset_01, R);
+        machine.SetDataToMemPtr(coredata.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), 1.234f, coredata);
+        machine.MemCpy(coredata.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00),
+                           coredata.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01),
+                           4, coredata);
+        Console.WriteLine(machine.GetDataFromMemPtr<float>(coredata.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), coredata));
+        Console.WriteLine(machine.GetDataFromMemPtr<float>(coredata.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01), coredata));
+        machine.Realloc((int)ID, 8, coredata);
+        Console.WriteLine(machine.GetDataFromMemPtr<float>(L, coredata));
+        L.Offset += 4;
+        machine.SetDataToMemPtr(L, 117, coredata    );
+        Console.WriteLine(machine.GetDataFromMemPtr<int>(L, coredata));
         using FileStream stream = File.OpenWrite("coredump");
-        runtimeData.DumpBinary(stream);
+        vm.DumpBinary(stream);
         stream.Flush();
-        runtimeData.DumpText(Console.Out);
+        vm.DumpText(Console.Out);
     }
 }

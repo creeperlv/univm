@@ -14,32 +14,36 @@ namespace univm.tests
         [Fact]
         public void MemBlockTest()
         {
-            CoreData runtimeData = new CoreData();
-            var ID = runtimeData.Alloc(4);
-            var ID2 = runtimeData.Alloc(4);
+            using VM _vm = new VM();
+            VMCore core = new VMCore(_vm);
+            MachineData machinedata = _vm.machineData;
+            CoreData coreData = core.coreData;
+            var ID = machinedata.Alloc(4, coreData);
+            var ID2 = machinedata.Alloc(4, coreData);
             MemPtr L = new MemPtr() { MemID = ID, Offset = 0 };
             MemPtr R = new MemPtr() { MemID = ID2, Offset = 0 };
-            runtimeData.SetDataToRegister(RegisterDefinition.RegisterOffset_00, L);
-            runtimeData.SetDataToRegister(RegisterDefinition.RegisterOffset_01, R);
-            runtimeData.SetDataToMemPtr(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), 1.234f);
-            runtimeData.MemCpy(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00),
-                               runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01),
-                               4);
-            Assert.Equal(runtimeData.GetDataFromMemPtr<float>(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00)),
-                         runtimeData.GetDataFromMemPtr<float>(runtimeData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01)));
+            coreData.SetDataToRegister(RegisterDefinition.RegisterOffset_00, L);
+            coreData.SetDataToRegister(RegisterDefinition.RegisterOffset_01, R);
+            machinedata.SetDataToMemPtr(coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), 1.234f, coreData);
+            machinedata.MemCpy(coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01), 4, coreData);
+            Assert.Equal(machinedata.GetDataFromMemPtr<float>(coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_00), coreData),
+                         machinedata.GetDataFromMemPtr<float>(coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.RegisterOffset_01), coreData));
 
         }
         [Fact]
         public void MemReallocFreeTest()
         {
-            using CoreData runtimeData = new CoreData();
-            var id=runtimeData.Alloc(4);
-            MemPtr PTR0 = new MemPtr() { MemID=id,Offset = 0 };
-            runtimeData.SetDataToMemPtr(PTR0,117);
-            runtimeData.Realloc((int)PTR0.MemID,8);
-            PTR0.Offset+=4;
-            runtimeData.SetDataToMemPtr(PTR0,117);
-            Assert.Equal(117,runtimeData.GetDataFromMemPtr<int>(PTR0));
+            using VM _vm = new VM();
+            VMCore core = new VMCore(_vm);
+            MachineData machinedata = _vm.machineData;
+            CoreData coreData = core.coreData;
+            var id = machinedata.Alloc(4, coreData);
+            MemPtr PTR0 = new MemPtr() { MemID = id, Offset = 0 };
+            machinedata.SetDataToMemPtr(PTR0, 117, coreData);
+            machinedata.Realloc((int)PTR0.MemID, 8, coreData);
+            PTR0.Offset += 4;
+            machinedata.SetDataToMemPtr(PTR0, 117, coreData);
+            Assert.Equal(117, machinedata.GetDataFromMemPtr<int>(PTR0, coreData ));
         }
     }
 }
