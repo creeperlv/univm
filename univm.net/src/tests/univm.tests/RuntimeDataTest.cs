@@ -7,14 +7,14 @@ namespace univm.tests
         [Fact]
         public void RegisterTest()
         {
-            RuntimeData data = new RuntimeData();
+            CoreData data = new CoreData();
             data.SetDataToRegister(0, 1234567);
             Assert.Equal(1234567, data.GetDataFromRegister<int>(0));
         }
         [Fact]
         public void MemBlockTest()
         {
-            RuntimeData runtimeData = new RuntimeData();
+            CoreData runtimeData = new CoreData();
             var ID = runtimeData.Alloc(4);
             var ID2 = runtimeData.Alloc(4);
             MemPtr L = new MemPtr() { MemID = ID, Offset = 0 };
@@ -32,7 +32,7 @@ namespace univm.tests
         [Fact]
         public void MemReallocFreeTest()
         {
-            using RuntimeData runtimeData = new RuntimeData();
+            using CoreData runtimeData = new CoreData();
             var id=runtimeData.Alloc(4);
             MemPtr PTR0 = new MemPtr() { MemID=id,Offset = 0 };
             runtimeData.SetDataToMemPtr(PTR0,117);

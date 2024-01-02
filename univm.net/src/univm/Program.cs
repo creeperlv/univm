@@ -7,7 +7,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        using RuntimeData runtimeData = new RuntimeData();
+        using CoreData runtimeData = new CoreData();
         DefaultSysCalls.SetupSysCall(runtimeData);
         runtimeData.SetDataToRegister(0, 123);
         Console.WriteLine(runtimeData.GetDataFromRegister<int>(0));

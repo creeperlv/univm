@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using univm.core.Utilities;
 
 namespace univm.core
@@ -10,6 +11,7 @@ namespace univm.core
     public unsafe class UniVMAssembly : IDisposable
     {
         public byte*[]? Texts;
+        public string[]? Libraries;
         public Inst[]? Instructions;
 
         public void Dispose()
@@ -30,7 +32,9 @@ namespace univm.core
             uint TextCount = 0;
             uint Value0 = 0;//Text Length
             uint InstCount = 0;
+            uint LibraryCount = 0;
             stream.ReadUInt32(buffer4, out TextCount);
+            stream.ReadUInt32(buffer4, out LibraryCount);
             stream.ReadUInt32(buffer4, out InstCount);
             byte*[] Texts = new byte*[TextCount];
             for (int i = 0; i < TextCount; i++)
@@ -48,6 +52,14 @@ namespace univm.core
                     }
                 }
             }
+            string[] Libraries = new string[LibraryCount];
+            for (int i = 0; i < LibraryCount; i++)
+            {
+                stream.ReadUInt32(buffer4, out Value0);
+                Span<byte> b = stackalloc byte[(int)Value0];
+                stream.Read(b);
+                Libraries[i] = Encoding.UTF8.GetString(b);
+            }
             Inst[] insts = new Inst[InstCount];
             for (int i = 0; i < InstCount; i++)
             {
@@ -61,7 +73,7 @@ namespace univm.core
                 insts[i] = inst;
             }
 
-            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Instructions = insts };
+            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Libraries = Libraries, Instructions = insts };
 
             return uniVMAssembly;
         }
@@ -71,7 +83,7 @@ namespace univm.core
         public uint AssemblyID;
         public uint PCInAssembly;
     }
-    public delegate bool SysCall(RuntimeData arg);
+    public delegate bool SysCall(CoreData arg);
     [StructLayout(LayoutKind.Sequential)]
     public struct MemPtr
     {

@@ -1,6 +1,7 @@
 ﻿using LibCLCC.NET.Operations;
 using LibCLCC.NET.TextProcessing;
 using System;
+using System.IO;
 using univm.core;
 
 namespace univmc.core
@@ -220,7 +221,7 @@ namespace univmc.core
             }
             return ConvertData(partialInstruction, definition.Data0Type, definition.Data1Type, definition.Data2Type);
         }
-        public OperationResult<bool> Parse(CompileTimeData data, Segment HEAD)
+        public OperationResult<bool> Parse(CompileTimeData data, string WorkDirectory, Segment HEAD)
         {
             OperationResult<bool> result = new OperationResult<bool>(false);
             if (data.IntermediateUniAssembly is null)
@@ -255,6 +256,29 @@ namespace univmc.core
                 {
                     switch (currentSection)
                     {
+                        case Section.Prep:
+                            {
+                                var label = context.GetCurrentContent().ToLower();
+                                if (Keywords.PrepLabels.TryGetValue(label, out var key))
+                                {
+                                    switch (key)
+                                    {
+                                        case PrepLabel.include:
+                                            {
+                                                if (!context.GoNext())
+                                                {
+                                                    result.AddError(new UnexpectedEndError(context.Current));
+                                                    return result;
+                                                }
+                                                data.IntermediateUniAssembly.Includes.Add(Path.Combine(WorkDirectory, context.GetCurrentContent()));
+                                            }
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            break;
                         case Section.Text:
                             break;
                         case Section.Constants:

@@ -5,6 +5,12 @@ namespace univmc.core
 {
     public static class Keywords
     {
+        public static Dictionary<string, PrepLabel> PrepLabels = new Dictionary<string, PrepLabel>()
+        {
+            { "include",PrepLabel.include },
+            { "inc",PrepLabel.include },
+            { "i",PrepLabel.include },
+        };
         public static Dictionary<string, Section> SectionNames = new Dictionary<string, Section>()
         {
             {".text", Section.Text },
@@ -15,6 +21,8 @@ namespace univmc.core
             {".program", Section.Program},
             {".code", Section.Program},
             {".codes", Section.Program},
+            {".prep", Section.Prep},
+            {".preparation", Section.Prep},
         };
         public static Dictionary<string, uint> RegisterNames = new Dictionary<string, uint>
         {
@@ -30,6 +38,33 @@ namespace univmc.core
 
             {"add", InstOPCodes.BASE_ADD },
             {"sub", InstOPCodes.BASE_SUB },
+            {"mul", InstOPCodes.BASE_MUL},
+            {"div", InstOPCodes.BASE_DIV},
+            {"alloc", InstOPCodes.HL_ALLOC},
+            {"realloc", InstOPCodes.HL_REALLOC},
+            {"resize", InstOPCodes.HL_RRESIZE},
+            {"expand", InstOPCodes.HL_EXPAND},
+            {"expandi", InstOPCodes.HL_EXPANDI},
+            {"shrink", InstOPCodes.HL_SHRINK},
+            {"shrinki", InstOPCodes.HL_SHRINKI},
+            {"free", InstOPCodes.HL_FREE},
+            {"pushd", InstOPCodes.HL_PUSHD},
+            {"pushdi", InstOPCodes.HL_PUSHDI},
+            {"pushd8", InstOPCodes.HL_PUSHDD8},
+            {"pushd16", InstOPCodes.HL_PUSHDD16},
+            {"pushd32", InstOPCodes.HL_PUSHDD32},
+            {"pushd64", InstOPCodes.HL_PUSHDD64},
+            {"popd", InstOPCodes.HL_POPD},
+            {"popdi", InstOPCodes.HL_POPDI},
+            {"pp", InstOPCodes.HL_PP},
+            {"ppi", InstOPCodes.HL_PPI},
+            {"measure", InstOPCodes.HL_MEASURE},
+            {"memlen", InstOPCodes.HL_MEASURE},
+            {"cp", InstOPCodes.HL_CP},
+            {"cpi", InstOPCodes.HL_CPI},
+            {"loadasm", InstOPCodes.HL_LOADASM},
+            {"loadasmf", InstOPCodes.HL_LOADASMF},
+            {"loadasmi", InstOPCodes.HL_LOADASMI},
         };
     }
 }

@@ -38,6 +38,7 @@ namespace univmc.core
     }
     public class IntermediateUniAssembly
     {
+        public List<string> Includes = new List<string>();
         public List<IntermediateInstruction> intermediateInstructions = new List<IntermediateInstruction>();
     }
 
@@ -47,16 +48,21 @@ namespace univmc.core
         public string? label;
         public IntermediateInstruction? FollowingInstruction;
     }
+    public enum PrepLabel
+    {
+        include,
+    }
     public enum Section
     {
         Text,
         Constants,
-        Program
+        Program,
+        Prep
     }
     public class PartialInstruction : IntermediateInstruction
     {
         public Inst FinalInstruction;
-        public bool IsFinallized=false;
+        public bool IsFinallized = false;
         public Segment? Data0;
         public Segment? Data1;
         public Segment? Data2;
