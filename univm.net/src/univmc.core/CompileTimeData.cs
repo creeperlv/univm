@@ -39,6 +39,7 @@ namespace univmc.core
     public class IntermediateUniAssembly
     {
         public List<string> Includes = new List<string>();
+        public List<string> Libraries = new List<string>();
         public List<IntermediateInstruction> intermediateInstructions = new List<IntermediateInstruction>();
     }
 
@@ -50,7 +51,7 @@ namespace univmc.core
     }
     public enum PrepLabel
     {
-        include,library
+        include, library
     }
     public enum Section
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace univm.cli.core.Extensions
+namespace univm.core.Utilities
 {
     public static class DictionaryExtensions
     {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using univm.cli.core.Errors;
-using univm.cli.core.Extensions;
+using univm.core.Utilities;
 
 namespace univm.cli.core
 {

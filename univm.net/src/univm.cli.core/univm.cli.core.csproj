@@ -8,4 +8,8 @@
   <ItemGroup>
     <PackageReference Include="LibCLCC.NET" Version="1.28.29" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\univm.core\univm.core.csproj" />
+  </ItemGroup>
 </Project>

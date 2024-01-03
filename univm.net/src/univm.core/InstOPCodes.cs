@@ -215,7 +215,7 @@
         public const uint HL_LOADASMF = 0x0000_2212;
         // Get loadeed Assembly ID from ID in current assembly
         // getasmid AssemblyLabel $Reciver
-        public const uint HL_GETASNID = 0x0000_2213;
+        public const uint HL_GETASMID = 0x0000_2213;
 
         // syscalltest namespace id $reciver
         public const uint BASE_SYSCALL_TEST = 0x0000_1200;
