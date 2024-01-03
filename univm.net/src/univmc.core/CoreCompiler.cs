@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using LibCLCC.NET.Operations;
+using System.Collections.Generic;
+using System.IO;
 
 namespace univmc.core
 {
@@ -19,20 +21,46 @@ namespace univmc.core
         }
         public void FinalizeData(CompileTimeData data)
         {
+            data.Artifact = new univm.core.UniVMAssembly();
+            if (data.IntermediateUniAssembly != null)
+            {
+                for (int i = 0; i < data.IntermediateUniAssembly.intermediateInstructions.Count; i++)
+                {
+                    if (options.IsStatic)
+                    {
 
+                    }
+
+                }
+            }
         }
-        public void Compile()
+        public OperationResult<CompileTimeData> Compile()
         {
             CompileTimeData data = new CompileTimeData();
-
+            OperationResult<CompileTimeData> result = new OperationResult<CompileTimeData>(data);
+            AssemblyScanner scanner = new AssemblyScanner();
             if (options.SourceFiles != null)
             {
                 foreach (var item in options.SourceFiles)
                 {
-
+                    var file_info = new FileInfo(item);
+                    var parent = file_info.Directory;
+                    var HEAD = scanner.Scan(File.ReadAllText(item), false, null);
+                    Parser parser = new Parser();
+                    var _result = parser.Parse(data, parent.FullName, HEAD);
+                    if (result.CheckAndInheritErrorAndWarnings(result))
+                    {
+                        return result;
+                    }
+                    if (!_result.Result)
+                    {
+                        return result;
+                    }
                 }
             }
+
             FinalizeData(data);
+            return result;
         }
     }
 }

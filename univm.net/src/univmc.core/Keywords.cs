@@ -7,6 +7,9 @@ namespace univmc.core
     {
         public static Dictionary<string, PrepLabel> PrepLabels = new Dictionary<string, PrepLabel>()
         {
+            { "library",PrepLabel.library },
+            { "lib",PrepLabel.library },
+            { "l",PrepLabel.library },
             { "include",PrepLabel.include },
             { "inc",PrepLabel.include },
             { "i",PrepLabel.include },
@@ -65,6 +68,10 @@ namespace univmc.core
             {"loadasm", InstOPCodes.HL_LOADASM},
             {"loadasmf", InstOPCodes.HL_LOADASMF},
             {"loadasmi", InstOPCodes.HL_LOADASMI},
+            {"call", InstOPCodes.BASE_CALL },
+            {"callr", InstOPCodes.BASE_CALLR },
+            {"calle", InstOPCodes.BASE_CALLE },
+            {"caller", InstOPCodes.BASE_CALLER },
         };
     }
 }

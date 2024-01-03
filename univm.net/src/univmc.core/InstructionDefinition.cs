@@ -27,6 +27,10 @@ namespace univmc.core
             { InstOPCodes.BASE_SYSCALL_TEST, new InstructionTypeDefinition( TUInt32, TUInt32,null ) },
             { InstOPCodes.BASE_SYSCALL_TESTR, new InstructionTypeDefinition( TRegister, TRegister,null ) },
             { InstOPCodes.HL_FREE, new InstructionTypeDefinition( TRegister, null,null ) },
+            { InstOPCodes.BASE_CALL, new InstructionTypeDefinition( TUInt32, null,null ) },
+            { InstOPCodes.BASE_CALLR, new InstructionTypeDefinition( TRegister, null,null ) },
+            { InstOPCodes.BASE_CALLE, new InstructionTypeDefinition( TUInt32, TUInt32,null ) },
+            { InstOPCodes.BASE_CALLER, new InstructionTypeDefinition( TRegister, TRegister,null ) },
         };
     }
 }

@@ -1,4 +1,5 @@
 ﻿using univm.cli.core;
+using univmc.core;
 
 namespace univmc;
 
@@ -15,7 +16,10 @@ class Program
             new Parameter(){ MainName="O", Aliases=new List<string>(){"output"}, RequireValues=true, AcceptValues =true, Description="Output" },
         };
         var options=CLIOptions.ParseFromStringArray(args, processor);
+        CompileOptions compileOptions = new CompileOptions();
 
+        CoreCompiler coreCompiler=new CoreCompiler(compileOptions);
+        coreCompiler.Compile();
     }
 
 }

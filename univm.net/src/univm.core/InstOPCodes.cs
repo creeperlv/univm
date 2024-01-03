@@ -96,13 +96,21 @@
         public const uint BASE_SET16 = 0x00001009;
         public const uint BASE_SET32 = 0x0000100A;
         public const uint BASE_SET64 = 0x0000100B;
-
+        // call call_id
         public const uint BASE_CALL = 0x00001100;
-        public const uint BASE_CALLI = 0x00001101;
+        // callr $register
+        public const uint BASE_CALLR = 0x00001101;
         public const uint BASE_RET = 0x00001102;
         public const uint BASE_SPADD = 0x00001103;
         public const uint BASE_GETSPLEN = 0x00001104;
-        public const uint BASE_SETSPLEN = 0x00001104;
+        //
+        public const uint BASE_SETSPLEN = 0x00001105;
+        //Call External Function
+        //calle asm_id pc
+        public const uint BASE_CALLE = 0x00001106;
+        //Call External Function in Register
+        //caller $asm_id $pc
+        public const uint BASE_CALLER = 0x00001107;
         // Jump to relative address
         public const uint BASE_J = 0x00001110;
         public const uint BASE_JR = 0x00001111;
@@ -205,6 +213,9 @@
         // Load Assembly from a file
         // loadasmf $ResourceID
         public const uint HL_LOADASMF = 0x0000_2212;
+        // Get loadeed Assembly ID from ID in current assembly
+        // getasmid AssemblyLabel $Reciver
+        public const uint HL_GETASNID = 0x0000_2213;
 
         // syscalltest namespace id $reciver
         public const uint BASE_SYSCALL_TEST = 0x0000_1200;

@@ -9,7 +9,7 @@ class Program
     {
         VM vm = new VM();
         MachineData machine = vm.machineData;
-        VMCore vMCore=vm.NewCore();
+        VMCore vMCore=vm.CreateCore();
         CoreData coredata = vMCore.coreData;
         DefaultSysCalls.SetupSysCall(vm);
         coredata.SetDataToRegister(0, 123);

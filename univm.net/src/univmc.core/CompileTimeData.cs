@@ -50,7 +50,7 @@ namespace univmc.core
     }
     public enum PrepLabel
     {
-        include,
+        include,library
     }
     public enum Section
     {

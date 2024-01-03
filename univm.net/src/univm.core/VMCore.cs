@@ -17,7 +17,7 @@ namespace univm.core
         {
             machineData.Dispose();
         }
-        public VMCore NewCore()
+        public VMCore CreateCore()
         {
             VMCore core = new VMCore(this);
             Cores.Add(core);
