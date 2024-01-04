@@ -1,4 +1,5 @@
 ﻿using LibCLCC.NET.Operations;
+using LibCLCC.NET.TextProcessing;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,13 +9,19 @@ using univmc.core.Errors;
 
 namespace univmc.core
 {
+    public class SourceFile
+    {
+        public string Data = string.Empty;
+        public bool DataIsNotFile;
+    }
     public class CompileOptions
     {
-        public List<string>? SourceFiles;
+        public List<SourceFile>? SourceFiles;
         public List<string>? IncludeDirectories;
         public List<string>? Libraries;
         public bool IsStatic = false;
         public string output = "a.out";
+        public string FallbackWorkingDirectory = ".";
     }
     public class CompileIntermediateData
     {
@@ -226,11 +233,22 @@ namespace univmc.core
             {
                 foreach (var item in options.SourceFiles)
                 {
-                    var file_info = new FileInfo(item);
-                    var parent = file_info.Directory;
-                    var HEAD = scanner.Scan(File.ReadAllText(item), false, null);
+                    string Directory;
+                    Segment HEAD;
+                    if (item.DataIsNotFile)
+                    {
+                        HEAD=scanner.Scan(item.Data, false);
+                        Directory = options.FallbackWorkingDirectory;
+                    }
+                    else
+                    {
+                        var file_info = new FileInfo(item.Data);
+                        HEAD = scanner.Scan(File.ReadAllText(file_info.FullName), false, file_info.FullName);
+                        var parent = file_info.Directory;
+                        Directory = parent.FullName;
+                    }
                     Parser parser = new Parser();
-                    var _result = parser.Parse(data, parent.FullName, HEAD);
+                    var _result = parser.Parse(data, Directory, HEAD);
                     if (result.CheckAndInheritErrorAndWarnings(result))
                     {
                         return result;

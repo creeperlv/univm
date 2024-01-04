@@ -18,6 +18,8 @@ class Program
         var options=CLIOptions.ParseFromStringArray(args, processor);
         CompileOptions compileOptions = new CompileOptions();
 
+        var sample_code = ".code: set32 $1 1 set32 $2 2 add $3 $1 $2";
+
         CoreCompiler coreCompiler=new CoreCompiler(compileOptions);
         coreCompiler.Compile();
     }
