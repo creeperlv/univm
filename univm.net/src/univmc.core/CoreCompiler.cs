@@ -16,6 +16,18 @@ namespace univmc.core
         public bool IsStatic = false;
         public string output = "a.out";
     }
+    public class CompileIntermediateData
+    {
+        public IntermediateUniAssembly assembly;
+
+        public CompileIntermediateData(IntermediateUniAssembly assembly)
+        {
+            this.assembly = assembly;
+        }
+
+        public Dictionary<uint, uint> Offsets = new Dictionary<uint, uint>();
+        public Dictionary<string, uint> Labels = new Dictionary<string, uint>();
+    }
     public class CoreCompiler
     {
         CompileOptions options;
@@ -48,15 +60,64 @@ namespace univmc.core
             result.AddError(new LabelHaveNoRealLabelString());
             return result;
         }
+        public unsafe OperationResult<bool> TryParse(CompileIntermediateData cidata, string content, out uint data)
+        {
+            OperationResult<bool> operationResult = new OperationResult<bool>(false);
+            if (content.StartsWith("%"))
+            {
+                if (cidata.assembly.Constants.TryGetValue(content[1..], out var _value))
+                {
+                    return TryParse(cidata, _value, out data);
+                }
+                else
+                {
+                    data = default;
+                    operationResult.AddError(new ConstantDefinitionNotFound(content[1..]));
+                    return operationResult;
+                }
+            }
+            else if (content.StartsWith("@"))
+            {
+
+                var _data = cidata.assembly.TextKeys.IndexOf(content[1..]);
+                if (_data >= 0)
+                {
+                    data = (uint)_data;
+                    return true;
+                }
+                else
+                {
+                    data = default;
+                    operationResult.AddError(new TextDefinitionNotFound(content[1..]));
+                    return operationResult;
+                }
+            }
+            else if (content.StartsWith(":"))
+            {
+
+                if (cidata.Labels.TryGetValue(content[1..], out uint _data))
+                {
+                    data = _data;
+                    return true;
+                }
+                else
+                {
+                    data = default;
+                    operationResult.AddError(new LabelNotFound(content[1..]));
+                    return operationResult;
+                }
+            }
+            data = default;
+            return true;
+        }
         public OperationResult<bool> FinalizeData(CompileTimeData data)
         {
             OperationResult<bool> result = new OperationResult<bool>();
             data.Artifact = new univm.core.UniVMAssembly();
             List<Inst> Insts = new List<Inst>();
-            Dictionary<uint, uint> Offsets = new Dictionary<uint, uint>();
-            Dictionary<string, uint> Labels = new Dictionary<string, uint>();
             if (data.IntermediateUniAssembly != null)
             {
+                CompileIntermediateData cidata = new CompileIntermediateData(data.IntermediateUniAssembly);
                 if (options.IsStatic)
                 {
                     var libs = data.IntermediateUniAssembly.Libraries;
@@ -69,7 +130,7 @@ namespace univmc.core
                         var asm = UniVMAssembly.Read(stream);
                         if (asm.Instructions != null)
                         {
-                            Offsets.Add(ID, Offset);
+                            cidata.Offsets.Add(ID, Offset);
                             foreach (var inst in asm.Instructions)
                             {
                                 switch (inst.Op_Code)
@@ -103,7 +164,7 @@ namespace univmc.core
                     }
                     else
                     {
-                        var DL_Result = DestructLabels(Labels, Inst, (uint)i);
+                        var DL_Result = DestructLabels(cidata.Labels, Inst, (uint)i + (uint)Insts.Count);
 
                         if (result.CheckAndInheritErrorAndWarnings(DL_Result))
                         {
@@ -116,6 +177,42 @@ namespace univmc.core
                 for (int i = 0; i < data.IntermediateUniAssembly.intermediateInstructions.Count; i++)
                 {
                     PartialInstruction item = (PartialInstruction)data.IntermediateUniAssembly.intermediateInstructions[i];
+                    if (item.IsFinallized)
+                    {
+                        Insts.Add(item.FinalInstruction);
+                    }
+                    else
+                    {
+                        if (item.Data0 != null)
+                        {
+                            var res = TryParse(cidata, item.Data0.content, out var _value);
+                            if (result.CheckAndInheritErrorAndWarnings(res))
+                            {
+                                return result;
+                            }
+                            item.FinalInstruction.Data0 = _value;
+                        }
+                        if (item.Data1 != null)
+                        {
+                            var res = TryParse(cidata, item.Data1.content, out var _value);
+                            if (result.CheckAndInheritErrorAndWarnings(res))
+                            {
+                                return result;
+                            }
+                            item.FinalInstruction.Data1 = _value;
+                        }
+                        if (item.Data2 != null)
+                        {
+                            var res = TryParse(cidata, item.Data2.content, out var _value);
+                            if (result.CheckAndInheritErrorAndWarnings(res))
+                            {
+                                return result;
+                            }
+                            item.FinalInstruction.Data2 = _value;
+                        }
+                        Insts.Add(item.FinalInstruction);
+                    }
+
                 }
             }
             return result;

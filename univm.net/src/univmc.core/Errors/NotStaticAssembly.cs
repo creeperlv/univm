@@ -24,18 +24,4 @@ namespace univmc.core.Errors
             return "A Label have no label string! How do you get this error?";
         }
     }
-
-    public class LabelMustHaveSubsequentInstruction : Error
-    {
-        public string Label;
-
-        public LabelMustHaveSubsequentInstruction(string label)
-        {
-            Label = label;
-        }
-        public override string ToString()
-        {
-            return $"{Label} requres at least one subsequent instruction.";
-        }
-    }
 }

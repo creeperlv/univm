@@ -12,6 +12,11 @@ namespace univmc.core
             HEAD = head;
             Current = head;
         }
+        public string? PeekNext()
+        {
+            if (Current.Next == null) return null;
+            return Current.Next.content;
+        }
         public string GetCurrentContent() => Current.content;
         public MatchResult IsLabel()
         {

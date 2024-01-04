@@ -273,6 +273,27 @@ namespace univmc.core
                                                 data.IntermediateUniAssembly.Includes.Add(Path.Combine(WorkDirectory, context.GetCurrentContent()));
                                             }
                                             break;
+                                        case PrepLabel.library:
+                                            {
+
+                                                if (!context.GoNext())
+                                                {
+                                                    result.AddError(new UnexpectedEndError(context.Current));
+                                                    return result;
+                                                }
+                                                {
+                                                    var Name = context.GetCurrentContent();
+                                                    if (!context.GoNext())
+                                                    {
+                                                        result.AddError(new UnexpectedEndError(context.Current));
+                                                        return result;
+                                                    }
+                                                    var Content = context.GetCurrentContent();
+                                                    data.IntermediateUniAssembly.LibraryKeys.Add(Name);
+                                                    data.IntermediateUniAssembly.LibraryMap.Add(Name, Content);
+                                                }
+                                            }
+                                            break;
                                         default:
                                             break;
                                     }
@@ -280,8 +301,29 @@ namespace univmc.core
                             }
                             break;
                         case Section.Text:
+                            {
+                                var Name = context.GetCurrentContent();
+                                if (!context.GoNext())
+                                {
+                                    result.AddError(new UnexpectedEndError(context.Current));
+                                    return result;
+                                }
+                                var Content = context.GetCurrentContent();
+                                data.IntermediateUniAssembly.TextKeys.Add(Name);
+                                data.IntermediateUniAssembly.Texts.Add(Name, Content);
+                            }
                             break;
                         case Section.Constants:
+                            {
+                                var Name = context.GetCurrentContent();
+                                if (!context.GoNext())
+                                {
+                                    result.AddError(new UnexpectedEndError(context.Current));
+                                    return result;
+                                }
+                                var Content = context.GetCurrentContent();
+                                data.IntermediateUniAssembly.Constants.Add(Name, Content);
+                            }
                             break;
                         case Section.Program:
                             var op_code = context.GetCurrentContent().ToLower();
@@ -353,6 +395,10 @@ namespace univmc.core
                 if (context.IsCurrentLastSegment())
                 {
                     break;
+                }
+                if (context.PeekNext() == ";")
+                {
+                    context.GoNext();
                 }
                 context.GoNext();
 
