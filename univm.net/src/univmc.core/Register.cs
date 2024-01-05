@@ -16,6 +16,14 @@
                         data = Keywords.RegisterNames[name];
                         return true;
                     }
+                    else
+                    {
+                        if(uint.TryParse(str[1..],out var value))
+                        {
+                            data=value*8;
+                            return true;
+                        }
+                    }
 
                 }
                 return false;

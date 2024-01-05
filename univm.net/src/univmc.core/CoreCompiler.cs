@@ -1,8 +1,11 @@
 ﻿using LibCLCC.NET.Operations;
 using LibCLCC.NET.TextProcessing;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
 using univm.core;
 using univm.core.Utilities;
 using univmc.core.Errors;
@@ -14,13 +17,26 @@ namespace univmc.core
         public string Data = string.Empty;
         public bool DataIsNotFile;
     }
+    public class Output
+    {
+        public Stream stream;
+
+        public Output(string path)
+        {
+            this.stream = File.OpenWrite(path);
+        }
+        public Output(Stream stream)
+        {
+            this.stream = stream;
+        }
+    }
     public class CompileOptions
     {
-        public List<SourceFile>? SourceFiles;
+        public List<SourceFile> SourceFiles = new List<SourceFile>();
         public List<string>? IncludeDirectories;
         public List<string>? Libraries;
         public bool IsStatic = false;
-        public string output = "a.out";
+        public Output? output;// = "a.out";
         public string FallbackWorkingDirectory = ".";
     }
     public class CompileIntermediateData
@@ -117,10 +133,10 @@ namespace univmc.core
             data = default;
             return true;
         }
-        public OperationResult<bool> FinalizeData(CompileTimeData data)
+        public unsafe OperationResult<bool> PostProcessInstructions(CompileTimeData data)
         {
             OperationResult<bool> result = new OperationResult<bool>();
-            data.Artifact = new univm.core.UniVMAssembly();
+            data.Artifact = new UniVMAssembly();
             List<Inst> Insts = new List<Inst>();
             if (data.IntermediateUniAssembly != null)
             {
@@ -221,9 +237,26 @@ namespace univmc.core
                     }
 
                 }
+
+                data.Artifact.Texts = new TextItem[data.IntermediateUniAssembly.Texts.Values.Count];
+                var textList = data.IntermediateUniAssembly.Texts.Values.ToList();
+                for (int i = 0; i < textList.Count; i++)
+                {
+                    string? item = textList[i];
+                    var bytes = Encoding.UTF8.GetBytes(item);
+                    void* b = (void*)Marshal.AllocHGlobal(bytes.Length);
+                    fixed (void* _b = bytes)
+                    {
+                        Buffer.MemoryCopy(_b, b, bytes.Length, bytes.Length);
+                    }
+                    data.Artifact.Texts[i].Length = (uint)bytes.Length;
+                    data.Artifact.Texts[i].Data = (byte*)b;
+                }
+                data.Artifact.Instructions = Insts.ToArray();
             }
             return result;
         }
+
         public OperationResult<CompileTimeData> Compile()
         {
             CompileTimeData data = new CompileTimeData();
@@ -237,7 +270,7 @@ namespace univmc.core
                     Segment HEAD;
                     if (item.DataIsNotFile)
                     {
-                        HEAD=scanner.Scan(item.Data, false);
+                        HEAD = scanner.Scan(item.Data, false);
                         Directory = options.FallbackWorkingDirectory;
                     }
                     else
@@ -260,7 +293,7 @@ namespace univmc.core
                 }
             }
 
-            FinalizeData(data);
+            PostProcessInstructions(data);
             return result;
         }
     }

@@ -40,6 +40,7 @@ namespace univmc.core
         {
 
             {"add", InstOPCodes.BASE_ADD },
+            {"set32", InstOPCodes.BASE_SET32},
             {"sub", InstOPCodes.BASE_SUB },
             {"mul", InstOPCodes.BASE_MUL},
             {"div", InstOPCodes.BASE_DIV},

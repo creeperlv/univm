@@ -7,10 +7,14 @@ using univm.core.Utilities;
 namespace univm.core
 {
 
-
+    public unsafe struct TextItem
+    {
+        public uint Length;
+        public byte* Data;
+    }
     public unsafe class UniVMAssembly : IDisposable
     {
-        public byte*[]? Texts;
+        public TextItem[]? Texts;
         public string[]? Libraries;
         public Inst[]? Instructions;
 
@@ -21,9 +25,41 @@ namespace univm.core
 
                 foreach (var ptr in Texts)
                 {
-                    Marshal.FreeHGlobal((IntPtr)ptr);
+                    Marshal.FreeHGlobal((IntPtr)ptr.Data);
                 }
             }
+        }
+        public static void Write(Stream stream, UniVMAssembly asm)
+        {
+            stream.WriteData((uint)(asm.Texts?.Length ?? 0));
+            stream.WriteData((uint)(asm.Libraries?.Length ?? 0));
+            stream.WriteData((uint)(asm.Instructions?.Length ?? 0));
+            if (asm.Texts != null)
+                foreach (var item in asm.Texts)
+                {
+                    stream.WriteData(item.Length);
+                    stream.WritePointer(item.Data, item.Length);
+                }
+            if (asm.Libraries != null)
+                foreach (var item in asm.Libraries)
+                {
+                    var b = Encoding.UTF8.GetBytes(item);
+                    stream.WriteData(b.Length);
+                    stream.Write(b);
+                }
+            if (asm.Instructions != null)
+            {
+                Span<byte> buffer = stackalloc byte[sizeof(Inst)];
+                foreach (var item in asm.Instructions)
+                {
+                    fixed (byte* ptr = buffer)
+                    {
+                        ((Inst*)ptr)[0]=item;
+                        stream.Write(buffer);
+                    }
+                }
+            }
+            stream.Flush();
         }
         public static UniVMAssembly Read(Stream stream)
         {
@@ -36,12 +72,13 @@ namespace univm.core
             stream.ReadUInt32(buffer4, out TextCount);
             stream.ReadUInt32(buffer4, out LibraryCount);
             stream.ReadUInt32(buffer4, out InstCount);
-            byte*[] Texts = new byte*[TextCount];
+            TextItem[] Texts = new TextItem[TextCount];
             for (int i = 0; i < TextCount; i++)
             {
                 stream.ReadUInt32(buffer4, out Value0);
                 var data = (byte*)Marshal.AllocHGlobal((int)Value0);
-                Texts[i] = data;
+                Texts[i].Length = Value0;
+                Texts[i].Data = data;
                 int d = default;
                 byte* target = (byte*)data;
                 for (int index = 0; index < Value0; index++)

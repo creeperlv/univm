@@ -16,7 +16,7 @@ namespace univmc.core
     {
         public IntermediateUniAssembly? IntermediateUniAssembly = null;
         public UniVMAssembly? Artifact = null;
-        public AssembleDef? ArtifaceDef = null;
+        public AssembleDef? ArtifactDef = null;
         public List<AssembleDef> AssembleDefs = new List<AssembleDef>();
         public List<UniVMAssembly?> LoadedAssemblies = new List<UniVMAssembly?>();
     }

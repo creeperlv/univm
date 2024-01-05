@@ -5,6 +5,13 @@ namespace univm.core.Utilities
 {
     public static class StreamExtensions
     {
+        public static unsafe void WritePointer(this Stream stream, byte* pointer, uint length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                stream.WriteByte(pointer[i]);
+            }
+        }
         public static unsafe void WriteData<T>(this Stream stream, T data) where T : unmanaged
         {
             int size = sizeof(T);
