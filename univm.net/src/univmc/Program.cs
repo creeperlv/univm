@@ -20,13 +20,16 @@ class Program
         var options = CLIOptions.ParseFromStringArray(args, processor);
         CompileOptions compileOptions = new CompileOptions();
 
-        var sample_code = ".code: set32 $1 1 set32 $2 2 add $3 $1 $2";
+        var sample_code = ".text: t0 \"ASD\" .code: " +
+            "set32 $1 1000 " +
+            "set32 $2 2000 " +
+            "add $3 $1 $2";
         compileOptions.SourceFiles.Add(new SourceFile() { Data = sample_code, DataIsNotFile = true });
         CoreCompiler coreCompiler = new CoreCompiler(compileOptions);
 
         var result = coreCompiler.Compile();
-        Console.WriteLine("Error?" + result.HasError());
-        Console.WriteLine("IC:" + result.Result.IntermediateUniAssembly.intermediateInstructions.Count);
+        //Console.WriteLine("Error?" + result.HasError());
+        //Console.WriteLine("IC:" + result.Result.IntermediateUniAssembly.intermediateInstructions.Count);
 
         if (result.Result.Artifact != null)
         {

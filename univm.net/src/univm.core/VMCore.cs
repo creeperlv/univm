@@ -102,7 +102,7 @@ namespace univm.core
         {
             HostMachine = hostMachine;
             machineData = hostMachine.machineData;
-            coreData.SharedCoreData = machineData;
+            coreData.mdata = machineData;
         }
 
         public void Dispose()
@@ -133,19 +133,39 @@ namespace univm.core
                 case InstOPCodes.BASE_SET8:
                     coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(byte));
                     break;
+                case InstOPCodes.BASE_SETU32:
+                    coreData.SetDataToRegister(inst.Data0, inst.Data1);
+                    break;
+                case InstOPCodes.BASE_SETU16:
+                    coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(short));
+                    break;
+                case InstOPCodes.BASE_SETS8:
+                    coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(sbyte));
+                    break;
                 case InstOPCodes.BASE_SET64:
+                    coreData.SetDataToRegister64(inst.Data0, inst.Data1, inst.Data2);
+                    break;
+                case InstOPCodes.BASE_SETU64:
                     coreData.SetDataToRegister64(inst.Data0, inst.Data1, inst.Data2);
                     break;
                 case InstOPCodes.HL_ALLOC:
                     {
-                        var id = machineData.Alloc(coreData.GetDataFromRegister<uint>(inst.Data1), coreData);
+                        uint size = coreData.GetDataFromRegister<uint>(inst.Data1);
+                        var id = coreData.Alloc(size);
+                        ;
                         MemPtr ptr = new MemPtr(id, 0);
+                        if (machineData.MemBlocks[(int)id].Size == 0 && size != 0)
+                        {
+                            ptr = new MemPtr(uint.MaxValue, uint.MaxValue);
+                        }
                         coreData.SetDataToRegister(inst.Data0, ptr);
                     }
                     break;
                 case InstOPCodes.HL_FREE:
                     {
-                        machineData.Free(coreData.GetDataFromRegister<uint>(inst.Data0));
+                        var PTR= coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        if(PTR.IsNotNull())
+                        machineData.Free(PTR.MemID);
                     }
                     break;
                 case InstOPCodes.HL_MEASURE:

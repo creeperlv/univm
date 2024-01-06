@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using univm.core.Utilities;
@@ -54,7 +55,7 @@ namespace univm.core
                 {
                     fixed (byte* ptr = buffer)
                     {
-                        ((Inst*)ptr)[0]=item;
+                        ((Inst*)ptr)[0] = item;
                         stream.Write(buffer);
                     }
                 }
@@ -131,6 +132,10 @@ namespace univm.core
             MemID = memID;
             Offset = offset;
         }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public readonly bool IsNull() => MemID == uint.MaxValue && Offset == uint.MaxValue;
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public readonly bool IsNotNull() => MemID != uint.MaxValue || Offset != uint.MaxValue;
     }
     public unsafe struct MemBlock
     {
@@ -141,7 +146,8 @@ namespace univm.core
             this.Size = Size;
             this.Data = data;
         }
-        public unsafe T GetDataFromRegister<T>(uint Offset) where T : unmanaged
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public readonly unsafe T GetDataFromRegister<T>(uint Offset) where T : unmanaged
         {
             T t;
             {

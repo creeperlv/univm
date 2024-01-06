@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using univm.core;
 
 namespace univmc.core
 {
-    public static class InstructionDefinition
+    internal  class InstructionDefinition
     {
-        private static readonly System.Type TRegister = typeof(Register);
-        private static readonly System.Type TUInt32 = typeof(uint);
-        private static readonly System.Type TInt32 = typeof(int);
-        public static Dictionary<uint, InstructionTypeDefinition> PredefinedInstructionWithType = new Dictionary<uint, InstructionTypeDefinition>()
+        private static readonly Type TRegister = typeof(Register);
+        private static readonly Type TUInt32 = typeof(uint);
+        private static readonly Type TInt32 = typeof(int);
+        private static readonly Type TInt16 = typeof(Int16);
+        private static readonly Type TInt64 = typeof(Int64);
+        private static readonly Type TByte = typeof(byte);
+        private static readonly Type TSByte = typeof(sbyte);
+        private static readonly Type TUInt64 = typeof(UInt64);
+        private static readonly Type TUInt16 = typeof(UInt16);
+        private static readonly Type TSingle = typeof(float);
+        private static readonly Type TDouble = typeof(double);
+        private static Dictionary<uint, InstructionTypeDefinition> PredefinedInstructionWithType = new Dictionary<uint, InstructionTypeDefinition>()
         {
             { InstOPCodes.BASE_ADD, new InstructionTypeDefinition(  TRegister, TRegister,TRegister ) },
             { InstOPCodes.BASE_SUB, new InstructionTypeDefinition( TRegister, TRegister,TRegister ) },
@@ -28,7 +37,16 @@ namespace univmc.core
             { InstOPCodes.BASE_SYSCALL_TEST, new InstructionTypeDefinition( TUInt32, TUInt32,null ) },
             { InstOPCodes.BASE_SYSCALL_TESTR, new InstructionTypeDefinition( TRegister, TRegister,null ) },
             { InstOPCodes.HL_FREE, new InstructionTypeDefinition( TRegister, null,null ) },
+            { InstOPCodes.BASE_SETS, new InstructionTypeDefinition(  TRegister, TSingle,null) },
+            { InstOPCodes.BASE_SETD, new InstructionTypeDefinition(  TRegister, TDouble,null) },
+            { InstOPCodes.BASE_SET8, new InstructionTypeDefinition(  TRegister, TByte,null) },
+            { InstOPCodes.BASE_SET16, new InstructionTypeDefinition(  TRegister, TInt16,null) },
             { InstOPCodes.BASE_SET32, new InstructionTypeDefinition(  TRegister, TInt32,null) },
+            { InstOPCodes.BASE_SET64, new InstructionTypeDefinition(  TRegister, TInt64,null) },
+            { InstOPCodes.BASE_SETS8, new InstructionTypeDefinition(  TRegister, TSByte,null) },
+            { InstOPCodes.BASE_SETU16, new InstructionTypeDefinition(  TRegister, TUInt16,null) },
+            { InstOPCodes.BASE_SETU32, new InstructionTypeDefinition(  TRegister, TUInt32,null) },
+            { InstOPCodes.BASE_SETU64, new InstructionTypeDefinition(  TRegister, TUInt64,null) },
             { InstOPCodes.BASE_CALL, new InstructionTypeDefinition( TUInt32, null,null ) },
             { InstOPCodes.BASE_CALLR, new InstructionTypeDefinition( TRegister, null,null ) },
             { InstOPCodes.BASE_CALLE, new InstructionTypeDefinition( TUInt32, TUInt32,null ) },

@@ -40,7 +40,6 @@ namespace univmc.core
         {
 
             {"add", InstOPCodes.BASE_ADD },
-            {"set32", InstOPCodes.BASE_SET32},
             {"sub", InstOPCodes.BASE_SUB },
             {"mul", InstOPCodes.BASE_MUL},
             {"div", InstOPCodes.BASE_DIV},
@@ -73,6 +72,15 @@ namespace univmc.core
             {"callr", InstOPCodes.BASE_CALLR },
             {"calle", InstOPCodes.BASE_CALLE },
             {"caller", InstOPCodes.BASE_CALLER },
+            {"set8", InstOPCodes.BASE_SET8},
+            {"set16", InstOPCodes.BASE_SET16},
+            {"set32", InstOPCodes.BASE_SET32},
+            {"set64", InstOPCodes.BASE_SET64},
+            {"sets8", InstOPCodes.BASE_SETS8},
+            {"setu16", InstOPCodes.BASE_SETU16},
+            {"setu32", InstOPCodes.BASE_SETU32},
+            {"setu64", InstOPCodes.BASE_SETU64},
+            {"sets", InstOPCodes.BASE_SETS},
         };
     }
 }

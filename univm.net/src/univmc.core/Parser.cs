@@ -28,6 +28,15 @@ namespace univmc.core
                 }
             }
             else
+            if (t == typeof(sbyte))
+            {
+                if (sbyte.TryParse(str, out var d))
+                {
+                    ((sbyte*)data0)[0] = d;
+                    return true;
+                }
+            }
+            else
             if (t == typeof(Int32))
             {
                 if (Int32.TryParse(str, out int d))
@@ -221,7 +230,7 @@ namespace univmc.core
             }
             return ConvertData(partialInstruction, definition.Data0Type, definition.Data1Type, definition.Data2Type);
         }
-        public OperationResult<bool> Parse(CompileTimeData data, string WorkDirectory, Segment HEAD)
+        public OperationResult<bool> Parse(ISADefinition definition, CompileTimeData data, string WorkDirectory, Segment HEAD)
         {
             OperationResult<bool> result = new OperationResult<bool>(false);
             if (data.IntermediateUniAssembly is null)
@@ -327,7 +336,7 @@ namespace univmc.core
                             break;
                         case Section.Program:
                             var op_code = context.GetCurrentContent().ToLower();
-                            if (Keywords.InstructionNames.ContainsKey(op_code))
+                            if (definition.Operations.ContainsKey(op_code))
                             {
                                 inst = new PartialInstruction();
                                 var pi = inst as PartialInstruction;
@@ -338,11 +347,11 @@ namespace univmc.core
                                     return result;
                                 }
                                 pi.FinalInstruction = new Inst();
-                                var OPCode = Keywords.InstructionNames[op_code];
+                                var OPCode = definition.Operations[op_code];
                                 pi.FinalInstruction.Op_Code = OPCode;
-                                if (InstructionDefinition.PredefinedInstructionWithType.ContainsKey(OPCode))
+                                if (definition.Definitions.ContainsKey(OPCode))
                                 {
-                                    InstructionParse(pi, context, InstructionDefinition.PredefinedInstructionWithType[OPCode]);
+                                    InstructionParse(pi, context, definition.Definitions[OPCode]);
                                 }
                                 else
                                 {

@@ -4,6 +4,12 @@
     <ProjectReference Include="..\univm.core\univm.core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="isas\univm.isa">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>

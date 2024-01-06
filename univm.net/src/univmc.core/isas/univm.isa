@@ -1,0 +1,23 @@
+opcode:
+ADD	0x00000001
+SUB	0x00000002
+MUL	0x00000003
+DIV	0x00000004
+ADDS	0x00000005
+SUBS	0x00000006
+MULS	0x00000007
+DIVS	0x00000008
+archinfo	0x00001204
+archinfor	0x00001205
+SETU64	0x0000100F
+def:
+add	reg	reg	reg
+sub	reg	reg	reg
+mul	reg	reg	reg
+div	reg	reg	reg
+adds	reg	reg	reg
+subs	reg	reg	reg
+muls	reg	reg	reg
+divs	reg	reg	reg
+archinfo	
+setu64	reg	ulong

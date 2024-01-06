@@ -2,6 +2,7 @@
 using LibCLCC.NET.TextProcessing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -36,6 +37,9 @@ namespace univmc.core
         public List<string>? IncludeDirectories;
         public List<string>? Libraries;
         public bool IsStatic = false;
+        public bool UseBuiltInISADefinition = false;
+        public bool ISAFileInWorkingDirectory = false;
+        public string ISADefinitionFile = "isas/univm.isa";
         public Output? output;// = "a.out";
         public string FallbackWorkingDirectory = ".";
     }
@@ -262,6 +266,26 @@ namespace univmc.core
             CompileTimeData data = new CompileTimeData();
             OperationResult<CompileTimeData> result = new OperationResult<CompileTimeData>(data);
             AssemblyScanner scanner = new AssemblyScanner();
+            ISADefinition isa;
+            if (options.UseBuiltInISADefinition)
+            {
+                isa = ISADefinition.Default;
+            }
+            else
+            {
+                if (options.ISAFileInWorkingDirectory)
+                {
+                    using var sr = File.OpenText(options.ISADefinitionFile);
+                    isa = ISADefinition.LoadFromReader(sr);
+                }
+                else
+                {
+
+                    var FullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, options.ISADefinitionFile);
+                    using var sr = File.OpenText(FullPath);
+                    isa = ISADefinition.LoadFromReader(sr);
+                }
+            }
             if (options.SourceFiles != null)
             {
                 foreach (var item in options.SourceFiles)
@@ -281,7 +305,7 @@ namespace univmc.core
                         Directory = parent.FullName;
                     }
                     Parser parser = new Parser();
-                    var _result = parser.Parse(data, Directory, HEAD);
+                    var _result = parser.Parse(isa, data, Directory, HEAD);
                     if (result.CheckAndInheritErrorAndWarnings(result))
                     {
                         return result;

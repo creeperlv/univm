@@ -92,10 +92,20 @@
         public const uint BASE_S64 = 0x00001006;
         public const uint BASE_LD = 0x00001007;
         public const uint BASE_L64 = 0x00001007;
-        public const uint BASE_SET8 = 0x00001008;
+        //Set int*
+        public const uint BASE_SETS8 = 0x0000100C;
         public const uint BASE_SET16 = 0x00001009;
         public const uint BASE_SET32 = 0x0000100A;
         public const uint BASE_SET64 = 0x0000100B;
+        //Set uint*
+        public const uint BASE_SET8 = 0x00001008;
+        public const uint BASE_SETU16 = 0x0000100D;
+        public const uint BASE_SETU32 = 0x0000100E;
+        public const uint BASE_SETU64 = 0x0000100F;
+        //Set single
+        public const uint BASE_SETS = 0x00001010;
+        //Set double
+        public const uint BASE_SETD = 0x00001011;
         // call call_id
         public const uint BASE_CALL = 0x00001100;
         // callr $register
@@ -224,5 +234,13 @@
         public const uint BASE_SYSCALL = 0x00001202;
         // syscallr $namespace $id 
         public const uint BASE_SYSCALLR = 0x00001203;
+        //archinfo info_id(uint32) $reciver
+        public const uint BASE_ARCHINFO = 0x00001204;
+        //archinfor $info_id(uint32) $reciver
+        public const uint BASE_ARCHINFOR = 0x00001205;
+        //archinfoexist info_id $reciver
+        public const uint BASE_ARCHINFOEXIST = 0x00001206;
+        //archinfoexistr $info_id $reciver
+        public const uint BASE_ARCHINFOEXISTR = 0x00001207;
     }
 }
