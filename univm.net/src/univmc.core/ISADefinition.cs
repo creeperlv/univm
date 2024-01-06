@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using univm.core;
+using univm.core.Utilities;
 using univmc.core.Utilities;
 
 namespace univmc.core
@@ -143,12 +144,16 @@ namespace univmc.core
             while ((line = treader.ReadLine()) != null)
             {
                 line = line.Trim().ToLower();
-                if (line.EndsWith(":"))
+                if (line.StartsWith("//") || line.StartsWith("#") || line.StartsWith(";"))
+                {
+                }
+                else if (line == string.Empty)
+                {
+
+                }
+                else if (line.EndsWith(":"))
                 {
                     Sections.TryGetValue(line[0..^1], out Section);
-                }
-                else if (line.StartsWith("//") || line.StartsWith("#") || line.StartsWith(";"))
-                {
                 }
                 else
                 {
@@ -161,7 +166,7 @@ namespace univmc.core
                             {
                                 if (segs[1].TryParse(out uint value))
                                 {
-                                    definition.Operations.Add(segs[0], value);
+                                    definition.Operations.Set(segs[0], value);
                                 }
                             }
                             catch (Exception)
@@ -196,7 +201,7 @@ namespace univmc.core
                                     knowntypes.TryGetValue(segs[2], out T1);
                                 if (segs.Length >= 4)
                                     knowntypes.TryGetValue(segs[3], out T2);
-                                definition.Definitions.Add(op_code, new InstructionTypeDefinition(T0, T1, T2));
+                                definition.Definitions.Set(op_code, new InstructionTypeDefinition(T0, T1, T2));
                             }
                             catch (Exception)
                             {

@@ -1,4 +1,8 @@
+//This file is licensed under the MIT License.
+//Copyright (C) 2024 Creeper Lv
+//This is the ISA Definition file of UniVM V1.0
 opcode:
+
 ADD	0x00000001
 SUB	0x00000002
 MUL	0x00000003
@@ -9,8 +13,18 @@ MULS	0x00000007
 DIVS	0x00000008
 archinfo	0x00001204
 archinfor	0x00001205
+SETU8	0x00001008
+SETS8	0x0000100C
+SET16	0x00001009
+SET32	0x0000100A
+SET64	0x0000100B
+SETS	0x00001010
+SETD	0x00001011
+SETU32	0x0000100E
 SETU64	0x0000100F
+
 def:
+
 add	reg	reg	reg
 sub	reg	reg	reg
 mul	reg	reg	reg
@@ -19,5 +33,15 @@ adds	reg	reg	reg
 subs	reg	reg	reg
 muls	reg	reg	reg
 divs	reg	reg	reg
-archinfo	
+archinfo	uint32 reg
+archinfor	reg reg
+setu8	reg byte
+set16	reg int16
+set32	reg int32
+set64	reg int64
+sets8	reg sbyte
+setu16	reg	uint16
+setu32	reg	uint32
 setu64	reg	ulong
+sets	reg	float
+setd	reg	double
