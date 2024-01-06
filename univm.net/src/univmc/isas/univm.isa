@@ -22,6 +22,17 @@ SETS	0x00001010
 SETD	0x00001011
 SETU32	0x0000100E
 SETU64	0x0000100F
+CALL	0x00001100
+CALLR	0x00001101
+RET	0x00001102
+J	0x00001110
+JR	0x00001111
+JAL	0x00001112
+JALR	0x00001113
+JA	0x00001114
+JAR	0x00001115
+JAAL	0x00001116
+JAALR	0x00001117
 
 def:
 
@@ -45,3 +56,14 @@ setu32	reg	uint32
 setu64	reg	ulong
 sets	reg	float
 setd	reg	double
+call	uint
+callr	reg
+ret
+j	uint
+jr	reg
+jal	reg	uint
+jalr	reg	reg
+ja	uint
+jar	reg
+jaal	reg	uint
+jaalr	reg	reg

@@ -106,7 +106,7 @@
         public const uint BASE_SETS = 0x00001010;
         //Set double
         public const uint BASE_SETD = 0x00001011;
-        // call call_id
+        // call label
         public const uint BASE_CALL = 0x00001100;
         // callr $register
         public const uint BASE_CALLR = 0x00001101;

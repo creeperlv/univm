@@ -6,6 +6,12 @@
     <ProjectReference Include="..\univmc.core\univmc.core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="isas\univm.isa">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
