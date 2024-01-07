@@ -18,7 +18,7 @@ namespace univmc.core
         public string Data = string.Empty;
         public bool DataIsNotFile;
     }
-    public class Output
+    public class Output : IDisposable
     {
         public Stream stream;
 
@@ -30,6 +30,11 @@ namespace univmc.core
         {
             this.stream = stream;
         }
+
+        public void Dispose()
+        {
+            stream.Dispose();
+        }
     }
     public class CompileOptions
     {
@@ -37,10 +42,12 @@ namespace univmc.core
         public List<string>? IncludeDirectories;
         public List<string>? Libraries;
         public bool IsStatic = false;
+        public bool ProduceDefinition=false;
         public bool UseBuiltInISADefinition = false;
         public bool ISAFileInWorkingDirectory = false;
         public string ISADefinitionFile = "isas/univm.isa";
         public Output? output;// = "a.out";
+        public Output? DefinitionFile;
         public string FallbackWorkingDirectory = ".";
     }
     public class CompileIntermediateData

@@ -252,6 +252,7 @@ namespace univmc.core
                     if (Keywords.SectionNames.ContainsKey(QueryName))
                     {
                         currentSection = Keywords.SectionNames[QueryName];
+                        context.GoNext();
                     }
                     else
                     {

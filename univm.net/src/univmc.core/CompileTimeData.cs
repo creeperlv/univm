@@ -20,18 +20,6 @@ namespace univmc.core
         public List<AssembleDef> AssembleDefs = new List<AssembleDef>();
         public List<UniVMAssembly?> LoadedAssemblies = new List<UniVMAssembly?>();
     }
-    public class AssemblyScanner : GeneralPurposeScanner
-    {
-        public AssemblyScanner()
-        {
-            this.lineCommentIdentifiers = new List<LineCommentIdentifier> {
-                new LineCommentIdentifier() { StartSequence = ";" },
-                new LineCommentIdentifier() { StartSequence = "#" },
-                new LineCommentIdentifier() { StartSequence = "//" },
-            };
-            this.Splitters = new char[] { ';', ' ', '\t', '\r', '\n' };
-        }
-    }
     public enum MatchResult
     {
         Match, No, ReachEnd

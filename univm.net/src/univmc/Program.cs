@@ -20,7 +20,8 @@ class Program
         var options = CLIOptions.ParseFromStringArray(args, processor);
         CompileOptions compileOptions = new CompileOptions();
 
-        var sample_code = ".text: t0 \"ASD\" .code: " +
+        var sample_code = ".text: " +
+            "t0 \"ASD\" .code: " +
             "set32 $1 1000 " +
             "set32 $2 2000 " +
             "add $3 $1 $2";
@@ -33,8 +34,8 @@ class Program
 
         if (result.Result.Artifact != null)
         {
-            var opt = compileOptions.output ?? new Output("a.out");
-            UniVMAssembly.Write(opt.stream,result.Result.Artifact);
+            using var opt = compileOptions.output ?? new Output("a.out");
+            UniVMAssembly.Write(opt.stream, result.Result.Artifact);
         }
     }
 
