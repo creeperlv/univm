@@ -13,6 +13,9 @@ namespace univmc.core
             { "include",PrepLabel.include },
             { "inc",PrepLabel.include },
             { "i",PrepLabel.include },
+            { "global",PrepLabel.global},
+            { "glb",PrepLabel.global},
+            { "g",PrepLabel.global},
         };
         public static Dictionary<string, Section> SectionNames = new Dictionary<string, Section>()
         {

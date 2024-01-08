@@ -18,7 +18,7 @@ namespace univm.core
         public void Dispose()
         {
         }
-        public void Execute(Inst inst)
+        public unsafe void Execute(Inst inst)
         {
             switch (inst.Op_Code)
             {
@@ -34,8 +34,158 @@ namespace univm.core
                 case InstOPCodes.BASE_DIV:
                     coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / coreData.GetDataFromRegister<int>(inst.Data2));
                     break;
+                case InstOPCodes.BASE_ADD_U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) + coreData.GetDataFromRegister<uint>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_SUB_U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) - coreData.GetDataFromRegister<uint>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_MUL_U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) * coreData.GetDataFromRegister<uint>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_DIV_U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) / coreData.GetDataFromRegister<uint>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_ADD_I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_SUB_I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_MUL_I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_DIV_I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_ADD_IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + inst.Data2);
+                    break;
+                case InstOPCodes.BASE_SUB_IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - inst.Data2);
+                    break;
+                case InstOPCodes.BASE_MUL_IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * inst.Data2);
+                    break;
+                case InstOPCodes.BASE_DIV_IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / inst.Data2);
+                    break;
+                case InstOPCodes.BASE_ADD_64:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + coreData.GetDataFromRegister<long>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_SUB_64:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - coreData.GetDataFromRegister<long>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_MUL_64:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * coreData.GetDataFromRegister<long>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_DIV_64:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / coreData.GetDataFromRegister<long>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_ADD_64I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_SUB_64I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_MUL_64I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_DIV_64I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_ADD_64IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + inst.Data2);
+                    break;
+                case InstOPCodes.BASE_SUB_64IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - inst.Data2);
+                    break;
+                case InstOPCodes.BASE_MUL_64IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * inst.Data2);
+                    break;
+                case InstOPCodes.BASE_DIV_64IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / inst.Data2);
+                    break;
+                case InstOPCodes.BASE_ADD_64U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_SUB_64U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_MUL_64U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_DIV_64U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_ADD_16:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + coreData.GetDataFromRegister<short>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_SUB_16:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - coreData.GetDataFromRegister<short>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_MUL_16:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * coreData.GetDataFromRegister<short>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_DIV_16:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / coreData.GetDataFromRegister<short>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_ADD_16U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_SUB_16U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_MUL_16U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_DIV_16U:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    break;
+                case InstOPCodes.BASE_ADD_16I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + ((short*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_SUB_16I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - ((short*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_MUL_16I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * ((short*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_DIV_16I:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / ((short*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_ADD_16IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + ((ushort*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_SUB_16IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - ((ushort*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_MUL_16IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * ((ushort*)&inst.Data2)[0]);
+                    break;
+                case InstOPCodes.BASE_DIV_16IU:
+                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / ((ushort*)&inst.Data2)[0]);
+                    break;
                 case InstOPCodes.BASE_SET32:
                     coreData.SetDataToRegister(inst.Data0, inst.Data1);
+                    break;
+                case InstOPCodes.BASE_ABS:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<int>(inst.Data1)));
+                    break;
+                case InstOPCodes.BASE_ABS_B:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<sbyte>(inst.Data1)));
+                    break;
+                case InstOPCodes.BASE_ABS_D:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<double>(inst.Data1)));
+                    break;
+                case InstOPCodes.BASE_ABS_S:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<float>(inst.Data1)));
+                    break;
+                case InstOPCodes.BASE_ABS_16:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<short>(inst.Data1)));
+                    break;
+                case InstOPCodes.BASE_ABS_64:
+                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<long>(inst.Data1)));
                     break;
                 case InstOPCodes.BASE_SET16:
                     coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(short));
@@ -62,7 +212,6 @@ namespace univm.core
                     {
                         uint size = coreData.GetDataFromRegister<uint>(inst.Data1);
                         var id = coreData.Alloc(size);
-                        ;
                         MemPtr ptr = new MemPtr(id, 0);
                         if (machineData.MemBlocks[(int)id].Size == 0 && size != 0)
                         {
@@ -73,13 +222,27 @@ namespace univm.core
                     break;
                 case InstOPCodes.HL_FREE:
                     {
-                        var PTR= coreData.GetDataFromRegister<MemPtr>(inst.Data0);
-                        if(PTR.IsNotNull())
-                        machineData.Free(PTR.MemID);
+                        var PTR = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        if (PTR.IsNotNull())
+                            machineData.Free(PTR.MemID);
                     }
                     break;
                 case InstOPCodes.HL_MEASURE:
                     coreData.SetDataToRegister(inst.Data1, machineData.GetMemBlockSize(coreData.GetDataFromRegister<uint>(inst.Data0), coreData));
+                    break;
+                case InstOPCodes.BASE_J:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = (uint)(frame.PCInAssembly + ((int*)&inst.Data0)[0]);
+                        coreData.CallStack[^1] = (frame);
+                    }
+                    break;
+                case InstOPCodes.BASE_JR:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = (uint)(frame.PCInAssembly + coreData.GetDataFromRegister<int>(inst.Data0));
+                        coreData.CallStack[^1] = (frame);
+                    }
                     break;
                 case InstOPCodes.BASE_SYSCALL:
                     machineData.SysCall(inst.Data0, inst.Data1, coreData);

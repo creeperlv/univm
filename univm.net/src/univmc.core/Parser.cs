@@ -3,6 +3,7 @@ using LibCLCC.NET.TextProcessing;
 using System;
 using System.IO;
 using univm.core;
+using univmc.core.Errors;
 
 namespace univmc.core
 {
@@ -301,6 +302,34 @@ namespace univmc.core
                                                     var Content = context.GetCurrentContent();
                                                     data.IntermediateUniAssembly.LibraryKeys.Add(Name);
                                                     data.IntermediateUniAssembly.LibraryMap.Add(Name, Content);
+                                                }
+                                            }
+                                            break;
+                                        case PrepLabel.global:
+                                            {
+
+                                                if (!context.GoNext())
+                                                {
+                                                    result.AddError(new UnexpectedEndError(context.Current));
+                                                    return result;
+                                                }
+                                                {
+                                                    var Name = context.GetCurrentContent();
+                                                    if (!context.GoNext())
+                                                    {
+                                                        result.AddError(new UnexpectedEndError(context.Current));
+                                                        return result;
+                                                    }
+                                                    var Value = context.GetCurrentContent();
+                                                    if (uint.TryParse(Value, out var _value))
+                                                    {
+                                                        data.IntermediateUniAssembly.GMOKeys.Add(Name);
+                                                        data.IntermediateUniAssembly.GlobalMemOffsets.Add(Name, _value);
+                                                    }
+                                                    else
+                                                    {
+                                                        result.AddError(new TypeParseError(typeof(uint), Value));
+                                                    }
                                                 }
                                             }
                                             break;

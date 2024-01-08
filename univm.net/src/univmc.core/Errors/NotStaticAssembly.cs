@@ -17,11 +17,4 @@ namespace univmc.core.Errors
             return $"\"{Name}\" is not static assembly.";
         }
     }
-    public class LabelHaveNoRealLabelString : Error
-    {
-        public override string ToString()
-        {
-            return "A Label have no label string! How do you get this error?";
-        }
-    }
 }

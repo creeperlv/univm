@@ -42,7 +42,7 @@ namespace univmc.core
         public List<string>? IncludeDirectories;
         public List<string>? Libraries;
         public bool IsStatic = false;
-        public bool ProduceDefinition=false;
+        public bool ProduceDefinition = false;
         public bool UseBuiltInISADefinition = false;
         public bool ISAFileInWorkingDirectory = false;
         public string ISADefinitionFile = "isas/univm.isa";
@@ -126,7 +126,7 @@ namespace univmc.core
                     return operationResult;
                 }
             }
-            else if (content.StartsWith(":"))
+            else if (content.StartsWith(">"))
             {
 
                 if (cidata.Labels.TryGetValue(content[1..], out uint _data))
@@ -138,6 +138,21 @@ namespace univmc.core
                 {
                     data = default;
                     operationResult.AddError(new LabelNotFound(content[1..]));
+                    return operationResult;
+                }
+            }
+            else if (content.StartsWith("^"))
+            {
+
+                if (cidata.assembly.GlobalMemOffsets.TryGetValue(content[1..], out uint _data))
+                {
+                    data = _data;
+                    return true;
+                }
+                else
+                {
+                    data = default;
+                    operationResult.AddError(new GlobalVariableNotFound(content[1..]));
                     return operationResult;
                 }
             }
@@ -263,6 +278,12 @@ namespace univmc.core
                     data.Artifact.Texts[i].Length = (uint)bytes.Length;
                     data.Artifact.Texts[i].Data = (byte*)b;
                 }
+                uint Size = 0;
+                foreach (var item in data.IntermediateUniAssembly.GlobalMemOffsets.Values)
+                {
+                    Size += item;
+                }
+                data.Artifact.GlobalMemSize = Size;
                 data.Artifact.Instructions = Insts.ToArray();
             }
             return result;

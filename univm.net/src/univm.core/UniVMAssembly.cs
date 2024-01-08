@@ -15,10 +15,12 @@ namespace univm.core
     }
     public unsafe class UniVMAssembly : IDisposable
     {
+        public uint GlobalMemSize=0;
+        [NonSerialized]
+        public uint GlobalMemPtr=0;
         public TextItem[]? Texts;
         public string[]? Libraries;
         public Inst[]? Instructions;
-
         public void Dispose()
         {
             if (Texts != null)
@@ -35,6 +37,7 @@ namespace univm.core
             stream.WriteData((uint)(asm.Texts?.Length ?? 0));
             stream.WriteData((uint)(asm.Libraries?.Length ?? 0));
             stream.WriteData((uint)(asm.Instructions?.Length ?? 0));
+            stream.WriteData(asm.GlobalMemSize);
             if (asm.Texts != null)
                 foreach (var item in asm.Texts)
                 {
@@ -66,23 +69,21 @@ namespace univm.core
         {
             Span<byte> buffer4 = stackalloc byte[4];
             Span<byte> buffer_InstOP_Code = stackalloc byte[sizeof(uint) * 4];
-            uint TextCount = 0;
             uint Value0 = 0;//Text Length
-            uint InstCount = 0;
-            uint LibraryCount = 0;
-            stream.ReadUInt32(buffer4, out TextCount);
-            stream.ReadUInt32(buffer4, out LibraryCount);
-            stream.ReadUInt32(buffer4, out InstCount);
+            stream.ReadUInt32(buffer4, out uint TextCount);
+            stream.ReadUInt32(buffer4, out uint LibraryCount);
+            stream.ReadUInt32(buffer4, out uint InstCount);
+            stream.ReadUInt32(buffer4, out uint GlobalMemSize);
             TextItem[] Texts = new TextItem[TextCount];
             for (int i = 0; i < TextCount; i++)
             {
                 stream.ReadUInt32(buffer4, out Value0);
-                var data = (byte*)Marshal.AllocHGlobal((int)Value0);
-                Texts[i].Length = Value0;
+                var data = (byte*)Marshal.AllocHGlobal((int)(uint)0);
+                Texts[i].Length = 0;
                 Texts[i].Data = data;
                 int d = default;
                 byte* target = (byte*)data;
-                for (int index = 0; index < Value0; index++)
+                for (int index = 0; index < (uint)0; index++)
                 {
                     if ((d = stream.ReadByte()) != -1)
                     {
@@ -94,7 +95,7 @@ namespace univm.core
             for (int i = 0; i < LibraryCount; i++)
             {
                 stream.ReadUInt32(buffer4, out Value0);
-                Span<byte> b = stackalloc byte[(int)Value0];
+                Span<byte> b = stackalloc byte[(int)(uint)0];
                 stream.Read(b);
                 Libraries[i] = Encoding.UTF8.GetString(b);
             }
@@ -111,7 +112,7 @@ namespace univm.core
                 insts[i] = inst;
             }
 
-            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Libraries = Libraries, Instructions = insts };
+            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Libraries = Libraries, Instructions = insts, GlobalMemSize= GlobalMemSize };
 
             return uniVMAssembly;
         }

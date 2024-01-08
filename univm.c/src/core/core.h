@@ -34,12 +34,20 @@ typedef struct _callStack {
   int CurrentPos;
   int CurrentSize;
 } callStack;
+typedef struct _coreData *CoreData;
+typedef struct _machineData *MachineData;
+typedef struct _coreData {
+  uint8_t Registers[MAX_REGISTER_COUNT * 8];
+  int ProgramBufferSize;
+  callStack CallStack;
+  MachineData Machine;
+} coreData;
+typedef struct _machineData {
+
+} machineData;
 typedef struct _runtime {
   Program *LoadedPrograms;
-  int ProgramBufferSize;
-  uint8_t Registers[MAX_REGISTER_COUNT * 8];
   MemoryBlock Mem;
-  callStack CallStack;
 } runtime;
 typedef runtime *Runtime;
 typedef struct _memoryPtr {
@@ -64,6 +72,7 @@ typedef syscallMapDict *SysCallMapDict;
 typedef struct _vm {
   SysCallMapDict CallMap;
   Runtime CurrentRuntime;
+  bool (*RunAsm)(Program);
 } vm;
 typedef vm *VM;
 Runtime CreateRT();

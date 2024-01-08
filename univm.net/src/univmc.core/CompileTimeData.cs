@@ -30,9 +30,11 @@ namespace univmc.core
         public List<string> Libraries = new List<string>();
         public List<string> LibraryKeys = new List<string>();
         public List<string> TextKeys = new List<string>();
+        public List<string> GMOKeys= new List<string>();
         public Dictionary<string, string> LibraryMap = new Dictionary<string, string>();
         public Dictionary<string, string> Texts = new Dictionary<string, string>();
         public Dictionary<string, string> Constants = new Dictionary<string, string>();
+        public Dictionary<string, uint> GlobalMemOffsets= new Dictionary<string, uint>();
         public List<IntermediateInstruction> intermediateInstructions = new List<IntermediateInstruction>();
     }
 
@@ -44,7 +46,7 @@ namespace univmc.core
     }
     public enum PrepLabel
     {
-        include, library
+        include, library,global
     }
     public enum Section
     {

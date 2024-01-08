@@ -11,9 +11,9 @@ namespace univm.core
         public List<VMCore> Cores = new List<VMCore>();
         public void RunAsm(UniVMAssembly asm)
         {
-            var core=CreateCore();
-            core.machineData.assemblies.Add(asm);
-            core.coreData.CallStack.Add(new CallStackItem() { AssemblyID=0, PCInAssembly=0});
+            var core = CreateCore();
+            var ID = machineData.AddAssembly(asm, core.coreData);
+            core.coreData.CallStack.Add(new CallStackItem() { AssemblyID = (uint)ID, PCInAssembly = 0 });
             core.Run();
         }
         public void SetSysCall(uint Namespace, uint ID, SysCall call)

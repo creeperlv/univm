@@ -11,6 +11,12 @@ namespace univm.core
         public Dictionary<uint, Dictionary<uint, SysCall>>? SysCallDefintion;
         public List<IDisposable?> Resources = new List<IDisposable?>();
         public List<MemBlock> MemBlocks = new List<MemBlock>();
+        public int AddAssembly(UniVMAssembly asm,CoreData callingCore)
+        {
+            assemblies.Add(asm);
+            asm.GlobalMemPtr=Alloc(asm.GlobalMemSize, callingCore);
+            return assemblies.Count-1;
+        }
         public uint GetMemBlockSize(uint ID,CoreData data)
         {
             if (MemBlocks.Count <= ID)
