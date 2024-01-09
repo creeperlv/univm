@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.Versioning;
+using univm.core.Utilities;
 
 namespace univm.core
 {
@@ -7,7 +9,6 @@ namespace univm.core
         public CoreData coreData = new CoreData();
         public MachineData machineData = new MachineData();
         public VM HostMachine;
-
         public VMCore(VM hostMachine)
         {
             HostMachine = hostMachine;
@@ -208,6 +209,62 @@ namespace univm.core
                 case InstOPCodes.BASE_SETU64:
                     coreData.SetDataToRegister64(inst.Data0, inst.Data1, inst.Data2);
                     break;
+                case InstOPCodes.BASE_SW:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToMemPtr(memptr, coreData.GetDataFromRegister<int>(inst.Data0));
+                    }
+                    break;
+                case InstOPCodes.BASE_S16:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToMemPtr(memptr, coreData.GetDataFromRegister<short>(inst.Data0));
+                    }
+                    break;
+                case InstOPCodes.BASE_S64:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToMemPtr(memptr, coreData.GetDataFromRegister<long>(inst.Data0));
+                    }
+                    break;
+                case InstOPCodes.BASE_SB:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToMemPtr(memptr, coreData.GetDataFromRegister<byte>(inst.Data0));
+                    }
+                    break;
+                case InstOPCodes.BASE_LW:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromMemPtr<int>(memptr));
+                    }
+                    break;
+                case InstOPCodes.BASE_LB:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromMemPtr<byte>(memptr));
+                    }
+                    break;
+                case InstOPCodes.BASE_LH:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromMemPtr<short>(memptr));
+                    }
+                    break;
+                case InstOPCodes.BASE_LD:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        memptr.Offset = (uint)(memptr.Offset + inst.Data2.BitWiseConvert<int>());
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromMemPtr<long>(memptr));
+                    }
+                    break;
                 case InstOPCodes.HL_ALLOC:
                     {
                         uint size = coreData.GetDataFromRegister<uint>(inst.Data1);
@@ -224,11 +281,11 @@ namespace univm.core
                     {
                         var PTR = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
                         if (PTR.IsNotNull())
-                            machineData.Free(PTR.MemID);
+                            coreData.Free(PTR.MemID);
                     }
                     break;
                 case InstOPCodes.HL_MEASURE:
-                    coreData.SetDataToRegister(inst.Data1, machineData.GetMemBlockSize(coreData.GetDataFromRegister<uint>(inst.Data0), coreData));
+                    coreData.SetDataToRegister(inst.Data1, coreData.GetMemBlockSize(coreData.GetDataFromRegister<uint>(inst.Data0)));
                     break;
                 case InstOPCodes.BASE_J:
                     {
@@ -242,6 +299,45 @@ namespace univm.core
                         var frame = coreData.CallStack[^1];
                         frame.PCInAssembly = (uint)(frame.PCInAssembly + coreData.GetDataFromRegister<int>(inst.Data0));
                         coreData.CallStack[^1] = (frame);
+                    }
+                    break;
+                case InstOPCodes.BASE_CALL:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        {
+                            frame.StackSize = coreData.CurrentStackSize;
+                            coreData.CallStack[^1] = (frame);
+                        }
+                        {
+                            CallStackItem callStackItem = new CallStackItem();
+                            callStackItem.AssemblyID = frame.AssemblyID;
+                            callStackItem.PCInAssembly = inst.Data0;
+                            coreData.CallStack.Add(callStackItem);
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CALLR:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        {
+                            frame.StackSize = coreData.CurrentStackSize;
+                            coreData.CallStack[^1] = (frame);
+                        }
+                        {
+                            CallStackItem callStackItem = new CallStackItem();
+                            callStackItem.AssemblyID = frame.AssemblyID;
+                            callStackItem.PCInAssembly = coreData.GetDataFromRegister<uint>(inst.Data0);
+                            coreData.CallStack.Add(callStackItem);
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_RET:
+                    {
+                        var frame = coreData.CallStack[^2];
+                        uint NewSize = ((frame.StackSize / Constants.StackBlockSize) + 1) * Constants.StackBlockSize;
+                        coreData.Realloc(0, (int)NewSize);
+                        coreData.CurrentStackSize = frame.StackSize;
+                        coreData.CallStack.RemoveAt(coreData.CallStack.Count - 1);
                     }
                     break;
                 case InstOPCodes.BASE_SYSCALL:

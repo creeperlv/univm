@@ -66,6 +66,13 @@ namespace univm.core.Utilities
             return false;
         }
     }
+    public static class UIntExtensions
+    {
+        public unsafe static T BitWiseConvert<T>(this uint value) where T : unmanaged
+        {
+            return ((T*)&value)[0];
+        }
+    }
     public static class ByteExtensions
     {
         static char OneDIGIT(int value)

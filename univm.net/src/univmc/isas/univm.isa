@@ -82,7 +82,23 @@ ADD16IU	0x0000004B
 SUB16IU	0x0000004C
 MUL16IU	0x0000004D
 DIV16IU	0x0000004E
+SW	0x00001000
+S32	0x00001000
+LW	0x00001001
+L32	0x00001001
+SB	0x00001002
+S8	0x00001002
+LB	0x00001003
+L8	0x00001003
+SH	0x00001004
+S16	0x00001004
+LH	0x00001005
+L16	0x00001005
 
+SD	0x00001006
+S64	0x00001006
+LD	0x00001007
+L64	0x00001007
 archinfo	0x00001204
 archinfor	0x00001205
 SETU8	0x00001008
@@ -138,6 +154,14 @@ sub64	reg	reg	reg
 mul64	reg	reg	reg
 div64	reg	reg	reg
 
+S32	reg	reg	int
+L32	reg	reg	int
+S8	reg	reg	int
+L8	reg	reg	int
+S16	reg	reg	int
+L16	reg	reg	int
+S64	reg	reg	int
+L64	reg	reg	int
 archinfo	uint32 reg
 archinfor	reg reg
 setu8	reg byte

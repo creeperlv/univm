@@ -117,11 +117,6 @@ namespace univm.core
             return uniVMAssembly;
         }
     }
-    public struct CallStackItem
-    {
-        public uint AssemblyID;
-        public uint PCInAssembly;
-    }
     public delegate bool SysCall(CoreData arg);
     [StructLayout(LayoutKind.Sequential)]
     public struct MemPtr

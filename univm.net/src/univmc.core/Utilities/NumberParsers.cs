@@ -8,6 +8,7 @@ namespace univmc.core.Utilities
     {
         public static bool TryParse(this string value, out int result)
         {
+            value=value.Replace("_","");
             if (value.StartsWith("0x") || value.StartsWith("0X"))
             {
                 try
@@ -60,6 +61,7 @@ namespace univmc.core.Utilities
         }
         public static bool TryParse(this string value, out uint result)
         {
+            value = value.Replace("_", "");
             if (value.StartsWith("0x") || value.StartsWith("0X"))
             {
                 try

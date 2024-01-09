@@ -17,10 +17,11 @@ namespace univm.core
         public MachineData mdata = new MachineData();
         public byte[] RegisterData;
         public List<CallStackItem> CallStack = new List<CallStackItem>();
+        public uint CurrentStackSize = 0;
         public CoreData()
         {
             RegisterData = new byte[MAX_REGISTER_COUNT * 8];
-            var memID = mdata.Alloc(Constants.StackBlockSize, this);
+            var memID = Alloc(Constants.StackBlockSize);
             MemPtr memPtr = new MemPtr(memID, 0);
             SetDataToRegister(RegisterDefinition.SP, memPtr);
         }
@@ -115,6 +116,7 @@ namespace univm.core
                 return;
             }
 #endif
+            if(mdata.MemBlocks[MemID].Size==Length)return;
             try
             {
                 var d = mdata.MemBlocks[MemID];
