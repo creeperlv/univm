@@ -189,14 +189,25 @@ namespace univmc.core
                         if (asm.Instructions != null)
                         {
                             cidata.Offsets.Add(ID, Offset);
-                            foreach (var inst in asm.Instructions)
+                            for (int i = 0; i < asm.Instructions.Length; i++)
                             {
+                                Inst inst = asm.Instructions[i];
                                 switch (inst.Op_Code)
                                 {
-                                    case InstOPCodes.HL_GETASMID:
+                                    case InstOPCodes.BASE_SETLBL:
+                                        inst.Data1 += Offset;
+                                        break;
                                     case InstOPCodes.BASE_JA:
-                                    case InstOPCodes.BASE_JAR:
+                                        inst.Data1 += Offset;
+                                        break;
                                     case InstOPCodes.BASE_JAAL:
+                                        inst.Data1 += Offset;
+                                        break;
+                                    case InstOPCodes.BASE_CALL:
+                                        inst.Data0 += Offset;
+                                        break;
+                                    case InstOPCodes.HL_GETASMID:
+                                    case InstOPCodes.BASE_JAR:
                                     case InstOPCodes.BASE_JAALR:
                                     case InstOPCodes.BASE_CALLE:
                                     case InstOPCodes.BASE_CALLER:
@@ -286,7 +297,21 @@ namespace univmc.core
                                         item.FinalInstruction.Data0 = item.FinalInstruction.Data1;
                                         item.FinalInstruction.Data1 = uint.MinValue;
                                     }
+                                    break;
+                                case InstOPCodes.BASE_CALLER:
+                                    {
+                                        item.FinalInstruction.Op_Code = InstOPCodes.BASE_CALLR;
+                                        item.FinalInstruction.Data0 = item.FinalInstruction.Data1;
+                                        item.FinalInstruction.Data1 = uint.MinValue;
+                                    }
                                     //item.FinalInstruction.Data0+=;
+                                    break;
+                                case InstOPCodes.HL_MAP_AGLBMEM:
+                                    {
+                                        item.FinalInstruction.Op_Code = InstOPCodes.HL_MAP_GLBMEM;
+                                        item.FinalInstruction.Data1 = 0;
+                                        item.FinalInstruction.Data2 = 0;
+                                    }
                                     break;
                                 default:
                                     break;

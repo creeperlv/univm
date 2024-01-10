@@ -2,6 +2,8 @@
 {
     public static class InstOPCodes
     {
+        public const uint BASE_NOP = 0x00000000;
+
         public const uint BASE_ADD = 0x00000001;
         public const uint BASE_SUB = 0x00000002;
         public const uint BASE_MUL = 0x00000003;
@@ -133,10 +135,17 @@
         public const uint BASE_SETS = 0x00001010;
         //Set double
         public const uint BASE_SETD = 0x00001011;
+        // Set Label
+        // Almost same as SETU32
+        // Designed for static assembly.
+        // setlbl $reg value
+        public const uint BASE_SETLBL = 0x00001012;
         // call label
         public const uint BASE_CALL = 0x00001100;
         // callr $register
         public const uint BASE_CALLR = 0x00001101;
+        // callrr $id_reg $pc_reg
+        public const uint BASE_CALLRR = 0x00001101;
         public const uint BASE_RET = 0x00001102;
         public const uint BASE_SPADD = 0x00001103;
         public const uint BASE_GETSPLEN = 0x00001104;
