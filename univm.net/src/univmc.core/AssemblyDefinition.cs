@@ -9,11 +9,27 @@ namespace univmc.core
     [Serializable]
     public class AssemblyDefinition
     {
+        public bool IsStaticAssembly;
+        public string? AssemblyID;
         public Dictionary<string, string> Texts = new Dictionary<string, string>();
         public Dictionary<string, uint> Labels = new Dictionary<string, uint>();
         public Dictionary<string, uint> Globals = new Dictionary<string, uint>();
         public static void WriteToStream(Stream stream, AssemblyDefinition definition)
         {
+            stream.WriteData(definition.IsStaticAssembly);
+            if (definition.IsStaticAssembly)
+            {
+                if (definition.AssemblyID != null)
+                {
+                    var data = Encoding.UTF8.GetBytes(definition.AssemblyID);
+                    stream.WriteData(data.Length);
+                    stream.Write(data);
+                }
+                else
+                {
+                    stream.WriteData(0);
+                }
+            }
             stream.WriteData((uint)definition.Texts.Count);
             stream.WriteData((uint)definition.Labels.Count);
             stream.WriteData((uint)definition.Globals.Count);
@@ -44,6 +60,15 @@ namespace univmc.core
         public static AssemblyDefinition LoadFromStream(Stream stream)
         {
             AssemblyDefinition def = new AssemblyDefinition();
+            stream.ReadData(out def.IsStaticAssembly);
+
+            if (def.IsStaticAssembly)
+            {
+                stream.ReadData(out int ID_Len);
+                Span<byte> buffer = stackalloc byte[ID_Len];
+                stream.Read(buffer);
+                def.AssemblyID = Encoding.UTF8.GetString(buffer);
+            }
             stream.ReadData(out int TextCount);
             stream.ReadData(out int LabelCount);
             stream.ReadData(out int GlobalsCount);

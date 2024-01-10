@@ -12,6 +12,8 @@ namespace univmc.core
                 new LineCommentIdentifier() { StartSequence = "#" },
                 new LineCommentIdentifier() { StartSequence = "//" },
             };
+            this.SegmentEncapsulationIdentifiers.Add(new SegmentEncapsulationIdentifier { L = '\"', R = '\"' });
+            this.SegmentEncapsulationIdentifiers.Add(new SegmentEncapsulationIdentifier { L = '<', R = '>' });
             this.PredefinedSegmentCharacters = new List<char> { ':' };
             this.Splitters = new char[] { ';', ' ', '\t', '\r', '\n' };
         }

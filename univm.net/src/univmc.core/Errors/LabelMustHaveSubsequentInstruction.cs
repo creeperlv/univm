@@ -15,5 +15,4 @@ namespace univmc.core.Errors
             return $"{Label} requres at least one subsequent instruction.";
         }
     }
-
 }

@@ -176,7 +176,16 @@ namespace univmc.core
 
                         uint Offset = 0;
                         using var stream = File.OpenRead(item);
+                        FileInfo fileInfo = new FileInfo(item);
+                        var ASM_ID = fileInfo.Name.ToLower();
                         var asm = UniVMAssembly.Read(stream);
+                        {
+                            var def = data.IntermediateUniAssembly.LoadedDefinitions[ASM_ID];
+                            foreach (var lbl in def.Labels)
+                            {
+                                cidata.Labels.Add(lbl.Key, lbl.Value + Offset);
+                            }
+                        }
                         if (asm.Instructions != null)
                         {
                             cidata.Offsets.Add(ID, Offset);
@@ -203,6 +212,13 @@ namespace univmc.core
                         ID++;
                     }
                 }
+                else
+                {
+                    foreach (var item in data.AssembleDefs)
+                    {
+                        cidata.Labels.MergeWith(item.Labels);
+                    }
+                }
                 //Scan Labels.
                 for (int i = 0; i < data.IntermediateUniAssembly.intermediateInstructions.Count; i++)
                 {
@@ -225,6 +241,7 @@ namespace univmc.core
                 }
                 for (int i = 0; i < data.IntermediateUniAssembly.intermediateInstructions.Count; i++)
                 {
+                    //ProcessInstructions.
                     PartialInstruction item = (PartialInstruction)data.IntermediateUniAssembly.intermediateInstructions[i];
                     if (item.IsFinallized)
                     {
@@ -258,6 +275,22 @@ namespace univmc.core
                                 return result;
                             }
                             item.FinalInstruction.Data2 = _value;
+                        }
+                        if (options.IsStatic)
+                        {
+                            switch (item.FinalInstruction.Op_Code)
+                            {
+                                case InstOPCodes.BASE_CALLE:
+                                    {
+                                        item.FinalInstruction.Op_Code = InstOPCodes.BASE_CALL;
+                                        item.FinalInstruction.Data0 = item.FinalInstruction.Data1;
+                                        item.FinalInstruction.Data1 = uint.MinValue;
+                                    }
+                                    //item.FinalInstruction.Data0+=;
+                                    break;
+                                default:
+                                    break;
+                            }
                         }
                         Insts.Add(item.FinalInstruction);
                     }

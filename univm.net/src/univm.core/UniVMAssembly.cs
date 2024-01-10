@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -15,9 +16,10 @@ namespace univm.core
     }
     public unsafe class UniVMAssembly : IDisposable
     {
-        public uint GlobalMemSize=0;
+        public uint GlobalMemSize = 0;
         [NonSerialized]
-        public uint GlobalMemPtr=0;
+        public uint GlobalMemPtr = 0;
+        public Dictionary<uint, int> RuntimeLibraryMap = new Dictionary<uint, int>();
         public TextItem[]? Texts;
         public string[]? Libraries;
         public Inst[]? Instructions;
@@ -112,7 +114,7 @@ namespace univm.core
                 insts[i] = inst;
             }
 
-            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Libraries = Libraries, Instructions = insts, GlobalMemSize= GlobalMemSize };
+            UniVMAssembly uniVMAssembly = new UniVMAssembly() { Texts = Texts, Libraries = Libraries, Instructions = insts, GlobalMemSize = GlobalMemSize };
 
             return uniVMAssembly;
         }

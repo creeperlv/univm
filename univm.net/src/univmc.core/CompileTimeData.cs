@@ -7,17 +7,12 @@ using univm.core;
 
 namespace univmc.core
 {
-    public class AssembleDef
-    {
-        public Dictionary<string, uint> Labels = new Dictionary<string, uint>();
-        public Dictionary<string, string> Texts = new Dictionary<string, string>();
-    }
     public class CompileTimeData
     {
         public IntermediateUniAssembly? IntermediateUniAssembly = null;
         public UniVMAssembly? Artifact = null;
-        public AssembleDef? ArtifactDef = null;
-        public List<AssembleDef> AssembleDefs = new List<AssembleDef>();
+        public AssemblyDefinition? ArtifactDef = null;
+        public List<AssemblyDefinition> AssembleDefs = new List<AssemblyDefinition>();
         public List<UniVMAssembly?> LoadedAssemblies = new List<UniVMAssembly?>();
     }
     public enum MatchResult
@@ -30,11 +25,12 @@ namespace univmc.core
         public List<string> Libraries = new List<string>();
         public List<string> LibraryKeys = new List<string>();
         public List<string> TextKeys = new List<string>();
-        public List<string> GMOKeys= new List<string>();
+        public List<string> GMOKeys = new List<string>();
         public Dictionary<string, string> LibraryMap = new Dictionary<string, string>();
         public Dictionary<string, string> Texts = new Dictionary<string, string>();
         public Dictionary<string, string> Constants = new Dictionary<string, string>();
-        public Dictionary<string, uint> GlobalMemOffsets= new Dictionary<string, uint>();
+        public Dictionary<string, uint> GlobalMemOffsets = new Dictionary<string, uint>();
+        public Dictionary<string, AssemblyDefinition> LoadedDefinitions = new Dictionary<string, AssemblyDefinition>();
         public List<IntermediateInstruction> intermediateInstructions = new List<IntermediateInstruction>();
     }
 
@@ -46,7 +42,7 @@ namespace univmc.core
     }
     public enum PrepLabel
     {
-        include, library,global
+        include, library, global
     }
     public enum Section
     {

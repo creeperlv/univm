@@ -231,6 +231,34 @@ namespace univmc.core
             }
             return ConvertData(partialInstruction, definition.Data0Type, definition.Data1Type, definition.Data2Type);
         }
+        public OperationResult<bool> FindAndLoadAsmDef(CompileTimeData data, string workingDir, string file, bool IsLocalized)
+        {
+            OperationResult<bool> result = new OperationResult<bool>(false);
+            if (IsLocalized)
+            {
+                var _file = Path.Combine(workingDir, file);
+                if (!File.Exists(_file))
+                {
+                    result.AddError(new AssemblyDefinitionNotFound(_file));
+                    return result;
+                }
+                using var fs = File.OpenRead(_file);
+                var def = AssemblyDefinition.LoadFromStream(fs);
+                if (def.IsStaticAssembly)
+                {
+                    if (def.AssemblyID != null)
+                    {
+                        data.IntermediateUniAssembly?.LoadedDefinitions.Add(def.AssemblyID, def);
+                        goto SKIP_NORMAL_DEF;
+                    }
+                }
+                data.AssembleDefs.Add(def);
+            SKIP_NORMAL_DEF:
+                return true;
+            }
+            return result;
+            //data.AssembleDefs.Add
+        }
         public OperationResult<bool> Parse(ISADefinition definition, CompileTimeData data, string WorkDirectory, Segment HEAD)
         {
             OperationResult<bool> result = new OperationResult<bool>(false);
@@ -281,7 +309,24 @@ namespace univmc.core
                                                     result.AddError(new UnexpectedEndError(context.Current));
                                                     return result;
                                                 }
-                                                data.IntermediateUniAssembly.Includes.Add(Path.Combine(WorkDirectory, context.GetCurrentContent()));
+                                                if (context.Current.EncapsulationIdentifier.L == '\"')
+                                                {
+                                                    var _result = FindAndLoadAsmDef(data, WorkDirectory, context.GetCurrentContent(), true);
+                                                    if (result.CheckAndInheritErrorAndWarnings(_result))
+                                                    {
+                                                        return result;
+                                                    }
+                                                    //data.IntermediateUniAssembly.Includes.Add(Path.Combine(WorkDirectory, context.GetCurrentContent()));
+                                                }
+                                                else if (context.Current.EncapsulationIdentifier.L == '<')
+                                                {
+                                                    var _result = FindAndLoadAsmDef(data, WorkDirectory, context.GetCurrentContent(), false);
+                                                    if (result.CheckAndInheritErrorAndWarnings(_result))
+                                                    {
+                                                        return result;
+                                                    }
+                                                    //data.IntermediateUniAssembly.Includes.Add(Path.Combine(WorkDirectory, context.GetCurrentContent()));
+                                                }
                                             }
                                             break;
                                         case PrepLabel.library:

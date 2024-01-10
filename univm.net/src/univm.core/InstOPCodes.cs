@@ -86,16 +86,16 @@
         public const uint BASE_SUB_16IU = 0x0000004C;
         public const uint BASE_MUL_16IU = 0x0000004D;
         public const uint BASE_DIV_16IU = 0x0000004E;
-        public const uint BASE_CVT8= 0x00000050;
-        public const uint BASE_CVT8U= 0x00000051;
-        public const uint BASE_CVT16= 0x00000052;
-        public const uint BASE_CVT16U= 0x00000053;
-        public const uint BASE_CVT32= 0x00000054;
-        public const uint BASE_CVT32U= 0x00000055;
-        public const uint BASE_CVT64= 0x00000056;
-        public const uint BASE_CVT64U= 0x00000057;
-        public const uint BASE_CVTS= 0x00000058;
-        public const uint BASE_CVTD= 0x00000059;
+        public const uint BASE_CVT8 = 0x00000050;
+        public const uint BASE_CVT8U = 0x00000051;
+        public const uint BASE_CVT16 = 0x00000052;
+        public const uint BASE_CVT16U = 0x00000053;
+        public const uint BASE_CVT32 = 0x00000054;
+        public const uint BASE_CVT32U = 0x00000055;
+        public const uint BASE_CVT64 = 0x00000056;
+        public const uint BASE_CVT64U = 0x00000057;
+        public const uint BASE_CVTS = 0x00000058;
+        public const uint BASE_CVTD = 0x00000059;
 
         // lw/sw $rs/rd $rptr(64bit)
         // lw/sw series:

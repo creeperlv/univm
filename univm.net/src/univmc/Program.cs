@@ -20,7 +20,7 @@ class Program
         var options = CLIOptions.ParseFromStringArray(args, processor);
         CompileOptions compileOptions = new CompileOptions();
 
-        var sample_code = ".text: " +
+        var sample_code = ".prep: i \"../kernel/k.inc\" i <io.inc> l ker \"kernel.dll\" .text: " +
             "t0 \"ASD\" .code: " +
             "set32 $1 1000 " +
             "set32 $2 2000 " +
