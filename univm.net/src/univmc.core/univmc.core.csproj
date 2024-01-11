@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\univm.cli.core\univm.cli.core.csproj" />
     <ProjectReference Include="..\univm.core\univm.core.csproj" />
   </ItemGroup>
 

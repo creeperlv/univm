@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Versioning;
+using System.Xml.Linq;
 using univm.core.Utilities;
 
 namespace univm.core
@@ -195,6 +196,7 @@ namespace univm.core
                     coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(byte));
                     break;
                 case InstOPCodes.BASE_SETU32:
+                case InstOPCodes.BASE_SETLBL:
                     coreData.SetDataToRegister(inst.Data0, inst.Data1);
                     break;
                 case InstOPCodes.BASE_SETU16:
@@ -338,6 +340,36 @@ namespace univm.core
                         coreData.Realloc(0, (int)NewSize);
                         coreData.CurrentStackSize = frame.StackSize;
                         coreData.CallStack.RemoveAt(coreData.CallStack.Count - 1);
+                    }
+                    break;
+                case InstOPCodes.HL_QTEXT:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        var Texts = machineData.assemblies[(int)frame.AssemblyID].Texts;
+                        if (Texts != null)
+                        {
+                            var text = Texts[(int)inst.Data1];
+                            var ptr = coreData.Alloc(text.Length);
+                            {
+
+                                byte* SrcPtr = text.Data;
+                                byte* DestPtr = machineData.MemBlocks[(int)ptr].Data;
+                                try
+                                {
+                                    Buffer.MemoryCopy(SrcPtr, DestPtr, text.Length, text.Length);
+                                    coreData.SetDataToRegister(inst.Data0, new MemPtr { MemID = ptr, Offset = 0 });
+                                }
+                                catch (ArgumentOutOfRangeException)
+                                {
+                                    coreData.SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
+                                }
+                                catch (Exception)
+                                {
+                                    coreData.SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.Unknown);
+                                }
+
+                            }
+                        }
                     }
                     break;
                 case InstOPCodes.BASE_SYSCALL:

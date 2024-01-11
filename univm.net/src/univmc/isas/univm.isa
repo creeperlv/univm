@@ -122,7 +122,8 @@ JA	0x00001114
 JAR	0x00001115
 JAAL	0x00001116
 JAALR	0x00001117
-
+QTEXT	0x00002007
+SYSCALL	0x00001202
 def:
 
 add	reg	reg	reg
@@ -173,6 +174,7 @@ sets8	reg sbyte
 setu16	reg	uint16
 setu32	reg	uint32
 setu64	reg	ulong
+setlbl	reg	uint32
 sets	reg	float
 setd	reg	double
 call	uint
@@ -186,3 +188,5 @@ ja	uint
 jar	reg
 jaal	reg	uint
 jaalr	reg	reg
+qtext	reg	uint
+syscall	uint uint

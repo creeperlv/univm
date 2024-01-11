@@ -81,11 +81,11 @@ namespace univm.core
             {
                 stream.ReadUInt32(buffer4, out Value0);
                 var data = (byte*)Marshal.AllocHGlobal((int)(uint)0);
-                Texts[i].Length = 0;
+                Texts[i].Length = Value0;
                 Texts[i].Data = data;
                 int d = default;
                 byte* target = (byte*)data;
-                for (int index = 0; index < (uint)0; index++)
+                for (int index = 0; index < Value0; index++)
                 {
                     if ((d = stream.ReadByte()) != -1)
                     {

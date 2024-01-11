@@ -36,6 +36,7 @@ namespace univmc.core
             {"a1", RegisterDefinition.A1 },
             {"a2", RegisterDefinition.A2 },
             {"a3", RegisterDefinition.A3 },
+            {"a4", RegisterDefinition.A4 },
             {"sp", RegisterDefinition.SP },
             {"spoffset", RegisterDefinition.SPOffset},
         };

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using univm.cli.core;
 using univm.core;
 using univm.core.Utilities;
 using univmc.core.Errors;
@@ -49,14 +50,27 @@ namespace univmc.core
         public Output? output;// = "a.out";
         public Output? DefinitionFile;
         public string FallbackWorkingDirectory = ".";
+        public CompileOptions() { }
+        public CompileOptions(CLIOptions options)
+        {
+            foreach (var item in options.MainParameters)
+            {
+                SourceFiles.Add(new SourceFile { Data = item, DataIsNotFile = false });
+            }
+            if (options.Options.TryGetValue("O", out var _value))
+            {
+                output = new Output(_value);
+            }
+        }
     }
     public class CompileIntermediateData
     {
         public IntermediateUniAssembly assembly;
-
-        public CompileIntermediateData(IntermediateUniAssembly assembly)
+        public UniVMAssembly finalAssembly;
+        public CompileIntermediateData(IntermediateUniAssembly assembly, UniVMAssembly finalAssembly)
         {
             this.assembly = assembly;
+            this.finalAssembly = finalAssembly;
         }
 
         public Dictionary<uint, uint> Offsets = new Dictionary<uint, uint>();
@@ -126,6 +140,31 @@ namespace univmc.core
                     return operationResult;
                 }
             }
+            else if (content.StartsWith("?"))
+            {
+
+                var _data = cidata.assembly.TextKeys.IndexOf(content[1..]);
+                if (_data >= 0)
+                {
+                    if (cidata.finalAssembly.Texts != null)
+                    {
+
+                        data = (uint)cidata.finalAssembly.Texts[_data].Length;
+                        return true;
+                    }
+                    else
+                    {
+                        data = 0;
+                        return false;
+                    }
+                }
+                else
+                {
+                    data = default;
+                    operationResult.AddError(new TextDefinitionNotFound(content[1..]));
+                    return operationResult;
+                }
+            }
             else if (content.StartsWith(">"))
             {
 
@@ -166,7 +205,7 @@ namespace univmc.core
             List<Inst> Insts = new List<Inst>();
             if (data.IntermediateUniAssembly != null)
             {
-                CompileIntermediateData cidata = new CompileIntermediateData(data.IntermediateUniAssembly);
+                CompileIntermediateData cidata = new CompileIntermediateData(data.IntermediateUniAssembly, data.Artifact);
                 if (options.IsStatic)
                 {
                     var libs = data.IntermediateUniAssembly.Libraries;
@@ -229,6 +268,21 @@ namespace univmc.core
                     {
                         cidata.Labels.MergeWith(item.Labels);
                     }
+                }
+
+                data.Artifact.Texts = new TextItem[data.IntermediateUniAssembly.Texts.Values.Count];
+                var textList = data.IntermediateUniAssembly.Texts.Values.ToList();
+                for (int i = 0; i < textList.Count; i++)
+                {
+                    string? item = textList[i];
+                    var bytes = Encoding.UTF8.GetBytes(item);
+                    void* b = (void*)Marshal.AllocHGlobal(bytes.Length);
+                    fixed (void* _b = bytes)
+                    {
+                        Buffer.MemoryCopy(_b, b, bytes.Length, bytes.Length);
+                    }
+                    data.Artifact.Texts[i].Length = (uint)bytes.Length;
+                    data.Artifact.Texts[i].Data = (byte*)b;
                 }
                 //Scan Labels.
                 for (int i = 0; i < data.IntermediateUniAssembly.intermediateInstructions.Count; i++)
@@ -320,21 +374,6 @@ namespace univmc.core
                         Insts.Add(item.FinalInstruction);
                     }
 
-                }
-
-                data.Artifact.Texts = new TextItem[data.IntermediateUniAssembly.Texts.Values.Count];
-                var textList = data.IntermediateUniAssembly.Texts.Values.ToList();
-                for (int i = 0; i < textList.Count; i++)
-                {
-                    string? item = textList[i];
-                    var bytes = Encoding.UTF8.GetBytes(item);
-                    void* b = (void*)Marshal.AllocHGlobal(bytes.Length);
-                    fixed (void* _b = bytes)
-                    {
-                        Buffer.MemoryCopy(_b, b, bytes.Length, bytes.Length);
-                    }
-                    data.Artifact.Texts[i].Length = (uint)bytes.Length;
-                    data.Artifact.Texts[i].Data = (byte*)b;
                 }
                 uint Size = 0;
                 foreach (var item in data.IntermediateUniAssembly.GlobalMemOffsets.Values)

@@ -2,6 +2,7 @@
 using LibCLCC.NET.TextProcessing;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using univm.core;
 using univmc.core.Errors;
 
@@ -38,7 +39,7 @@ namespace univmc.core
                 }
             }
             else
-            if (t == typeof(Int32))
+            if (t == typeof(int))
             {
                 if (Int32.TryParse(str, out int d))
                 {
@@ -132,6 +133,7 @@ namespace univmc.core
                 {
                     if (TryParse(instruction.Data0.content, Data0T, &FinalInst.Data0, &FinalInst.Data1))
                     {
+                        instruction.Data0 = null;
                         AllMatch |= true;
                     }
                     else
@@ -147,6 +149,7 @@ namespace univmc.core
                 {
                     if (TryParse(instruction.Data1.content, Data1T, &FinalInst.Data1, &FinalInst.Data2))
                     {
+                        instruction.Data1 = null;
                         AllMatch |= true;
                     }
                     else
@@ -162,6 +165,7 @@ namespace univmc.core
                 {
                     if (TryParse(instruction.Data2.content, Data2T, &FinalInst.Data2, null))
                     {
+                        instruction.Data2 = null;
                         AllMatch |= true;
                     }
                     else
@@ -393,6 +397,7 @@ namespace univmc.core
                                     return result;
                                 }
                                 var Content = context.GetCurrentContent();
+                                Content=Regex.Unescape(Content);
                                 data.IntermediateUniAssembly.TextKeys.Add(Name);
                                 data.IntermediateUniAssembly.Texts.Add(Name, Content);
                             }

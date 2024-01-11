@@ -196,7 +196,7 @@
         public const uint HL_EXPANDI = 0x00002005;
         public const uint HL_SHRINKI = 0x00002006;
         // Query Data From Text Section
-        // qtext $rd(64-bit) $rs
+        // qtext $rd(64-bit) TextID
         public const uint HL_QTEXT = 0x00002007;
         // Query Data From Text Section of a assembly
         // qtexta $register_to_store_mem $assemblyID $textID

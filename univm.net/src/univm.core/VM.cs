@@ -20,6 +20,15 @@ namespace univm.core
         {
             machineData.SetSysCall(Namespace, ID, call);
         }
+        public void RedirectSTDIO()
+        {
+            var input = Console.OpenStandardInput();
+            var output = Console.OpenStandardOutput();
+            var err = Console.OpenStandardError();
+            machineData.Resources.Add(input);
+            machineData.Resources.Add(output);
+            machineData.Resources.Add(err);
+        }
         public void Dispose()
         {
             machineData.Dispose();

@@ -19,12 +19,13 @@ class Program
         };
         var options = CLIOptions.ParseFromStringArray(args, processor);
         CompileOptions compileOptions = new CompileOptions();
-
-        var sample_code = ".prep: i \"../kernel/k.inc\" i <io.inc> l ker \"kernel.dll\" .text: " +
-            "t0 \"ASD\" .code: " +
-            "set32 $1 1000 " +
-            "set32 $2 2000 " +
-            "add $3 $1 $2";
+        //.prep: i \"../kernel/k.inc\" i <io.inc> l ker \"kernel.dll\" 
+        var sample_code = ".text: " +
+            "t0 \"Hello, World!\\n\" .code: " +
+            "qtext $a2 @t0 " +
+            "set32 $a1 1 " +
+            "set32 $a3 ?t0 " +
+            "syscall 0 64";
         compileOptions.SourceFiles.Add(new SourceFile() { Data = sample_code, DataIsNotFile = true });
         CoreCompiler coreCompiler = new CoreCompiler(compileOptions);
 
