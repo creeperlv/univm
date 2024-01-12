@@ -8,8 +8,8 @@ Runtime CreateRT() {
   }
   return rt;
 }
-Program CreateProgram() {
-  Program prog = malloc(sizeof(program));
+UniVMAsm CreateProgram() {
+  UniVMAsm prog = malloc(sizeof(uniVMAsm));
   if (IsNull(prog)) {
     Panic(ID_MALLOC_FAIL);
     return null;
@@ -33,23 +33,25 @@ SysCallMapDict CreateSysCallMapDict() {
   return dict;
 }
 bool InitRT(Runtime runtime) {
-  runtime->LoadedPrograms = malloc(sizeof(Program) * ProgramCountBlockSize);
-  if (IsNull(runtime->LoadedPrograms)) {
+
+  runtime->machine.LoadedPrograms =
+      malloc(sizeof(UniVMAsm) * ProgramCountBlockSize);
+  if (IsNull(runtime->machine.LoadedPrograms)) {
     Panic(ID_MALLOC_FAIL);
     return false;
   }
   for (int i = 0; i < ProgramCountBlockSize; i++) {
-    runtime->LoadedPrograms[i] = null;
+    runtime->machine.LoadedPrograms[i] = null;
   }
-  runtime->Mem = malloc(sizeof(memoryBlock) * MemBlockSize);
-  if (IsNull(runtime->Mem)) {
+  runtime->machine.Mem = malloc(sizeof(memoryBlock) * MemBlockSize);
+  if (IsNull(runtime->machine.Mem)) {
     Panic(ID_MALLOC_FAIL);
     return false;
   }
   for (int i = 0; i < MemBlockSize; i++) {
-    runtime->Mem[i].IsAlloced = false;
-    runtime->Mem[i].length = 0;
-    runtime->Mem[i].Ptr = null;
+    runtime->machine.Mem[i].IsAlloced = false;
+    runtime->machine.Mem[i].length = 0;
+    runtime->machine.Mem[i].Ptr = null;
   }
   return true;
 }

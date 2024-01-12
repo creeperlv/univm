@@ -1,46 +1,56 @@
 #include "core.h"
 
 int32 GetInt32FromMemoryPtr(Runtime rt, memoryPtr ptr) {
-  byte *base = rt->Mem[ptr.MemID].Ptr;
+  byte *base = rt->machine.Mem[ptr.MemID].Ptr;
   base += ptr.Offset;
   return ((int32 *)base)[0];
 }
 uint32 GetUInt32FromMemoryPtr(Runtime rt, memoryPtr ptr) {
-  byte *base = rt->Mem[ptr.MemID].Ptr;
+  byte *base = rt->machine.Mem[ptr.MemID].Ptr;
   base += ptr.Offset;
   return ((uint32 *)base)[0];
 }
 
-int32 GetInt32FromRegister(Runtime rt, uint32 startIndex) {
-  uint8_t *base = rt->Registers;
+int32 GetRegister_Int32(CoreData core, uint32 startIndex) {
+  uint8_t *base = core->Registers;
   base += startIndex;
   return ((int32 *)base)[0];
 }
-uint32 GetUInt32FromRegister(Runtime rt, uint32 startIndex) {
-  uint8_t *base = rt->Registers;
+int64 GetRegister_Int64(CoreData core, uint32 startIndex) {
+  uint8_t *base = core->Registers;
+  base += startIndex;
+  return ((int64 *)base)[0];
+}
+uint64 GetRegister_UInt64(CoreData core, uint32 startIndex) {
+  uint8_t *base = core->Registers;
+  base += startIndex;
+  return ((int64 *)base)[0];
+}
+uint32 GetRegister_UInt32(CoreData core, uint32 startIndex) {
+  uint8_t *base = core->Registers;
   base += startIndex;
   return ((uint32 *)base)[0];
 }
 
-bool WriteInt32ToRegister(Runtime rt, int32 Data, uint32 startIndex) {
-  uint8_t *base = rt->Registers;
+bool SetRegister_Int32(CoreData core, int32 Data, uint32 startIndex) {
+  uint8_t *base = core->Registers;
   base += startIndex;
   ((int32 *)base)[0] = Data;
   return true;
 }
-bool WriteUInt32ToRegister(Runtime rt, uint32 Data, uint32 startIndex) {
-  uint8_t *base = rt->Registers;
+bool SetRegister_UInt32(CoreData core, uint32 Data, uint32 startIndex) {
+  uint8_t *base = core->Registers;
   base += startIndex;
   ((uint32 *)base)[0] = Data;
   return true;
 }
 int64 GetInt64FromMemoryPtr(Runtime rt, memoryPtr ptr) {
-  byte *base = rt->Mem[ptr.MemID].Ptr;
+  byte *base = rt->machine.Mem[ptr.MemID].Ptr;
   base += ptr.Offset;
   return ((int64 *)base)[0];
 }
 uint64 GetUInt64FromMemoryPtr(Runtime rt, memoryPtr ptr) {
-  byte *base = rt->Mem[ptr.MemID].Ptr;
+  byte *base = rt->machine.Mem[ptr.MemID].Ptr;
   base += ptr.Offset;
   return ((uint64 *)base)[0];
 }

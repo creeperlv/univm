@@ -12,12 +12,12 @@ typedef struct _code {
   Instruction Instructions;
   int InstructionCount;
 } code;
-typedef struct _program {
+typedef struct _univmasm {
   int TextCount;
   char **Texts;
   code Code;
-} program;
-typedef program *Program;
+} uniVMAsm;
+typedef uniVMAsm *UniVMAsm;
 typedef struct _memoryBlock {
   bool IsAlloced;
   uint32 length;
@@ -43,11 +43,12 @@ typedef struct _coreData {
   MachineData Machine;
 } coreData;
 typedef struct _machineData {
-
+  UniVMAsm *LoadedPrograms;
+  MemoryBlock Mem;
+  CoreData Cores;
 } machineData;
 typedef struct _runtime {
-  Program *LoadedPrograms;
-  MemoryBlock Mem;
+  machineData machine;
 } runtime;
 typedef runtime *Runtime;
 typedef struct _memoryPtr {
@@ -72,11 +73,11 @@ typedef syscallMapDict *SysCallMapDict;
 typedef struct _vm {
   SysCallMapDict CallMap;
   Runtime CurrentRuntime;
-  bool (*RunAsm)(Program);
+  bool (*RunAsm)(UniVMAsm);
 } vm;
 typedef vm *VM;
 Runtime CreateRT();
-Program CreateProgram();
+UniVMAsm CreateProgram();
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
 bool ExpandSysCallMapDict(SysCallMapDict dict);
@@ -91,10 +92,12 @@ int32 GetInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 uint32 GetUInt32FromMemoryPtr(Runtime rt, memoryPtr ptr);
 int64 GetInt64FromMemoryPtr(Runtime rt, memoryPtr ptr);
 uint64 GetUInt64FromMemoryPtr(Runtime rt, memoryPtr ptr);
-int32 GetInt32FromRegister(Runtime rt, uint32 startIndex);
-uint32 GetUInt32FromRegister(Runtime rt, uint32 startIndex);
-bool WriteInt32ToRegister(Runtime rt, int32 Data, uint32 startIndex);
-bool WriteUInt32ToRegister(Runtime rt, uint32 Data, uint32 startIndex);
+int32 GetRegister_Int32(CoreData core, uint32 startIndex);
+uint32 GetRegister_UInt32(CoreData core, uint32 startIndex);
+int64 GetRegister_Int64(CoreData core, uint32 startIndex);
+uint64 GetRegister_UInt64(CoreData core, uint32 startIndex);
+bool SetRegister_Int32(CoreData core, int32 Data, uint32 startIndex);
+bool SetRegister_UInt32(CoreData core, uint32 Data, uint32 startIndex);
 int32 GetInt32FromLE(byte *buffer, int offset);
 uint32 GetUInt32FromLE(byte *buffer, int offset);
 int64 GetInt64FromLE(byte *buffer, int offset);
