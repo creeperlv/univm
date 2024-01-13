@@ -209,6 +209,7 @@ namespace univmc.core
                 result.AddError(new UnexpectedEndError(context.Current));
                 return result;
             }
+            partialInstruction.Data2 = context.Current;
         END:
             result.Result = true;
             return result;

@@ -183,6 +183,10 @@ add64	reg	reg	reg
 sub64	reg	reg	reg
 mul64	reg	reg	reg
 div64	reg	reg	reg
+add64u	reg	reg	reg
+sub64u	reg	reg	reg
+mul64u	reg	reg	reg
+div64u	reg	reg	reg
 cvt.8	reg	reg	uint
 cvt.8u	reg	reg	uint
 cvt.16	reg	reg	uint
