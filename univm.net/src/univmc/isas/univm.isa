@@ -82,6 +82,30 @@ ADD16IU	0x0000004B
 SUB16IU	0x0000004C
 MUL16IU	0x0000004D
 DIV16IU	0x0000004E
+CVT.8	0x00000050
+CVT8	0x00000050
+CVT.8U	0x00000051
+CVT8U	0x00000051
+CVT.16	0x00000052
+CVT16	0x00000052
+CVT16U	0x00000053
+CVT.16U	0x00000053
+CVT32	0x00000054
+CVT.32	0x00000054
+CVT32U	0x00000055
+CVT.32U	0x00000055
+CVT64	0x00000056
+CVT.64	0x00000056
+CVT64U	0x00000057
+CVT.64U	0x00000057
+CVTS	0x00000058
+CVT.S	0x00000058
+CVTD	0x00000059
+CVT.D	0x00000059
+ADDMEMPTR	0x0000005A
+SUBMEMPTR	0x0000005B
+ADDMEMPTRI	0x0000005C
+SUBMEMPTRI	0x0000005D
 SW	0x00001000
 S32	0x00001000
 LW	0x00001001
@@ -122,8 +146,12 @@ JA	0x00001114
 JAR	0x00001115
 JAAL	0x00001116
 JAALR	0x00001117
-QTEXT	0x00002007
 SYSCALL	0x00001202
+QTEXT	0x00002007
+MAPGLBMEM 0x00002200
+MAP_GLBMEM 0x00002200
+MAPAGLBMEM 0x00002201
+MAP_AGLBMEM 0x00002201
 def:
 
 add	reg	reg	reg
@@ -155,6 +183,20 @@ add64	reg	reg	reg
 sub64	reg	reg	reg
 mul64	reg	reg	reg
 div64	reg	reg	reg
+cvt.8	reg	reg	uint
+cvt.8u	reg	reg	uint
+cvt.16	reg	reg	uint
+cvt.16u	reg	reg	uint
+cvt.32	reg	reg	uint
+cvt.32u	reg	reg	uint
+cvt.64	reg	reg	uint
+cvt.64u	reg	reg	uint
+cvt.s	reg	reg	uint
+cvt.d	reg	reg	uint
+addmemptr	reg	reg
+submemptr	reg	reg
+addmemptri	reg	uint
+submemptri	reg	uint
 
 S32	reg	reg	int
 L32	reg	reg	int
@@ -190,3 +232,5 @@ jaal	reg	uint
 jaalr	reg	reg
 qtext	reg	uint
 syscall	uint uint
+MAPGLBMEM	reg	uint
+MAPAGLBMEM	reg	uint

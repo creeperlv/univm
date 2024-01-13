@@ -88,6 +88,7 @@
         public const uint BASE_SUB_16IU = 0x0000004C;
         public const uint BASE_MUL_16IU = 0x0000004D;
         public const uint BASE_DIV_16IU = 0x0000004E;
+        // cvt.8 $rd $rs orig_type
         public const uint BASE_CVT8 = 0x00000050;
         public const uint BASE_CVT8U = 0x00000051;
         public const uint BASE_CVT16 = 0x00000052;
@@ -98,7 +99,10 @@
         public const uint BASE_CVT64U = 0x00000057;
         public const uint BASE_CVTS = 0x00000058;
         public const uint BASE_CVTD = 0x00000059;
-
+        public const uint BASE_ADDMEMPTR = 0x0000005A;
+        public const uint BASE_SUBMEMPTR = 0x0000005B;
+        public const uint BASE_ADDMEMPTRI = 0x0000005C;
+        public const uint BASE_SUBMEMPTRI = 0x0000005D;
         // lw/sw $rs/rd $rptr(64bit)
         // lw/sw series:
         // op $data_ptr $mem_ptr_reg offset
@@ -243,13 +247,13 @@
         public const uint HL_CPI = 0x0000_2107;
 
         // Get the mapped global memory address of current assembly.
-        // mapglbmem $reg_to_store_memptr
+        // mapglbmem $reg_to_store_memptr value_additional_offset
         public const uint HL_MAP_GLBMEM = 0x0000_2200;
         // Get the mapped global memory address of a assembly.
-        // mapaglbmem $reg_to_store_memptr $AssemblyID
+        // mapaglbmem $reg_to_store_memptr AssemblyID
         public const uint HL_MAP_AGLBMEM = 0x0000_2201;
-        //mapaglbmemi $reg_to_store_memptr AssemblyID
-        public const uint HL_MAP_AGLBMEMI = 0x0000_2202;
+        //mapaglbmemi $reg_to_store_memptr $AssemblyID
+        public const uint HL_MAP_AGLBMEMR = 0x0000_2202;
         // Load assembly (Memory will be copied)
         // loadasm $MemPtr $Size
         public const uint HL_LOADASM = 0x0000_2210;

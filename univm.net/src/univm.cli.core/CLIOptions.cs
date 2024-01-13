@@ -27,6 +27,11 @@ namespace univm.cli.core
         public static OperationResult<CLIOptions> ParseFromStringArray(string[] args, CLIProcessor processor)
         {
             OperationResult<CLIOptions> result = new CLIOptions();
+            if (args.Length == 0)
+            {
+                result.Result.ShowHelp = true;
+                return result;
+            }
             for (int i = 0; i < args.Length; i++)
             {
                 string? item = args[i];

@@ -397,7 +397,7 @@ namespace univmc.core
                                     return result;
                                 }
                                 var Content = context.GetCurrentContent();
-                                Content=Regex.Unescape(Content);
+                                Content = Regex.Unescape(Content);
                                 data.IntermediateUniAssembly.TextKeys.Add(Name);
                                 data.IntermediateUniAssembly.Texts.Add(Name, Content);
                             }
@@ -472,7 +472,6 @@ namespace univmc.core
                                 WillSkip = true;
                             }
                         }
-
                         if (!WillSkip)
                         {
                             data.IntermediateUniAssembly.intermediateInstructions.Add(inst);

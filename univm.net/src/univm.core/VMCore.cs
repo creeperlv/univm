@@ -189,11 +189,612 @@ namespace univm.core
                 case InstOPCodes.BASE_ABS_64:
                     coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<long>(inst.Data1)));
                     break;
+                case InstOPCodes.BASE_CVT8:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister<sbyte>(inst.Data0, (sbyte)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT8U:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister<byte>(inst.Data0, (byte)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+
+                case InstOPCodes.BASE_CVT16:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (short)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT16U:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ushort)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT32:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (int)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT32U:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (uint)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT64:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (long)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVT64U:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (ulong)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVTS:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (float)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CVTD:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<Int32>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<Int64>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<UInt32>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<UInt64>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, (double)coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
                 case InstOPCodes.BASE_SET16:
                     coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(short));
                     break;
                 case InstOPCodes.BASE_SET8:
-                    coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(byte));
+                    coreData.SetDataToRegister(inst.Data0, inst.Data1, sizeof(sbyte));
                     break;
                 case InstOPCodes.BASE_SETU32:
                 case InstOPCodes.BASE_SETLBL:
@@ -296,6 +897,13 @@ namespace univm.core
                         coreData.CallStack[^1] = (frame);
                     }
                     break;
+                case InstOPCodes.BASE_JA:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = inst.Data0;
+                        coreData.CallStack[^1] = (frame);
+                    }
+                    break;
                 case InstOPCodes.BASE_JR:
                     {
                         var frame = coreData.CallStack[^1];
@@ -340,6 +948,12 @@ namespace univm.core
                         coreData.Realloc(0, (int)NewSize);
                         coreData.CurrentStackSize = frame.StackSize;
                         coreData.CallStack.RemoveAt(coreData.CallStack.Count - 1);
+                    }
+                    break;
+                case InstOPCodes.HL_MAP_GLBMEM:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        coreData.SetDataToRegister<MemPtr>(inst.Data0, new MemPtr { MemID = machineData.assemblies[(int)frame.AssemblyID].GlobalMemPtr, Offset = inst.Data1 });
                     }
                     break;
                 case InstOPCodes.HL_QTEXT:
@@ -404,6 +1018,8 @@ namespace univm.core
                 frame.PCInAssembly++;
                 coreData.CallStack[coreData.CallStack.Count - 1] = (frame);
                 Execute(inst);
+                if (coreData.CallStack.Count == 0)
+                    break;
                 frame = coreData.CallStack[coreData.CallStack.Count - 1];
                 if (machineData.assemblies[(int)frame.AssemblyID].Instructions.Length <= frame.PCInAssembly)
                 {

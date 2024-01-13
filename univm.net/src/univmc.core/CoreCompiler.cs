@@ -37,7 +37,7 @@ namespace univmc.core
             stream.Dispose();
         }
     }
-    public class CompileOptions
+    public class CompileOptions : IDisposable
     {
         public List<SourceFile> SourceFiles = new List<SourceFile>();
         public List<string>? IncludeDirectories;
@@ -57,10 +57,20 @@ namespace univmc.core
             {
                 SourceFiles.Add(new SourceFile { Data = item, DataIsNotFile = false });
             }
-            if (options.Options.TryGetValue("O", out var _value))
+            if (options.Options.TryGetValue("-O", out var _value))
             {
                 output = new Output(_value);
             }
+            else
+            {
+                output = new Output("a.out");
+            }
+        }
+
+        public void Dispose()
+        {
+            output?.Dispose();
+            DefinitionFile?.Dispose();
         }
     }
     public class CompileIntermediateData
@@ -74,6 +84,7 @@ namespace univmc.core
         }
 
         public Dictionary<uint, uint> Offsets = new Dictionary<uint, uint>();
+        public Dictionary<uint, uint> GMOffsets = new Dictionary<uint, uint>();
         public Dictionary<string, uint> Labels = new Dictionary<string, uint>();
     }
     public class CoreCompiler
@@ -92,7 +103,7 @@ namespace univmc.core
             }
             else
             {
-                if (!inst.HasLabel)
+                if (inst.HasLabel)
                     if (inst.label != null)
                     {
                         if (inst.FollowingInstruction != null)
@@ -205,6 +216,7 @@ namespace univmc.core
             List<Inst> Insts = new List<Inst>();
             if (data.IntermediateUniAssembly != null)
             {
+                uint GMOffset = 0;
                 CompileIntermediateData cidata = new CompileIntermediateData(data.IntermediateUniAssembly, data.Artifact);
                 if (options.IsStatic)
                 {
@@ -228,6 +240,7 @@ namespace univmc.core
                         if (asm.Instructions != null)
                         {
                             cidata.Offsets.Add(ID, Offset);
+                            cidata.GMOffsets.Add(ID, GMOffset);
                             for (int i = 0; i < asm.Instructions.Length; i++)
                             {
                                 Inst inst = asm.Instructions[i];
@@ -245,6 +258,9 @@ namespace univmc.core
                                     case InstOPCodes.BASE_CALL:
                                         inst.Data0 += Offset;
                                         break;
+                                    case InstOPCodes.HL_MAP_GLBMEM:
+                                        inst.Data1 += GMOffset;
+                                        break;
                                     case InstOPCodes.HL_GETASMID:
                                     case InstOPCodes.BASE_JAR:
                                     case InstOPCodes.BASE_JAALR:
@@ -259,6 +275,7 @@ namespace univmc.core
                             }
                             Offset++;
                         }
+                        GMOffset += asm.GlobalMemSize;
                         ID++;
                     }
                 }
@@ -298,6 +315,10 @@ namespace univmc.core
 
                         if (result.CheckAndInheritErrorAndWarnings(DL_Result))
                         {
+                            foreach (var item in result.Errors)
+                            {
+                                Console.WriteLine(item.ToString ());
+                            }
                             return result;
                         }
                         data.IntermediateUniAssembly.intermediateInstructions[i] = DL_Result.Result;
@@ -360,10 +381,15 @@ namespace univmc.core
                                     }
                                     //item.FinalInstruction.Data0+=;
                                     break;
+                                case InstOPCodes.HL_MAP_GLBMEM:
+                                    {
+                                        item.FinalInstruction.Data1 = (uint)(item.FinalInstruction.Data1 + GMOffset);
+                                    }
+                                    break;
                                 case InstOPCodes.HL_MAP_AGLBMEM:
                                     {
                                         item.FinalInstruction.Op_Code = InstOPCodes.HL_MAP_GLBMEM;
-                                        item.FinalInstruction.Data1 = 0;
+                                        item.FinalInstruction.Data1 = cidata.GMOffsets[item.FinalInstruction.Data1];
                                         item.FinalInstruction.Data2 = 0;
                                     }
                                     break;
