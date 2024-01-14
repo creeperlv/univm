@@ -11,11 +11,24 @@ namespace univm.core
         public Dictionary<uint, Dictionary<uint, SysCall>>? SysCallDefintion;
         public List<IDisposable?> Resources = new List<IDisposable?>();
         public List<MemBlock> MemBlocks = new List<MemBlock>();
-        public int AddAssembly(UniVMAssembly asm,CoreData callingCore)
+        public int AddResource(IDisposable resource)
+        {
+            for (int i = 0; i < Resources.Count; i++)
+            {
+                if (Resources[i] == null)
+                {
+                    Resources[i] = resource;
+                    return i;
+                }
+            }
+            Resources.Add(resource);
+            return Resources.Count - 1;
+        }
+        public int AddAssembly(UniVMAssembly asm, CoreData callingCore)
         {
             assemblies.Add(asm);
-            asm.GlobalMemPtr=callingCore.Alloc(asm.GlobalMemSize);
-            return assemblies.Count-1;
+            asm.GlobalMemPtr = callingCore.Alloc(asm.GlobalMemSize);
+            return assemblies.Count - 1;
         }
         public unsafe void Free(uint ID)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -54,12 +55,51 @@ namespace univm.core
             }
             return mdata.MemBlocks[(int)ID].Size;
         }
+        public uint GetMemBlockSize(MemPtr ID)
+        {
+            if (mdata.MemBlocks.Count <= ID.MemID)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
+                return 0;
+            }
+            return mdata.MemBlocks[(int)ID.MemID].Size - ID.Offset;
+        }
+        public unsafe void GetDataFromMemPtr(byte* buf, MemPtr ptr, uint TargetBufferSize, uint SizeToGet)
+        {
+            int id = (int)ptr.MemID;
+            if (id >= mdata.MemBlocks.Count)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.MemIDNotExist);
+                return;
+            }
+            if (SizeToGet > mdata.MemBlocks[id].Size)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
+                return;
+            }
+            var blk = mdata.MemBlocks[id];
+            var src = blk.Data + ptr.Offset;
+            Buffer.MemoryCopy(src, buf, TargetBufferSize, SizeToGet);
+        }
+        public unsafe void GetDataFromMemPtr(byte* buf, MemPtr ptr, uint TargetBufferSize)
+        {
+            int id = (int)ptr.MemID;
+            if (id >= mdata.MemBlocks.Count)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.MemIDNotExist);
+                return;
+            }
+            var blk = mdata.MemBlocks[id];
+            var SizeToGet = blk.Size - ptr.Offset;
+            var src = blk.Data + ptr.Offset;
+            Buffer.MemoryCopy(src, buf, TargetBufferSize, SizeToGet);
+        }
         public unsafe T GetDataFromMemPtr<T>(MemPtr ptr) where T : unmanaged
         {
             T t;
 #if BOUNDARY_CHECK
             int size = sizeof(T);
-            if (ptr.Offset + size > MemBlocks[(int)ptr.MemID].Size)
+            if (ptr.Offset + size > mdata.MemBlocks[(int)ptr.MemID].Size)
             {
                 SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
                 return default;
@@ -81,7 +121,7 @@ namespace univm.core
         {
 #if BOUNDARY_CHECK
             int size = sizeof(T);
-            if (ptr.Offset + size > MemBlocks[(int)ptr.MemID].Size)
+            if (ptr.Offset + size > mdata.MemBlocks[(int)ptr.MemID].Size)
             {
                 SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
                 return;
