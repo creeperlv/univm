@@ -477,6 +477,7 @@ namespace univmc.core
                         {
                             data.IntermediateUniAssembly.intermediateInstructions.Add(inst);
                             last = inst;
+                            inst = null;
                         }
                     }
                 }

@@ -13,7 +13,7 @@
         public const uint S0 = RegisterOffset_08;
         public const uint S1 = RegisterOffset_09;
         public const uint A0 = RegisterOffset_10;
-        public const uint ERRNO = A0;
+        public const uint ERRNO = RegisterOffset_63;
         public const uint A1 = RegisterOffset_11;
         public const uint A2 = RegisterOffset_12;
         public const uint A3 = RegisterOffset_13;

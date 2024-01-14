@@ -7,5 +7,6 @@
         public const uint OutOfMemory = 0x0000_0002;
         public const uint MemIDNotExist = 0x0000_0003;
         public const uint SysCallNotExist = 0x0000_0004;
+        public const uint ResourceNotFound= 0x0000_0005;
     }
 }

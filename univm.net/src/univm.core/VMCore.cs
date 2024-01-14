@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.Versioning;
 using System.Xml.Linq;
 using univm.core.Utilities;
@@ -997,6 +998,49 @@ namespace univm.core
                     break;
                 case InstOPCodes.BASE_SYSCALL_TESTR:
                     coreData.SetDataToRegister(inst.Data2, machineData.IsSysCallExist(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0)) ? 1 : 0);
+                    break;
+                case InstOPCodes.DEBUG_COREDUMP:
+                    {
+                        using FileStream stream = File.OpenWrite("coredump");
+                        stream.SetLength(0);
+                        HostMachine.DumpBinary(stream);
+                        stream.Flush();
+                    }
+                    break;
+                case InstOPCodes.DEBUG_COREDUMPRES:
+                    {
+                        if (coreData.TryQueryResourceByID(coreData.GetDataFromRegister<int>(inst.Data0), true, out var fid))
+                        {
+                            if (fid is Stream stream)
+                            {
+                                stream.SetLength(0);
+                                HostMachine.DumpBinary(stream);
+                                stream.Flush();
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.DEBUG_COREDUMPTEXTRES:
+                    {
+                        if (coreData.TryQueryResourceByID(coreData.GetDataFromRegister<int>(inst.Data0), true, out var fid))
+                        {
+                            if (fid is Stream stream)
+                            {
+                                StreamWriter writer = new StreamWriter(stream);
+                                HostMachine.DumpText(writer);
+                                stream.Flush();
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.DEBUG_COREDUMPTEXT:
+                    {
+                        using FileStream stream = File.OpenWrite("coredump");
+                        stream.SetLength(0);
+                        using StreamWriter writer = new StreamWriter(stream);
+                        HostMachine.DumpText(writer);
+                        stream.Flush();
+                    }
                     break;
                 default:
                     break;

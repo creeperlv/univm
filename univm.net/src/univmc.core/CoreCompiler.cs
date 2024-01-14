@@ -177,7 +177,7 @@ namespace univmc.core
                 }
             }
             else if (content.StartsWith(">"))
-            {
+            {  
 
                 if (cidata.Labels.TryGetValue(content[1..], out uint _data))
                 {
@@ -317,7 +317,7 @@ namespace univmc.core
                         {
                             foreach (var item in result.Errors)
                             {
-                                Console.WriteLine(item.ToString ());
+                                Console.WriteLine(item.ToString());
                             }
                             return result;
                         }
@@ -467,7 +467,6 @@ namespace univmc.core
                     }
                 }
             }
-
             PostProcessInstructions(data);
             return result;
         }

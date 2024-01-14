@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using univm.core.Utilities;
 
 namespace univm.core
 {
@@ -24,6 +22,28 @@ namespace univm.core
             var memID = Alloc(Constants.StackBlockSize);
             MemPtr memPtr = new MemPtr(memID, 0);
             SetDataToRegister(RegisterDefinition.SP, memPtr);
+        }
+        public bool TryQueryResourceByID(int ID, bool WillTriggerErrno, out IDisposable? disposable)
+        {
+            if (mdata.Resources.Count <= ID)
+            {
+                disposable = null;
+                if (WillTriggerErrno)
+                    SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.ResourceNotFound);
+                return false;
+            }
+            else
+            {
+                if (mdata.Resources[ID] == null)
+                {
+                    disposable = null;
+                    if (WillTriggerErrno)
+                        SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.ResourceNotFound);
+                    return false;
+                }
+                disposable = mdata.Resources[ID];
+                return true;
+            }
         }
         public uint GetMemBlockSize(uint ID)
         {
@@ -116,7 +136,7 @@ namespace univm.core
                 return;
             }
 #endif
-            if(mdata.MemBlocks[MemID].Size==Length)return;
+            if (mdata.MemBlocks[MemID].Size == Length) return;
             try
             {
                 var d = mdata.MemBlocks[MemID];

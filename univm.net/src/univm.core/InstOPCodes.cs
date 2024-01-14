@@ -282,5 +282,11 @@
         public const uint BASE_ARCHINFOEXIST = 0x00001206;
         //archinfoexistr $info_id $reciver
         public const uint BASE_ARCHINFOEXISTR = 0x00001207;
+        //coredump
+        public const uint DEBUG_COREDUMP = 0xFFFF0000;
+        //coredumpres $resource_id
+        public const uint DEBUG_COREDUMPRES = 0xFFFF0001;
+        public const uint DEBUG_COREDUMPTEXT = 0xFFFF0002;
+        public const uint DEBUG_COREDUMPTEXTRES = 0xFFFF0003;
     }
 }
