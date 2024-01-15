@@ -7,7 +7,7 @@ namespace univm.tests
         [Fact]
         public void RegisterTest()
         {
-            CoreData data = new CoreData();
+            CoreData data = new CoreData(new VMCore(new VM()));
             data.SetDataToRegister(0, 1234567);
             Assert.Equal(1234567, data.GetDataFromRegister<int>(0));
         }

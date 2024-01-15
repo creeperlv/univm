@@ -19,7 +19,7 @@ class Program
             asm= UniVMAssembly.Read(fs);
         }
         vm.RedirectSTDIO();
-        DefaultSysCalls.SetupSysCall(vm);
+        BSDStyleSyscalls.SetupSysCall(vm);
         //UniVMAssembly asm = new UniVMAssembly()
         //{
         //    Instructions = [

@@ -9,6 +9,18 @@ namespace univm.core
     {
         public MachineData machineData = new MachineData();
         public List<VMCore> Cores = new List<VMCore>();
+        public int ExitCode = 0;
+        public void Exit(int exitCode)
+        {
+            foreach (var item in Cores)
+            {
+                item.WillContinue = false;
+            }
+            this.ExitCode = exitCode;
+            machineData.Dispose();
+            machineData = new MachineData();
+            Cores.Clear();
+        }
         public void RunAsm(UniVMAssembly asm)
         {
             var core = CreateCore();

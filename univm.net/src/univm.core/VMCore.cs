@@ -8,11 +8,12 @@ namespace univm.core
 {
     public sealed class VMCore : IDisposable
     {
-        public CoreData coreData = new CoreData();
+        public CoreData coreData;
         public MachineData machineData = new MachineData();
         public VM HostMachine;
         public VMCore(VM hostMachine)
         {
+            coreData = new CoreData(this);
             HostMachine = hostMachine;
             machineData = hostMachine.machineData;
             coreData.mdata = machineData;
@@ -1051,9 +1052,10 @@ namespace univm.core
             coreData.CallStack.Add(frame);
             Run();
         }
+        internal bool WillContinue = true;
         public void Run()
         {
-            while (true)
+            while (WillContinue)
             {
 
                 var frame = coreData.CallStack[coreData.CallStack.Count - 1];

@@ -17,12 +17,23 @@ namespace univm.core
         public byte[] RegisterData;
         public List<CallStackItem> CallStack = new List<CallStackItem>();
         public uint CurrentStackSize = 0;
-        public CoreData()
+        public VMCore core;
+        public CoreData(VMCore core)
         {
             RegisterData = new byte[MAX_REGISTER_COUNT * 8];
             var memID = Alloc(Constants.StackBlockSize);
             MemPtr memPtr = new MemPtr(memID, 0);
             SetDataToRegister(RegisterDefinition.SP, memPtr);
+            this.core = core;
+        }
+        public void TryCloseResourceByID(int ID)
+        {
+            if (mdata.Resources == null) return;
+            if (mdata.Resources.Count <= ID) return;
+            var res = mdata.Resources[ID];
+            if (res == null) return;
+            res.Dispose();
+            mdata.Resources[ID] = null;
         }
         public bool TryQueryResourceByID(int ID, bool WillTriggerErrno, out IDisposable? disposable)
         {
@@ -63,6 +74,21 @@ namespace univm.core
                 return 0;
             }
             return mdata.MemBlocks[(int)ID.MemID].Size - ID.Offset;
+        }
+        public unsafe bool TryGetMemBlockFromPtr(MemPtr ptr, bool SetErrnoOnException, out MemBlock blk)
+        {
+            if (mdata.MemBlocks.Count <= ptr.MemID)
+            {
+                if (SetErrnoOnException)
+                    SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfBoundary);
+                blk = default;
+                return false;
+            }
+            var d = mdata.MemBlocks[(int)ptr.MemID];
+            d.Data += ptr.Offset;
+            d.Size -= ptr.Offset;
+            blk = d;
+            return true;
         }
         public unsafe void GetDataFromMemPtr(byte* buf, MemPtr ptr, uint TargetBufferSize, uint SizeToGet)
         {
