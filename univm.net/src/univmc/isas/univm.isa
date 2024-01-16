@@ -158,6 +158,23 @@ JA	0x00001114
 JAR	0x00001115
 JAAL	0x00001116
 JAALR	0x00001117
+
+BEQ	0x00001118
+BLT	0x00001119
+BGT	0x0000111A
+BLE	0x0000111B
+BGE	0x0000111C
+BNE	0x0000111D
+
+CJ	0x0000111E
+CJR	0x00001120
+CJA	0x00001121
+CJAR	0x00001122
+CJAL	0x00001123
+CJALR	0x00001124
+CJAAL	0x00001125
+CJAALR	0x00001126
+
 SYSCALL	0x00001202
 QTEXT	0x00002007
 MAPGLBMEM 0x00002200
@@ -176,10 +193,18 @@ add	reg	reg	reg
 sub	reg	reg	reg
 mul	reg	reg	reg
 div	reg	reg	reg
+addi	reg	reg	int
+subi	reg	reg	int
+muli	reg	reg	int
+divi	reg	reg	int
 addu	reg	reg	reg
 subu	reg	reg	reg
 mulu	reg	reg	reg
 divu	reg	reg	reg
+addiu	reg	reg	uint
+subiu	reg	reg	uint
+muliu	reg	reg	uint
+diviu	reg	reg	uint
 addb	reg	reg	reg
 subb	reg	reg	reg
 mulb	reg	reg	reg
@@ -252,6 +277,23 @@ ja	uint
 jar	reg
 jaal	reg	uint
 jaalr	reg	reg
+
+beq	reg	reg	uint
+blt	reg	reg	uint
+bgt	reg	reg	uint
+ble	reg	reg	uint
+bge	reg	reg	uint
+bne	reg	reg	uint
+
+cj	uint
+cjr	reg
+cjal	reg	uint
+cjalr	reg	reg
+cja	uint
+cjar	reg
+cjaal	reg	uint
+cjaalr	reg	reg
+
 qtext	reg	uint
 syscall	uint uint
 MAPGLBMEM	reg	uint

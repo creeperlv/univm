@@ -174,15 +174,22 @@
         // Jump to Absolute address And Link
         public const uint BASE_JAAL = 0x00001116;
         public const uint BASE_JAALR = 0x00001117;
-
+        //beq $l $r data_type
+        //set jump_cache.
         public const uint BASE_BEQ = 0x00001118;
-        public const uint BASE_BEQI = 0x00001119;
-
-        public const uint BASE_BLT = 0x0000111A;
-        public const uint BASE_BLTI = 0x0000111B;
-        public const uint BASE_BGT = 0x0000111C;
-        public const uint BASE_BGTI = 0x0000111D;
-
+        public const uint BASE_BLT = 0x00001119;
+        public const uint BASE_BGT = 0x0000111A;
+        public const uint BASE_BLE = 0x0000111B;
+        public const uint BASE_BGE = 0x0000111C;
+        public const uint BASE_BNE = 0x0000111D;
+        public const uint BASE_CJ = 0x0000111E;
+        public const uint BASE_CJR = 0x00001120;
+        public const uint BASE_CJA = 0x00001121;
+        public const uint BASE_CJAR = 0x00001122;
+        public const uint BASE_CJAL = 0x00001123;
+        public const uint BASE_CJALR = 0x00001124;
+        public const uint BASE_CJAAL = 0x00001125;
+        public const uint BASE_CJAALR = 0x00001126;
         // ALLOC = malloc(size_t)
         // alloc $rd(64bit) $rs
         public const uint HL_ALLOC = 0x00002000;

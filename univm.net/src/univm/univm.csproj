@@ -11,8 +11,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
+    <StackTraceSupport>false</StackTraceSupport>
+    <OptimizePreference>Size</OptimizePreference>
     <InvariantGlobalization>true</InvariantGlobalization>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+  
+</PropertyGroup>
 
 </Project>

@@ -1,0 +1,1 @@
+bflat.exe build src/univm/*.cs src/univm.core/*.cs src/univm.core/**/*.cs src/univm.syscalls/*.cs --stdlib:dotnet -Os --no-stacktrace-data   --no-reflection --no-globalization  --no-exception-messages  --no-pie --no-debug-info -o bin/univm-bflat.exe

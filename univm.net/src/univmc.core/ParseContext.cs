@@ -20,14 +20,14 @@ namespace univmc.core
         public string GetCurrentContent() => Current.content;
         public MatchResult IsLabel()
         {
-            if (Current.Next is null)
+            if (Current is null)
                 return MatchResult.ReachEnd;
             if (Current == End)
                 return MatchResult.ReachEnd;
             if (Current.Next == End)
                 return MatchResult.No;
-            if (Current.Next.content == "")
-                if (Current.Next.Next is null)
+            if (Current.content == "")
+                if (Current.Next is null)
                     return MatchResult.ReachEnd;
             return Current.Next.content == ":" ? MatchResult.Match : MatchResult.No;
         }

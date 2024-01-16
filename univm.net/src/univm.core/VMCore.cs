@@ -11,6 +11,7 @@ namespace univm.core
         public CoreData coreData;
         public MachineData machineData = new MachineData();
         public VM HostMachine;
+        public bool JumpFlag = false;
         public VMCore(VM hostMachine)
         {
             coreData = new CoreData(this);
@@ -907,6 +908,453 @@ namespace univm.core
                     }
                     break;
                 case InstOPCodes.BASE_JR:
+                    if (JumpFlag)
+                    {
+                        JumpFlag = false;
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = (uint)(frame.PCInAssembly + coreData.GetDataFromRegister<int>(inst.Data0));
+                        coreData.CallStack[^1] = (frame);
+                    }
+                    break;
+                case InstOPCodes.BASE_BEQ:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) ==
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_BLE:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) <=
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_BGE:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) >=
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_BGT:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) >
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) >
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) >
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) >
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) >
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) >
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) >
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) >
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) >
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) >
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_BLT:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) <
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) <
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) <
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) <
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) <
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) <
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) <
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) <
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) <
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) <
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_BNE:
+                    {
+                        var type = inst.Data2;
+                        switch (type)
+                        {
+                            case 0:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<byte>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<byte>(inst.Data1));
+                                }
+                                break;
+                            case 1:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<short>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<short>(inst.Data1));
+                                }
+                                break;
+                            case 2:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<int>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<int>(inst.Data1));
+                                }
+                                break;
+                            case 3:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<long>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<long>(inst.Data1));
+                                }
+                                break;
+                            case 4:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<sbyte>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<sbyte>(inst.Data1));
+                                }
+                                break;
+                            case 5:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ushort>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<ushort>(inst.Data1));
+                                }
+                                break;
+                            case 6:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<uint>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<uint>(inst.Data1));
+                                }
+                                break;
+                            case 7:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<ulong>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<ulong>(inst.Data1));
+                                }
+                                break;
+                            case 8:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<float>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<float>(inst.Data1));
+                                }
+                                break;
+                            case 9:
+                                {
+                                    JumpFlag = (coreData.GetDataFromRegister<double>(inst.Data0) !=
+                                                coreData.GetDataFromRegister<double>(inst.Data1));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case InstOPCodes.BASE_CJ:
+                    if (JumpFlag)
+                    {
+                        JumpFlag = false;
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = (uint)(frame.PCInAssembly + ((int*)&inst.Data0)[0]);
+                        coreData.CallStack[^1] = (frame);
+                    }
+                    break;
+                case InstOPCodes.BASE_CJA:
+                    if (JumpFlag)
+                    {
+                        JumpFlag = false;
+                        var frame = coreData.CallStack[^1];
+                        frame.PCInAssembly = inst.Data0;
+                        coreData.CallStack[^1] = (frame);
+                    }
+                    break;
+                case InstOPCodes.BASE_CJR:
                     {
                         var frame = coreData.CallStack[^1];
                         frame.PCInAssembly = (uint)(frame.PCInAssembly + coreData.GetDataFromRegister<int>(inst.Data0));

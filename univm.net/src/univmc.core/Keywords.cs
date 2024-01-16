@@ -32,6 +32,9 @@ namespace univmc.core
         };
         public static Dictionary<string, uint> RegisterNames = new Dictionary<string, uint>
         {
+            {"t0", RegisterDefinition.T0 },
+            {"t1", RegisterDefinition.T1 },
+            {"t2", RegisterDefinition.T2 },
             {"a0", RegisterDefinition.A0 },
             {"a1", RegisterDefinition.A1 },
             {"a2", RegisterDefinition.A2 },

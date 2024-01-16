@@ -441,7 +441,6 @@ namespace univmc.core
                             }
                             else
                             {
-
                             }
                             break;
                         default:
@@ -491,7 +490,6 @@ namespace univmc.core
                     context.GoNext();
                 }
                 context.GoNext();
-
             }
             result.Result = true;
             return result;
