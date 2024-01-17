@@ -9,6 +9,7 @@ namespace univm.core
     public static class Constants
     {
         public const int StackBlockSize = 4 * 16;
+        public readonly static MemPtr NULL = new MemPtr(uint.MaxValue, uint.MaxValue);
     }
     public sealed class CoreData
     {
@@ -218,6 +219,36 @@ namespace univm.core
             {
                 SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.Unknown);
             }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe bool TryRealloc(int MemID, int Length)
+        {
+#if NOT_MEMID_CHECK
+#else
+            if (mdata.MemBlocks.Count <= MemID)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.UndefinedBehaviour);    
+                return false;
+            }
+#endif
+            if (mdata.MemBlocks[MemID].Size == Length) return false;
+            try
+            {
+                var d = mdata.MemBlocks[MemID];
+                d.Data = (byte*)Marshal.ReAllocHGlobal((IntPtr)mdata.MemBlocks[MemID].Data, (IntPtr)Length);
+                d.Size = (uint)Length;
+                mdata.MemBlocks[MemID] = d;
+                return true;
+            }
+            catch (OutOfMemoryException)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfMemory);
+            }
+            catch (Exception)
+            {
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.Unknown);
+            }
+            return false;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe uint Alloc(uint Size)

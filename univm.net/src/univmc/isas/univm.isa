@@ -176,6 +176,17 @@ CJAAL	0x00001125
 CJAALR	0x00001126
 
 SYSCALL	0x00001202
+
+ALLOC	0x00002000
+
+REALLOC	0x00002001
+RRESIZE	0x00002002
+EXPAND	0x00002003
+SHRINK	0x00002004
+EXPANDI	0x00002005
+SHRINKI	0x00002006
+FREE	0x0000200A
+
 QTEXT	0x00002007
 MAPGLBMEM 0x00002200
 MAP_GLBMEM 0x00002200
@@ -230,6 +241,12 @@ add64u	reg	reg	reg
 sub64u	reg	reg	reg
 mul64u	reg	reg	reg
 div64u	reg	reg	reg
+abs	reg	reg
+abss	reg reg
+absd	reg reg
+absb	reg reg
+abs16	reg reg
+abs64	reg reg
 cvt.8	reg	reg	uint
 cvt.8u	reg	reg	uint
 cvt.16	reg	reg	uint
@@ -293,6 +310,15 @@ cja	uint
 cjar	reg
 cjaal	reg	uint
 cjaalr	reg	reg
+
+alloc	reg	reg
+realloc	reg	reg	reg
+resize	reg	reg
+expand	reg	reg
+shrink	reg	reg
+expandi	reg	int32
+shrinki	reg	int32
+free	reg
 
 qtext	reg	uint
 syscall	uint uint

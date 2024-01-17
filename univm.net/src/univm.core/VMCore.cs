@@ -883,6 +883,84 @@ namespace univm.core
                         coreData.SetDataToRegister(inst.Data0, ptr);
                     }
                     break;
+                case InstOPCodes.HL_REALLOC:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = coreData.GetDataFromRegister<uint>(inst.Data2);
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
+                case InstOPCodes.HL_RRESIZE:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = (uint)(coreData.GetMemBlockSize(memPtr.MemID) + coreData.GetDataFromRegister<int>(inst.Data2));
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
+                case InstOPCodes.HL_EXPAND:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = (coreData.GetMemBlockSize(memPtr.MemID) + coreData.GetDataFromRegister<uint>(inst.Data2));
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
+                case InstOPCodes.HL_EXPANDI:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = (coreData.GetMemBlockSize(memPtr.MemID) + inst.Data2);
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
+                case InstOPCodes.HL_SHRINK:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = (coreData.GetMemBlockSize(memPtr.MemID) - coreData.GetDataFromRegister<uint>(inst.Data2));
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
+                case InstOPCodes.HL_SHRINKI:
+                    {
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = (coreData.GetMemBlockSize(memPtr.MemID) - inst.Data2);
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        coreData.SetDataToRegister(inst.Data0, ptr);
+                    }
+                    break;
                 case InstOPCodes.HL_FREE:
                     {
                         var PTR = coreData.GetDataFromRegister<MemPtr>(inst.Data0);

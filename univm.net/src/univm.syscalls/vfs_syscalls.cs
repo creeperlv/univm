@@ -21,6 +21,20 @@ namespace univm.syscalls
             }
             return true;
         }
+        public unsafe static bool mkdir(CoreData coreData)
+        {
+            var PathPtr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.A1);
+            if (coreData.TryGetMemBlockFromPtr(PathPtr, true, out var blk))
+            {
+                Span<byte> buf = stackalloc byte[(int)blk.Size];
+                fixed (byte* ptr = buf)
+                {
+                    Buffer.MemoryCopy(blk.Data, ptr, blk.Size, blk.Size);
+                }
+                Directory.CreateDirectory(Encoding.UTF8.GetString(buf));
+            }
+            return true;
+        }
         public unsafe static bool open(CoreData coreData)
         {
             var PathPtr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.A1);
