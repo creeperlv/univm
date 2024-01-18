@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using univm.core.Utilities;
 
 namespace univm.core
 {
+    public interface IDispatcherFactory
+    {
+        IDispatcher CreateDispatcher();
+    }
     public sealed class VM : IDisposable
     {
         public MachineData machineData = new MachineData();
         public List<VMCore> Cores = new List<VMCore>();
+        public List<IDispatcher> Dispatchers = new List<IDispatcher>();
         public int ExitCode = 0;
+        public VMConfiguration CurrentConfiguration;
+        public int CurrentDispatcher = 0;
+        public VM(VMConfiguration currentConfiguration)
+        {
+            CurrentConfiguration = currentConfiguration;
+        }
+
         public void Exit(int exitCode)
         {
             foreach (var item in Cores)
@@ -27,6 +40,33 @@ namespace univm.core
             var ID = machineData.AddAssembly(asm, core.coreData);
             core.coreData.CallStack.Add(new CallStackItem() { AssemblyID = (uint)ID, PCInAssembly = 0 });
             core.Run();
+        }
+        public void CallParallel(uint AssemblyID, uint PCInAssembly)
+        {
+            var core = CreateCore();
+            core.coreData.CallStack.Add(new CallStackItem() { AssemblyID = AssemblyID, PCInAssembly = PCInAssembly });
+            if (CurrentConfiguration.UseDispatcher)
+            {
+                if (Dispatchers.Count < CurrentConfiguration.DispatcherLimit)
+                {
+                    var dispatcher = CurrentConfiguration.DispatcherFactory.CreateDispatcher();
+                    Dispatchers.Add(dispatcher);
+                    dispatcher.AddCore(core);
+                    dispatcher.Start();
+                    CurrentDispatcher++;
+                }
+                else
+                {
+                    if (CurrentDispatcher >= Dispatchers.Count) CurrentDispatcher = 0;
+                    var dispatcher = Dispatchers[CurrentDispatcher];
+                    dispatcher.AddCore(core);
+
+                }
+            }
+            else
+            {
+                Task.Run(core.Run);
+            }
         }
         public void SetSysCall(uint Namespace, uint ID, SysCall call)
         {

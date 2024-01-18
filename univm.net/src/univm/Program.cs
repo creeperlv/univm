@@ -13,7 +13,7 @@ class Program
             Console.WriteLine("univm: no input file.");
             return -1;
         }
-        VM vm = new();
+        VM vm = new(VMConfiguration.NoDispatcherConfiguration);
         UniVMAssembly asm;
         {
             using var fs = File.OpenRead(args[0]);

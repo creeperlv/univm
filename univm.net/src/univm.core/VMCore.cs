@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Runtime.Versioning;
 using System.Xml.Linq;
+using univm.core.Definitions;
 using univm.core.Utilities;
 
 namespace univm.core
@@ -1770,6 +1772,7 @@ namespace univm.core
             Run();
         }
         internal bool WillContinue = true;
+
         public void Run()
         {
             while (WillContinue)

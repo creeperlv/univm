@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using univm.core;
+using univm.core.Definitions;
 
 namespace univm.syscalls
 {

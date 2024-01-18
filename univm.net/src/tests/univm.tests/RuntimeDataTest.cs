@@ -7,14 +7,14 @@ namespace univm.tests
         [Fact]
         public void RegisterTest()
         {
-            CoreData data = new CoreData(new VMCore(new VM()));
+            CoreData data = new CoreData(new VMCore(new VM(VMConfiguration.NoDispatcherConfiguration)));
             data.SetDataToRegister(0, 1234567);
             Assert.Equal(1234567, data.GetDataFromRegister<int>(0));
         }
         [Fact]
         public void MemBlockTest()
         {
-            using VM _vm = new VM();
+            using VM _vm = new VM(VMConfiguration.NoDispatcherConfiguration);
             VMCore core = new VMCore(_vm);
             MachineData machinedata = _vm.machineData;
             CoreData coreData = core.coreData;
@@ -33,7 +33,7 @@ namespace univm.tests
         [Fact]
         public void MemReallocFreeTest()
         {
-            using VM _vm = new VM();
+            using VM _vm = new VM(VMConfiguration.NoDispatcherConfiguration);
             VMCore core = new VMCore(_vm);
             MachineData machinedata = _vm.machineData;
             CoreData coreData = core.coreData;

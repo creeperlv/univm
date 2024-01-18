@@ -20,9 +20,9 @@ namespace univm.core
         [NonSerialized]
         public uint GlobalMemPtr = 0;
         public Dictionary<uint, int> RuntimeLibraryMap = new Dictionary<uint, int>();
-        public TextItem[]? Texts;
-        public string[]? Libraries;
-        public Inst[]? Instructions;
+        public TextItem[] Texts = Array.Empty<TextItem>();
+        public string[] Libraries = Array.Empty<string>();
+        public Inst[] Instructions=Array.Empty<Inst>();
         public void Dispose()
         {
             if (Texts != null)
