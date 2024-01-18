@@ -896,6 +896,197 @@ namespace univm.core
                         coreData.SetDataToRegister(inst.Data0, ptr);
                     }
                     break;
+                case InstOPCodes.HL_PUSHD:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = (int)coreData.GetDataFromRegister<uint>(inst.Data2);
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        else
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                fixed (byte* srcPtr = coreData.RegisterData)
+                                {
+                                    Buffer.MemoryCopy(srcPtr + (int)Offset, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_PUSHDD32:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = sizeof(int);
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        else
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                {
+                                    Buffer.MemoryCopy(&inst.Data1, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_PUSHDD64:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = sizeof(ulong);
+                        Span<uint> data = stackalloc uint[2];
+                        data[0] = inst.Data1;
+                        data[1] = inst.Data2;
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        else
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                fixed (uint* srcPtr = data)
+                                {
+                                    Buffer.MemoryCopy(srcPtr, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_PUSHDD16:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = sizeof(ushort);
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        else
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                {
+                                    Buffer.MemoryCopy(&inst.Data1, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_PUSHDD8:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = sizeof(byte);
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        MemPtr ptr = memPtr;
+                        if (!isSuccess)
+                        {
+                            ptr = Constants.NULL;
+                        }
+                        else
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                {
+                                    Buffer.MemoryCopy(&inst.Data1, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_PUSHDI:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = (int)inst.Data2;
+                        int size = _size + bytes_to_copy;
+                        var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                        if (isSuccess)
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size;
+                                fixed (byte* srcPtr = coreData.RegisterData)
+                                {
+                                    Buffer.MemoryCopy(srcPtr + (int)Offset, __ptr, bytes_to_copy, bytes_to_copy);
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_POPDI:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = (int)inst.Data2;
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size - bytes_to_copy;
+                                fixed (byte* dest = coreData.RegisterData)
+                                {
+                                    Buffer.MemoryCopy(__ptr, dest + (int)Offset, bytes_to_copy, bytes_to_copy);
+                                }
+                                int size = _size - bytes_to_copy;
+                                var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_POPD:
+                    {
+                        var Offset = inst.Data0;
+                        MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        int _size = (int)coreData.GetMemBlockSize(memPtr.MemID);
+                        int bytes_to_copy = (int)coreData.GetDataFromRegister<uint>(inst.Data2);
+                        {
+                            if (coreData.TryGetPtr(memPtr, true, out var __ptr))
+                            {
+                                __ptr += _size - bytes_to_copy;
+                                fixed (byte* dest = coreData.RegisterData)
+                                {
+                                    Buffer.MemoryCopy(__ptr, dest + (int)Offset, bytes_to_copy, bytes_to_copy);
+                                }
+                                int size = _size - bytes_to_copy;
+                                var isSuccess = coreData.TryRealloc((int)memPtr.MemID, (int)size);
+                            }
+                        }
+                    }
+                    break;
                 case InstOPCodes.HL_RRESIZE:
                     {
                         MemPtr memPtr = coreData.GetDataFromRegister<MemPtr>(inst.Data1);

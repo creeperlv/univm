@@ -187,6 +187,15 @@ EXPANDI	0x00002005
 SHRINKI	0x00002006
 FREE	0x0000200A
 
+PUSHD	0x00002100
+PUSHDI	0x00002101
+PUSHDD8	0x00002110
+PUSHDD16	0x00002111
+PUSHDD32	0x00002112
+PUSHDD64	0x00002113
+POPD	0x00002102
+POPDI	0x00002103
+
 QTEXT	0x00002007
 MAPGLBMEM 0x00002200
 MAP_GLBMEM 0x00002200
@@ -320,10 +329,19 @@ expandi	reg	int32
 shrinki	reg	int32
 free	reg
 
+pushd	reg	reg	reg
+pushdi	reg	reg	uint
+pushdd8	reg	int8
+pushdd16	reg	int16
+pushdd32	reg	int32
+pushdd64	reg	int64
+popd	reg	reg	reg
+popdi	reg	reg	uint
+
 qtext	reg	uint
 syscall	uint uint
-MAPGLBMEM	reg	uint
-MAPAGLBMEM	reg	uint
+mapglbmem	reg	uint
+mapaglbmem	reg	uint
 
 coredump
 coredumptext

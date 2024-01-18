@@ -221,13 +221,27 @@ namespace univm.core
             }
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe bool TryGetPtr(MemPtr ptr, bool WillWriteErrno, out byte* _ptr)
+        {
+            int MemID = (int)ptr.MemID;
+            if (mdata.MemBlocks.Count <= MemID)
+            {
+                if (WillWriteErrno)
+                    SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.UndefinedBehaviour);
+                _ptr = null;
+                return false;
+            }
+            _ptr = mdata.MemBlocks[MemID].Data;
+            return true;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe bool TryRealloc(int MemID, int Length)
         {
 #if NOT_MEMID_CHECK
 #else
             if (mdata.MemBlocks.Count <= MemID)
             {
-                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.UndefinedBehaviour);    
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.UndefinedBehaviour);
                 return false;
             }
 #endif
