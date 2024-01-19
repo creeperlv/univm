@@ -16,14 +16,12 @@ class Program
         processor.UnknownParametersAsMainParameters = true;
         processor.ParameterOptions =
         [
-            new Parameter() { MainName = "-L", Aliases = [], RequireValues = true, AcceptValues = true, Description = "Library" },
-            new Parameter()
+            new Parameter("-L",[]) { RequireValues = true, AcceptValues = true, Description = "Library" },
+            new Parameter("-o", ["--output"])
             {
-                MainName = "-O",
-                Aliases = ["output"],
                 RequireValues = true,
                 AcceptValues = true,
-                Description = "Output",
+                Description = "Output file",
                 KeyAsPartOfName = false
             },
         ];

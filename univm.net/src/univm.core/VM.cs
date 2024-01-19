@@ -41,6 +41,36 @@ namespace univm.core
             core.coreData.CallStack.Add(new CallStackItem() { AssemblyID = (uint)ID, PCInAssembly = 0 });
             core.Run();
         }
+        public void CallParallel(CoreData coreData, uint AssemblyID, uint PCInAssembly, uint AdditionDataOffset)
+        {
+            MemPtr ptr = coreData.GetDataFromRegister<MemPtr>(AdditionDataOffset);
+            uint TargetRegister = coreData.GetDataFromRegister<uint>(AdditionDataOffset + 8);
+            var core = CreateCore();
+            core.coreData.CallStack.Add(new CallStackItem() { AssemblyID = AssemblyID, PCInAssembly = PCInAssembly });
+            core.coreData.SetDataToRegister(TargetRegister, ptr);
+            if (CurrentConfiguration.UseDispatcher)
+            {
+                if (Dispatchers.Count < CurrentConfiguration.DispatcherLimit)
+                {
+                    var dispatcher = CurrentConfiguration.DispatcherFactory.CreateDispatcher();
+                    Dispatchers.Add(dispatcher);
+                    dispatcher.AddCore(core);
+                    dispatcher.Start();
+                    CurrentDispatcher++;
+                }
+                else
+                {
+                    if (CurrentDispatcher >= Dispatchers.Count) CurrentDispatcher = 0;
+                    var dispatcher = Dispatchers[CurrentDispatcher];
+                    dispatcher.AddCore(core);
+
+                }
+            }
+            else
+            {
+                Task.Run(core.Run);
+            }
+        }
         public void CallParallel(uint AssemblyID, uint PCInAssembly)
         {
             var core = CreateCore();

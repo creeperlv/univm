@@ -229,6 +229,10 @@ namespace univmc.core
             {
                 Count++;
             }
+            if (Count == 0)
+            {
+                return true;
+            }
             var marchResult = DataMarcher(partialInstruction, context, Count);
             if (marchResult.Result == false)
             {

@@ -21,7 +21,17 @@ class Program
         }
         vm.RedirectSTDIO();
         BSDStyleSyscalls.SetupSysCall(vm);
-        vm.RunAsm(asm);
+        try
+        {
+            vm.RunAsm(asm);
+        }
+        catch (Exception)
+        {
+            var fs=File.Open("coredump.log", FileMode.Create, FileAccess.Write);
+            fs.SetLength(0);
+            var sw=new StreamWriter(fs);
+            vm.DumpText(sw);
+        }
         return vm.ExitCode;
     }
 }

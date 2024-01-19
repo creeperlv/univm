@@ -39,6 +39,9 @@ namespace univm.syscalls
             return true;
         }
     }
+    public static class kern_time
+    {
+    }
     public static class kern_exit
     {
         public static bool exit(CoreData coreData)

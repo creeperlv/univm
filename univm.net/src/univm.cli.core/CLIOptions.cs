@@ -17,6 +17,12 @@ namespace univm.cli.core
         public bool KeyAsPartOfName;
         public Func<string, bool> Validation = (_) => true;
         public string? Value = null;
+
+        public Parameter(string mainName, List<string> aliases)
+        {
+            MainName = mainName;
+            Aliases = aliases;
+        }
     }
     public class CLIOptions
     {

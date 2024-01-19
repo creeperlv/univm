@@ -104,7 +104,6 @@ namespace univm.syscalls
         public static bool fsync(CoreData coreData)
         {
             var FileID = coreData.GetDataFromRegister<int>(RegisterDefinition.A1);
-
             coreData.TryQueryResourceByID(FileID, true, out var fid);
             if (fid is Stream stream)
             {

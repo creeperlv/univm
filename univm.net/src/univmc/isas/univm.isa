@@ -148,8 +148,16 @@ SET64U	0x0000100F
 SET.64U	0x0000100F
 CALL	0x00001100
 CALLR	0x00001101
-SETLBL	0x00001102
 RET	0x00001102
+SETLBL	0x00001012
+CALLP	0x00001108
+CALLPR	0x00001109
+CALLEP	0x0000110A
+CALLEPR	0x0000110B
+CALLPD	0x0000110C
+CALLPDR	0x0000110D
+CALLEPD	0x0000110E
+CALLEPDR	0x0000110F
 J	0x00001110
 JR	0x00001111
 JAL	0x00001112
@@ -295,6 +303,14 @@ setd	reg	double
 call	uint
 callr	reg
 ret
+callp	uint
+callpr	reg
+callep	uint uint
+callepr	reg	reg
+callpd	uint	uint
+callpdr	reg	reg
+callepd	reg	reg	reg
+callepdr	reg	reg	reg
 j	uint
 jr	reg
 jal	reg	uint

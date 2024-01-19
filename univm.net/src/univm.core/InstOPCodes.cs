@@ -161,6 +161,22 @@
         //Call External Function in Register
         //caller $asm_id $pc
         public const uint BASE_CALLER = 0x00001107;
+        //callp label
+        public const uint BASE_CALLP = 0x00001108;
+        //callpr $lbl
+        public const uint BASE_CALLPR = 0x00001109;
+        //callep id label 
+        public const uint BASE_CALLEP = 0x0000110A;
+        //callepr $id $lbl 
+        public const uint BASE_CALLEPR = 0x0000110B;
+        //callpd label $additional_data
+        public const uint BASE_CALLPD = 0x0000110C;
+        //callpdr $lbl $additional_data
+        public const uint BASE_CALLPDR = 0x0000110D;
+        //callepd id label  $additional_data
+        public const uint BASE_CALLEPD = 0x0000110E;
+        //callepdr $id $lbl  $additional_data
+        public const uint BASE_CALLEPDR = 0x0000110F;
         // Jump to relative address
         public const uint BASE_J = 0x00001110;
         public const uint BASE_JR = 0x00001111;

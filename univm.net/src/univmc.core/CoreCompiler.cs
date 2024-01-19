@@ -57,7 +57,7 @@ namespace univmc.core
             {
                 SourceFiles.Add(new SourceFile { Data = item, DataIsNotFile = false });
             }
-            if (options.Options.TryGetValue("-O", out var _value))
+            if (options.Options.TryGetValue("-o", out var _value))
             {
                 output = new Output(_value);
             }
@@ -177,7 +177,7 @@ namespace univmc.core
                 }
             }
             else if (content.StartsWith(">"))
-            {  
+            {
 
                 if (cidata.Labels.TryGetValue(content[1..], out uint _data))
                 {
@@ -467,7 +467,8 @@ namespace univmc.core
                     }
                 }
             }
-            PostProcessInstructions(data);
+            var ppir = PostProcessInstructions(data);
+            result.CheckAndInheritErrorAndWarnings(ppir);
             return result;
         }
     }

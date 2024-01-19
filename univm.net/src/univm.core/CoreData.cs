@@ -214,7 +214,7 @@ namespace univm.core
             }
             catch (OutOfMemoryException)
             {
-                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfMemory);
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.ENOMEM);
             }
             catch (Exception)
             {
@@ -257,7 +257,7 @@ namespace univm.core
             }
             catch (OutOfMemoryException)
             {
-                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfMemory);
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.ENOMEM);
             }
             catch (Exception)
             {
@@ -280,7 +280,7 @@ namespace univm.core
             }
             catch (OutOfMemoryException)
             {
-                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.OutOfMemory);
+                SetDataToRegister(RegisterDefinition.ERRNO, ErrNos.ENOMEM);
             }
             catch (Exception)
             {

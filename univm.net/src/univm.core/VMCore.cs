@@ -1647,6 +1647,18 @@ namespace univm.core
                         }
                     }
                     break;
+                case InstOPCodes.BASE_CALLP:
+                    {
+                        var frame = coreData.CallStack[^1];
+                        {
+                            frame.StackSize = coreData.CurrentStackSize;
+                            coreData.CallStack[^1] = (frame);
+                        }
+                        {
+                            this.HostMachine.CallParallel(frame.AssemblyID, frame.PCInAssembly);
+                        }
+                    }
+                    break;
                 case InstOPCodes.BASE_CALLR:
                     {
                         var frame = coreData.CallStack[^1];

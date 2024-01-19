@@ -7,6 +7,6 @@ cp -p isas/univm.isa ../../bin/isas
 if [ -z "$PRESERVE_DEBUG_SYMBOLS" ];
 then
 	cd ../../bin/
-	rm *.pdb
-	rm *.dbg
+	rm -f *.pdb
+	rm -f *.dbg
 fi
