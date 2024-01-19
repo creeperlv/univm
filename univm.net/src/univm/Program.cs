@@ -31,6 +31,7 @@ class Program
             fs.SetLength(0);
             var sw=new StreamWriter(fs);
             vm.DumpText(sw);
+            throw;
         }
         return vm.ExitCode;
     }

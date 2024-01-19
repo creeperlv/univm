@@ -19,10 +19,10 @@ namespace univm.syscalls
                 int ID = (int)_Buffer.MemID;
                 if (coreData.mdata.MemBlocks.Count > ID)
                 {
-                    var size = coreData.GetMemBlockSize(_Buffer);
+                    //var size = coreData.GetMemBlockSize(_Buffer);
                     byte* target = coreData.mdata.MemBlocks[ID].Data;
                     target += _Buffer.Offset;
-                    Span<byte> bytes = new Span<byte>(target, (int)size);
+                    Span<byte> bytes = new Span<byte>(target, (int)Length);
                     int offset = stream.Read(bytes);
                     coreData.SetDataToRegister(RegisterDefinition.A0, (uint)offset);
                 }

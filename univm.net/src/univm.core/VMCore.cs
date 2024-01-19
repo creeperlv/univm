@@ -1651,11 +1651,7 @@ namespace univm.core
                     {
                         var frame = coreData.CallStack[^1];
                         {
-                            frame.StackSize = coreData.CurrentStackSize;
-                            coreData.CallStack[^1] = (frame);
-                        }
-                        {
-                            this.HostMachine.CallParallel(frame.AssemblyID, frame.PCInAssembly);
+                            this.HostMachine.CallParallel(frame.AssemblyID, inst.Data0);
                         }
                     }
                     break;
@@ -1676,11 +1672,18 @@ namespace univm.core
                     break;
                 case InstOPCodes.BASE_RET:
                     {
-                        var frame = coreData.CallStack[^2];
-                        uint NewSize = ((frame.StackSize / Constants.StackBlockSize) + 1) * Constants.StackBlockSize;
-                        coreData.Realloc(0, (int)NewSize);
-                        coreData.CurrentStackSize = frame.StackSize;
-                        coreData.CallStack.RemoveAt(coreData.CallStack.Count - 1);
+                        if (coreData.CallStack.Count == 1)
+                        {
+                            coreData.CallStack.Clear();
+                        }
+                        else
+                        {
+                            var frame = coreData.CallStack[^2];
+                            uint NewSize = ((frame.StackSize / Constants.StackBlockSize) + 1) * Constants.StackBlockSize;
+                            coreData.Realloc(0, (int)NewSize);
+                            coreData.CurrentStackSize = frame.StackSize;
+                            coreData.CallStack.RemoveAt(coreData.CallStack.Count - 1);
+                        }
                     }
                     break;
                 case InstOPCodes.HL_MAP_GLBMEM:
