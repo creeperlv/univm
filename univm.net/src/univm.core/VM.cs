@@ -54,6 +54,9 @@ namespace univm.core
                 {
                     var dispatcher = CurrentConfiguration.DispatcherFactory.CreateDispatcher();
                     Dispatchers.Add(dispatcher);
+
+                    core.IsDispatchMode = true;
+                    core.ParentDispatcher = dispatcher;
                     dispatcher.AddCore(core);
                     dispatcher.Start();
                     CurrentDispatcher++;
@@ -62,6 +65,9 @@ namespace univm.core
                 {
                     if (CurrentDispatcher >= Dispatchers.Count) CurrentDispatcher = 0;
                     var dispatcher = Dispatchers[CurrentDispatcher];
+
+                    core.IsDispatchMode = true;
+                    core.ParentDispatcher = dispatcher;
                     dispatcher.AddCore(core);
 
                 }
@@ -81,6 +87,8 @@ namespace univm.core
                 {
                     var dispatcher = CurrentConfiguration.DispatcherFactory.CreateDispatcher();
                     Dispatchers.Add(dispatcher);
+                    core.IsDispatchMode = true;
+                    core.ParentDispatcher = dispatcher;
                     dispatcher.AddCore(core);
                     dispatcher.Start();
                     CurrentDispatcher++;
@@ -89,6 +97,8 @@ namespace univm.core
                 {
                     if (CurrentDispatcher >= Dispatchers.Count) CurrentDispatcher = 0;
                     var dispatcher = Dispatchers[CurrentDispatcher];
+                    core.IsDispatchMode = true;
+                    core.ParentDispatcher = dispatcher;
                     dispatcher.AddCore(core);
 
                 }

@@ -14,6 +14,10 @@ namespace univm.core
         public MachineData machineData = new MachineData();
         public VM HostMachine;
         public bool JumpFlag = false;
+        public DateTime WaitUntil;
+        public bool WillWaitUntil;
+        public bool IsDispatchMode;
+        public IDispatcher? ParentDispatcher;
         public VMCore(VM hostMachine)
         {
             coreData = new CoreData(this);
