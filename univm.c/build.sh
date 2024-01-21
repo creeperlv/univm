@@ -36,10 +36,6 @@ then
 	CORE_SRC="./src/core/*.c"
 fi
 
-if [ -z "$ASMC_SRC" ];
-then
-	ASMC_SRC="./src/univmc/*.c"
-fi
 if [ -z "$FUNC_TEST_SRC" ];
 then
 	FUNC_TEST_SRC="./src/functest/*.c"
@@ -50,10 +46,6 @@ then
 	VMRT_SRC="./src/univm/*.c"
 fi
 
-if [ -z "$ASMC_EXE" ];
-then
-	ASMC_EXE="univmc"
-fi
 if [ -z "$FUNC_TEST_EXE" ];
 then
 	FUNC_TEST_EXE="functest"
@@ -92,18 +84,6 @@ then
 		exit 1
 	fi
 	
-fi
-INDEX=$(($INDEX+1))
-if [ -z "$SKIP_ASMC" ];
-then
-	COMPILE="$CC $C_FLAGS $CORE_SRC $ASMC_SRC -o $OUTPUT_DIR/$ASMC_EXE"
-	echo "[$INDEX]$COMPILE"
-	$COMPILE
-	if [  $? != 0 ];
-	then 
-		echo "\e[91mCompilation Failed!\e[0m"
-		exit 1
-	fi
 fi
 INDEX=$(($INDEX+1))
 if [ -z "$SKIP_VMRT" ];

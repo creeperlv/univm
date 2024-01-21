@@ -76,6 +76,12 @@ typedef struct _vm {
   bool (*RunAsm)(UniVMAsm);
 } vm;
 typedef vm *VM;
+typedef struct _vmCore *VMCore;
+typedef struct _vmCore {
+  CoreData CoreData;
+  VM HostMachine;
+  bool (*ExecuteInst)(VMCore core, Instruction inst);
+} vmCore;
 Runtime CreateRT();
 UniVMAsm CreateProgram();
 SysCallMap CreateSysCallMap();

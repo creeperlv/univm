@@ -1,15 +1,18 @@
 #ifndef UNIVM_BASE
 #define UNIVM_BASE
 #include "panic.h"
-//#include <endian.h>
+// #include <endian.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h>
-
+#endif
 #define null NULL
 #define IsNull(x) x == NULL
 #define IsNotNull(x) x != NULL
