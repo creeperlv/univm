@@ -4,86 +4,95 @@
 #include "basedata.h"
 #include "inst.h"
 typedef struct __instruction {
-  uint32_t Inst;
-  uint32_t Data[3];
+	uint32_t Inst;
+	uint32_t Data[3];
 } instruction;
-typedef instruction *Instruction;
+typedef instruction* Instruction;
 typedef struct _code {
-  Instruction Instructions;
-  int InstructionCount;
+	Instruction Instructions;
+	int InstructionCount;
 } code;
+typedef struct _textItem {
+	int Length;
+	char* Data;
+} textItem;
+typedef textItem* TextItem;
 typedef struct _univmasm {
-  int TextCount;
-  char **Texts;
-  code Code;
+	uint32 TextCount;
+	TextItem Texts;
+	uint32 LibCount;
+	TextItem Libs;
+	uint32 GlobalMemorySize;
+	code Code;
 } uniVMAsm;
-typedef uniVMAsm *UniVMAsm;
+typedef uniVMAsm* UniVMAsm;
 typedef struct _memoryBlock {
-  bool IsAlloced;
-  uint32 length;
-  byte *Ptr;
+	bool IsAlloced;
+	uint32 length;
+	byte* Ptr;
 } memoryBlock;
-typedef memoryBlock *MemoryBlock;
+typedef memoryBlock* MemoryBlock;
 typedef struct _callStackItem {
-  uint32 ProgramID;
-  uint32 PC;
+	uint32 ProgramID;
+	uint32 PC;
 } callStackItem;
-typedef callStackItem *CallStackItem;
+typedef callStackItem* CallStackItem;
 typedef struct _callStack {
-  CallStackItem HEAD;
-  int CurrentPos;
-  int CurrentSize;
+	CallStackItem HEAD;
+	int CurrentPos;
+	int CurrentSize;
 } callStack;
-typedef struct _coreData *CoreData;
-typedef struct _machineData *MachineData;
+typedef struct _coreData* CoreData;
+typedef struct _machineData* MachineData;
 typedef struct _coreData {
-  uint8_t Registers[MAX_REGISTER_COUNT * 8];
-  int ProgramBufferSize;
-  callStack CallStack;
-  MachineData Machine;
+	uint8_t Registers[MAX_REGISTER_COUNT * 8];
+	int ProgramBufferSize;
+	callStack CallStack;
+	MachineData Machine;
 } coreData;
 typedef struct _machineData {
-  UniVMAsm *LoadedPrograms;
-  MemoryBlock Mem;
-  CoreData Cores;
+	UniVMAsm* LoadedPrograms;
+	MemoryBlock Mem;
+	CoreData Cores;
 } machineData;
 typedef struct _runtime {
-  machineData machine;
+	machineData machine;
 } runtime;
-typedef runtime *Runtime;
+typedef runtime* Runtime;
 typedef struct _memoryPtr {
-  int32 MemID;
-  uint32 Offset;
+	int32 MemID;
+	uint32 Offset;
 } memoryPtr;
 typedef void (*Syscall)(Runtime);
 typedef struct _syscallMap {
-  uint32 *IDs;
-  Syscall *Calls;
-  uint32 SysCallMapBufSize;
-  uint32 SysCallCount;
+	uint32* IDs;
+	Syscall* Calls;
+	uint32 SysCallMapBufSize;
+	uint32 SysCallCount;
 } syscallMap;
-typedef syscallMap *SysCallMap;
+typedef syscallMap* SysCallMap;
 typedef struct _syscallMapDict {
-  uint32 *IDs;
-  SysCallMap *Maps;
-  uint32 DictBufSize;
-  uint32 DictCount;
+	uint32* IDs;
+	SysCallMap* Maps;
+	uint32 DictBufSize;
+	uint32 DictCount;
 } syscallMapDict;
-typedef syscallMapDict *SysCallMapDict;
+typedef syscallMapDict* SysCallMapDict;
 typedef struct _vm {
-  SysCallMapDict CallMap;
-  Runtime CurrentRuntime;
-  bool (*RunAsm)(UniVMAsm);
+	SysCallMapDict CallMap;
+	Runtime CurrentRuntime;
+	bool (*RunAsm)(UniVMAsm);
 } vm;
-typedef vm *VM;
-typedef struct _vmCore *VMCore;
+typedef vm* VM;
+typedef struct _vmCore* VMCore;
 typedef struct _vmCore {
-  CoreData CoreData;
-  VM HostMachine;
-  bool (*ExecuteInst)(VMCore core, Instruction inst);
+	CoreData CoreData;
+	VM HostMachine;
+	bool (*ExecuteInst)(VMCore core, Instruction inst);
 } vmCore;
 Runtime CreateRT();
 UniVMAsm CreateProgram();
+bool LoadProgram(FILE* src, UniVMAsm asm);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
 bool ExpandSysCallMapDict(SysCallMapDict dict);
@@ -104,9 +113,9 @@ int64 GetRegister_Int64(CoreData core, uint32 startIndex);
 uint64 GetRegister_UInt64(CoreData core, uint32 startIndex);
 bool SetRegister_Int32(CoreData core, int32 Data, uint32 startIndex);
 bool SetRegister_UInt32(CoreData core, uint32 Data, uint32 startIndex);
-int32 GetInt32FromLE(byte *buffer, int offset);
-uint32 GetUInt32FromLE(byte *buffer, int offset);
-int64 GetInt64FromLE(byte *buffer, int offset);
-uint64 GetUInt64FromLE(byte *buffer, int offset);
+int32 GetInt32FromLE(byte* buffer, int offset);
+uint32 GetUInt32FromLE(byte* buffer, int offset);
+int64 GetInt64FromLE(byte* buffer, int offset);
+uint64 GetUInt64FromLE(byte* buffer, int offset);
 
 #endif
