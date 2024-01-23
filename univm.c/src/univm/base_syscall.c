@@ -1,22 +1,33 @@
 #include "base_syscall.h"
-void WRITE(Runtime rt) {}
-void READ(Runtime rt) {}
-void CHDIR(Runtime rt) {}
-void LSEEK(Runtime rt) {}
-void STATFS(Runtime rt) {}
-void FSTATFS(Runtime rt) {}
-void TRUNCATE(Runtime rt) {}
-void FTRUNCATE(Runtime rt) {}
-void FALLOCATE(Runtime rt) {}
+void ReleaseFILE(Resource res) {
+  if (res->DataType == _BSD_STYLE_SYSCALL_DATA_TYPE_FILE) {
+    if (res->IsInited == true)
+      if (IsNotNull(res->Data)) {
+        fclose((FILE *)res->Data);
+        res->Data = NULL;
+      }
+  }
+}
+void InitResource_FILE(Resource resource, FILE *file) {
+  resource->DataType = _BSD_STYLE_SYSCALL_DATA_TYPE_FILE;
+  resource->IsInited = true;
+  resource->Data = file;
+  resource->Release = ReleaseFILE;
+}
+void WRITE(VMCore core) {}
+void READ(VMCore core) {}
+void CHDIR(VMCore core) {}
+void OPEN(VMCore core) {}
+void CLOSE(VMCore core) {}
+void FSYSC(VMCore core) {}
+void MKDIR(VMCore core) {}
 bool SetupSysCall_Base_0(SysCallMapDict dict) {
-  SetSysCall(dict, STATFS, 0, 43);
-  SetSysCall(dict, FSTATFS, 0, 44);
-  SetSysCall(dict, TRUNCATE, 0, 45);
-  SetSysCall(dict, FTRUNCATE, 0, 46);
-  SetSysCall(dict, FALLOCATE, 0, 47);
-  SetSysCall(dict, CHDIR, 0, 49);
-  SetSysCall(dict, LSEEK, 0, 62);
-  SetSysCall(dict, READ, 0, 63);
-  SetSysCall(dict, WRITE, 0, 64);
+  SetSysCall(dict, READ, 0, 3);
+  SetSysCall(dict, WRITE, 0, 4);
+  SetSysCall(dict, OPEN, 0, 5);
+  SetSysCall(dict, CLOSE, 0, 6);
+  SetSysCall(dict, CHDIR, 0, 12);
+  SetSysCall(dict, FSYSC, 0, 95);
+  SetSysCall(dict, MKDIR, 0, 136);
   return true;
 }

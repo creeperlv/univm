@@ -5,11 +5,23 @@
 #include "inst.h"
 typedef struct _dispatcherInterface *DispatcherInterface;
 typedef struct _vmCore *VMCore;
+typedef struct _textItem *TextItem;
+typedef struct __instruction *Instruction;
+typedef struct _univmasm*UniVMAsm;
+typedef struct _memoryBlock *MemoryBlock;
+typedef struct _callStackItem *CallStackItem;
+typedef struct _coreData *CoreData;
+typedef struct _machineData *MachineData;
+typedef struct _syscallMap* SysCallMap;
+typedef struct _runtime* Runtime;
+typedef struct _syscallMapDict* SysCallMapDict;
+typedef struct _vm* VM;
+typedef struct _resource* Resource;
+typedef void (*Syscall)(VMCore);
 typedef struct __instruction {
   uint32_t Inst;
   uint32_t Data[3];
 } instruction;
-typedef instruction *Instruction;
 typedef struct _code {
   Instruction Instructions;
   int InstructionCount;
@@ -18,7 +30,12 @@ typedef struct _textItem {
   int Length;
   byte *Data;
 } textItem;
-typedef textItem *TextItem;
+typedef struct _resource {
+	int DataType;
+	bool IsInited;
+	void* Data;
+	void (*Release)(Resource);
+}resource;
 typedef struct _univmasm {
   uint32 TextCount;
   TextItem Texts;
@@ -27,25 +44,20 @@ typedef struct _univmasm {
   uint32 GlobalMemorySize;
   code Code;
 } uniVMAsm;
-typedef uniVMAsm *UniVMAsm;
 typedef struct _memoryBlock {
   bool IsAlloced;
   uint32 length;
   byte *Ptr;
 } memoryBlock;
-typedef memoryBlock *MemoryBlock;
 typedef struct _callStackItem {
   uint32 ProgramID;
   uint32 PC;
 } callStackItem;
-typedef callStackItem *CallStackItem;
 typedef struct _callStack {
   CallStackItem HEAD;
   int CurrentPos;
   int CurrentSize;
 } callStack;
-typedef struct _coreData *CoreData;
-typedef struct _machineData *MachineData;
 typedef struct _coreData {
   uint8_t Registers[MAX_REGISTER_COUNT * 8];
   int ProgramBufferSize;
@@ -55,6 +67,7 @@ typedef struct _coreData {
 typedef struct _machineData {
   UniVMAsm *LoadedPrograms;
   MemoryBlock Mem;
+  Resource resources;
   CoreData Cores;
 } machineData;
 typedef struct _runtime {
@@ -62,26 +75,22 @@ typedef struct _runtime {
   VMCore *Cores;
   DispatcherInterface *Dispatchers;
 } runtime;
-typedef runtime *Runtime;
 typedef struct _memoryPtr {
   int32 MemID;
   uint32 Offset;
 } memoryPtr;
-typedef void (*Syscall)(Runtime);
 typedef struct _syscallMap {
   uint32 *IDs;
   Syscall *Calls;
   uint32 SysCallMapBufSize;
   uint32 SysCallCount;
 } syscallMap;
-typedef syscallMap *SysCallMap;
 typedef struct _syscallMapDict {
   uint32 *IDs;
   SysCallMap *Maps;
   uint32 DictBufSize;
   uint32 DictCount;
 } syscallMapDict;
-typedef syscallMapDict *SysCallMapDict;
 typedef struct _genericData {
   uint32 TypeID;
   void *Data;
@@ -98,7 +107,6 @@ typedef struct _vm {
   Runtime CurrentRuntime;
   bool (*RunAsm)(UniVMAsm);
 } vm;
-typedef vm *VM;
 typedef struct _vmCore {
   CoreData CoreData;
   VM HostMachine;
