@@ -21,7 +21,7 @@ class Program
             {
                 RequireValues = true,
                 AcceptValues = true,
-                KeyAsPartOfName = false
+                KeyAsPartOfName = false,
                 Description = "Create definition"
             },
             new Parameter("-o", ["--output"])
