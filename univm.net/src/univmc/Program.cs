@@ -16,7 +16,14 @@ class Program
         processor.UnknownParametersAsMainParameters = true;
         processor.ParameterOptions =
         [
-            new Parameter("-L",[]) { RequireValues = true, AcceptValues = true, Description = "Library" },
+            new Parameter("-L", []) { RequireValues = true, AcceptValues = true, Description = "Library" },
+            new Parameter("-cd", ["--create-definition"])
+            {
+                RequireValues = true,
+                AcceptValues = true,
+                KeyAsPartOfName = false
+                Description = "Create definition"
+            },
             new Parameter("-o", ["--output"])
             {
                 RequireValues = true,
@@ -67,6 +74,17 @@ class Program
         else
         {
             Console.WriteLine("Weird. No Artifact.");
+        }
+        if (compileOptions.ProduceDefinition && compileOptions.DefinitionFile != null)
+        {
+            if (result.Result.ArtifactDef != null)
+            {
+                AssemblyDefinition.WriteToStream(compileOptions.DefinitionFile.stream, result.Result.ArtifactDef);
+            }
+            else
+            {
+                Console.WriteLine("Weird. No Definition.");
+            }
         }
     }
 

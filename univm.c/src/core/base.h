@@ -41,6 +41,10 @@
 #define SysCallMapBlockSize 32
 #endif
 
+#ifndef SysCallMapDictBlockSize
+#define SysCallMapDictBlockSize 4
+#endif
+
 typedef float Single;
 typedef double Double;
 

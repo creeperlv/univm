@@ -8,14 +8,29 @@ namespace univmc.core
         public static Dictionary<string, PrepLabel> PrepLabels = new Dictionary<string, PrepLabel>()
         {
             { "library",PrepLabel.library },
+            { ".library",PrepLabel.library },
             { "lib",PrepLabel.library },
+            { ".lib",PrepLabel.library },
             { "l",PrepLabel.library },
+            { ".l",PrepLabel.library },
+            { ".include",PrepLabel.include },
             { "include",PrepLabel.include },
             { "inc",PrepLabel.include },
+            { ".inc",PrepLabel.include },
             { "i",PrepLabel.include },
+            { ".i",PrepLabel.include },
+            { ".global",PrepLabel.global},
             { "global",PrepLabel.global},
             { "glb",PrepLabel.global},
+            { ".glb",PrepLabel.global},
             { "g",PrepLabel.global},
+            { ".g",PrepLabel.global},
+            { "expose",PrepLabel.expose},
+            { ".expose",PrepLabel.expose},
+            { "exp",PrepLabel.expose},
+            { ".exp",PrepLabel.expose},
+            { "e",PrepLabel.expose},
+            { ".e",PrepLabel.expose},
         };
         public static Dictionary<string, Section> SectionNames = new Dictionary<string, Section>()
         {

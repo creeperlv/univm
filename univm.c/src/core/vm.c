@@ -1,6 +1,11 @@
 #include "vm.h"
 #include "core.h"
 #include "vm_func.h"
+bool InitVM(VM vm) {
+    vm->CallMap = CreateSysCallMapDict();
+    vm -> CurrentRuntime = CreateRT();
+    return true;
+}
 bool ExecuteInst(VMCore vmCore, Instruction inst) {
   uint32_t _inst = inst->Inst;
   VM vm = vmCore->HostMachine;

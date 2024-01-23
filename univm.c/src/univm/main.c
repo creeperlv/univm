@@ -1,4 +1,6 @@
 #include "../core/core.h"
+#include "../core/vm.h"
+#include "base_syscall.h"
 int main(int argc, char **argv) {
   SetInternalOutput(stdout);
   SetPanicHandler(DefaultPanicHandler);
@@ -15,7 +17,9 @@ int main(int argc, char **argv) {
         Log("Program Load Failed!\n");
     }
     else {
-
+        vm _vm;
+        InitVM(&_vm);
+        SetupSysCall_Base_0(_vm.CallMap);
     }
   }
   return 0;

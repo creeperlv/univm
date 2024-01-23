@@ -57,6 +57,11 @@ namespace univmc.core
             {
                 SourceFiles.Add(new SourceFile { Data = item, DataIsNotFile = false });
             }
+            if (options.Options.TryGetValue("-cd", out var createDefinition))
+            {
+                ProduceDefinition = true;
+                DefinitionFile = new Output(createDefinition);
+            }
             if (options.Options.TryGetValue("-o", out var _value))
             {
                 output = new Output(_value);
@@ -209,7 +214,7 @@ namespace univmc.core
             data = default;
             return true;
         }
-        public unsafe OperationResult<bool> PostProcessInstructions(CompileTimeData data)
+        public unsafe OperationResult<bool> PostProcessInstructions(CompileTimeData data, out CompileIntermediateData? cidata)
         {
             OperationResult<bool> result = new OperationResult<bool>();
             data.Artifact = new UniVMAssembly();
@@ -217,7 +222,7 @@ namespace univmc.core
             if (data.IntermediateUniAssembly != null)
             {
                 uint GMOffset = 0;
-                CompileIntermediateData cidata = new CompileIntermediateData(data.IntermediateUniAssembly, data.Artifact);
+                cidata = new CompileIntermediateData(data.IntermediateUniAssembly, data.Artifact);
                 if (options.IsStatic)
                 {
                     var libs = data.IntermediateUniAssembly.Libraries;
@@ -408,10 +413,41 @@ namespace univmc.core
                 }
                 data.Artifact.GlobalMemSize = Size;
                 data.Artifact.Instructions = Insts.ToArray();
+                return true;
             }
+            cidata = null;
             return result;
         }
-
+        public OperationResult<bool> CreateAsmDef(CompileTimeData data, CompileIntermediateData cidata)
+        {
+            OperationResult<bool> result = false;
+            var def = new AssemblyDefinition();
+            if (data.IntermediateUniAssembly != null)
+            {
+                foreach (var item in data.IntermediateUniAssembly.ExposedLabels)
+                {
+                    if (cidata.Labels.ContainsKey(item))
+                    {
+                        def.Labels.Add(item, cidata.Labels[item]);
+                    }
+                    else if (cidata.assembly.Texts.ContainsKey(item))
+                    {
+                        def.Texts.Add(item, cidata.assembly.Texts[item]);
+                    }
+                    else if (cidata.assembly.Constants.ContainsKey(item))
+                    {
+                        def.Constants.Add(item, cidata.assembly.Constants[item]);
+                    }
+                    else if (cidata.assembly.GMOKeys.Contains(item))
+                    {
+                        def.Globals.Add(item, cidata.assembly.GlobalMemOffsets[item]);
+                    }
+                }
+            }
+            data.ArtifactDef = def;
+            result.Result = true;
+            return result;
+        }
         public OperationResult<CompileTimeData> Compile()
         {
             CompileTimeData data = new CompileTimeData();
@@ -467,8 +503,15 @@ namespace univmc.core
                     }
                 }
             }
-            var ppir = PostProcessInstructions(data);
-            result.CheckAndInheritErrorAndWarnings(ppir);
+            var ppir = PostProcessInstructions(data, out var cidata);
+            if (result.CheckAndInheritErrorAndWarnings(ppir))
+            {
+                return result;
+            }
+            if (cidata != null)
+            {
+                var defp = this.CreateAsmDef(data, cidata);
+            }
             return result;
         }
     }

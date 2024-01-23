@@ -387,6 +387,17 @@ namespace univmc.core
                                                 }
                                             }
                                             break;
+                                        case PrepLabel.expose:
+                                            if (!context.GoNext())
+                                            {
+                                                result.AddError(new UnexpectedEndError(context.Current));
+                                                return result;
+                                            }
+                                            {
+                                                var LabelName = context.GetCurrentContent();
+                                                data.IntermediateUniAssembly.ExposedLabels.Add(LabelName);
+                                            }
+                                            break;
                                         default:
                                             break;
                                     }
