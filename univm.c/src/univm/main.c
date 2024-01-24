@@ -2,6 +2,7 @@
 #include "../core/vm.h"
 #include "base_syscall.h"
 int main(int argc, char **argv) {
+  uniVMAsm *MainModule;
   SetInternalOutput(stdout);
   SetPanicHandler(DefaultPanicHandler);
   if (argc == 1)
@@ -11,15 +12,15 @@ int main(int argc, char **argv) {
     FILE *f = fopen(name, "rb");
     if (IsNull(f)) {
       Log("Target file \"%s\" not exist!\n", name);
+	  return -1;
     }
-    UniVMAsm MainModule = CreateProgram();
+    MainModule = CreateProgram();
     if (LoadProgram(f, MainModule) == false) {
-        Log("Program Load Failed!\n");
-    }
-    else {
-        vm _vm;
-        InitVM(&_vm);
-        SetupSysCall_Base_0(_vm.CallMap);
+      Log("Program Load Failed!\n");
+    } else {
+      vm _vm;
+      InitVM(&_vm);
+      SetupSysCall_Base_0(_vm.CallMap);
     }
   }
   return 0;

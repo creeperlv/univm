@@ -3,8 +3,25 @@
 #include "panic.h"
 // #include <endian.h>
 #include <stdarg.h>
+#ifdef _MSC_VER
+#if _MSC_VER <= 1500
+#define NOSTDBOL 1
+#define NOSTDINT 1
+#endif
+#endif
+#ifndef NOSTDBOL
 #include <stdbool.h>
+#else
+#define bool char
+#define true 1
+#define false 0
+#endif
+
+#ifndef NOSTDINT
 #include <stdint.h>
+#else
+#include "types.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

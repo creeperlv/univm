@@ -39,10 +39,11 @@ bool FreeVStr(VStr str) {
 
 bool VStrIsEqualsToCStr(VStr L, char *R) {
   uint32 RLen = strlen(R);
+  uint32 i = 0;
   if (L->Count != RLen) {
     return false;
   }
-  for (uint32 i = 0; i < RLen; i++) {
+  for (; i < RLen; i++) {
     if (L->HEAD[i] != R[i])
       return false;
   }
@@ -50,10 +51,11 @@ bool VStrIsEqualsToCStr(VStr L, char *R) {
 }
 bool VStrIsStartWithCStr(VStr L, char *R) {
   uint32 RLen = strlen(R);
+  uint32 i = 0;
   if (L->Count < RLen) {
     return false;
   }
-  for (uint32 i = 0; i < RLen; i++) {
+  for (; i < RLen; i++) {
     if (L->HEAD[i] != R[i])
       return false;
   }
@@ -62,11 +64,12 @@ bool VStrIsStartWithCStr(VStr L, char *R) {
 
 StrPtrArr AllocStrPtrArr() {
   StrPtrArr arr = malloc(sizeof(strPtrArr));
+  char **HEAD;
   if (IsNull(arr)) {
     Panic(ID_MALLOC_FAIL);
     return NULL;
   }
-  char **HEAD = malloc(sizeof(char *) * STR_PTR_ARR_BLOCK_SIZE);
+  HEAD = malloc(sizeof(char *) * STR_PTR_ARR_BLOCK_SIZE);
   if (IsNull(HEAD)) {
     free(arr);
     Panic(ID_MALLOC_FAIL);
@@ -103,21 +106,22 @@ bool AppendStrPtrArr(StrPtrArr arr, char *string) {
 bool CStrIsEqualCStr(char *L, char *R) {
   uint32 LL = strlen(L);
   uint32 RL = strlen(R);
+  uint32 i = 0;
   if (LL != RL)
     return false;
-  for (uint32 i = 0; i < LL; i++) {
+  for (; i < LL; i++) {
     if (L[i] != R[i])
       return false;
   }
   return true;
 }
 bool TrimUnusedStrPtrArrAllocation(StrPtrArr arr) {
-
+  char **HEAD;
   uint32 newSize = arr->Count;
   if (newSize == arr->Size) {
     return true;
   }
-  char **HEAD = realloc(arr->HEAD, sizeof(char *) * newSize);
+  HEAD = realloc(arr->HEAD, sizeof(char *) * newSize);
   if (HEAD == NULL) {
     if (newSize != 0) {
 

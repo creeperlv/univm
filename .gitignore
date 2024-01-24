@@ -3,3 +3,7 @@ bin/
 *.exe
 obj/
 .vs/
+Debug
+*.ncb
+*.suo
+*.user

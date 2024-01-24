@@ -18,7 +18,8 @@ UniVMAsm CreateProgram() {
 }
 bool ReadData(FILE *src, byte *buffer, size_t Size) {
   int c;
-  for (size_t i = 0; i < Size; i++) {
+  size_t i = 0;
+  for (; i < Size; i++) {
     c = fgetc(src);
     if (c == EOF && i < Size - 1)
       return false;
@@ -26,14 +27,18 @@ bool ReadData(FILE *src, byte *buffer, size_t Size) {
   }
   return true;
 }
-bool LoadProgram(FILE *src, UniVMAsm _asm) {
-  if (IsNull(_asm))
-    return false;
+bool LoadProgram(FILE *src, UniVMAsm assembly) {
   instruction inst;
   uint32 TextCount;
   uint32 LibCount;
   uint32 InstCount;
   uint32 GPSize;
+  byte *Data;
+  size_t i = 0;
+  size_t index = 0;
+  int d;
+  if (IsNull(assembly))
+    return false;
   if (ReadData(src, (byte *)(&TextCount), 4) == false) {
     return false;
   }
@@ -46,48 +51,47 @@ bool LoadProgram(FILE *src, UniVMAsm _asm) {
   if (ReadData(src, (byte *)(&GPSize), 4) == false) {
     return false;
   }
-  int d;
-  _asm->TextCount = TextCount;
-  _asm->Texts = malloc(sizeof(textItem) * TextCount);
-  for (size_t i = 0; i < TextCount; i++) {
+  assembly->TextCount = TextCount;
+  assembly->Texts = malloc(sizeof(textItem) * TextCount);
+  for (; i < TextCount; i++) {
     uint32 Length;
     if (ReadData(src, (byte *)(&Length), 4) == false) {
       return false;
     }
-    byte *Data = malloc(sizeof(byte) * Length);
-    for (size_t index = 0; index < Length; index++) {
+    Data = malloc(sizeof(byte) * Length);
+    for (; index < Length; index++) {
       if ((d = fgetc(src)) != EOF) {
         Data[index] = (byte)d;
       }
     }
-    _asm->Texts[i].Length = Length;
-    _asm->Texts[i].Data = Data;
+    assembly->Texts[i].Length = Length;
+    assembly->Texts[i].Data = Data;
   }
-  _asm->LibCount = LibCount;
-  _asm->Libs = malloc(sizeof(textItem) * TextCount);
-  for (size_t i = 0; i < LibCount; i++) {
+  assembly->LibCount = LibCount;
+  assembly->Libs = malloc(sizeof(textItem) * TextCount);
+  for (i = 0; i < LibCount; i++) {
     uint32 Length;
     if (ReadData(src, (byte *)(&Length), 4) == false) {
       return false;
     }
-    byte *Data = malloc(sizeof(byte) * Length);
-    for (size_t index = 0; index < Length; index++) {
+    Data = malloc(sizeof(byte) * Length);
+    for (index = 0; index < Length; index++) {
       if ((d = fgetc(src)) != EOF) {
         Data[index] = (byte)d;
       }
     }
-    _asm->Libs[i].Length = Length;
-    _asm->Libs[i].Data = Data;
+    assembly->Libs[i].Length = Length;
+    assembly->Libs[i].Data = Data;
   }
-  _asm->Code.InstructionCount = InstCount;
-  _asm->Code.Instructions = malloc(sizeof(instruction) * InstCount);
-  for (size_t i = 0; i < InstCount; i++) {
+  assembly->Code.InstructionCount = InstCount;
+  assembly->Code.Instructions = malloc(sizeof(instruction) * InstCount);
+  for (i = 0; i < InstCount; i++) {
     if (ReadData(src, (byte *)(&inst), sizeof(instruction))) {
-      _asm->Code.Instructions[i] = inst;
+      assembly->Code.Instructions[i] = inst;
     } else
       return false;
   }
-  _asm->GlobalMemorySize = GPSize;
+  assembly->GlobalMemorySize = GPSize;
   return true;
 }
 SysCallMap CreateSysCallMap() {
@@ -110,14 +114,14 @@ SysCallMapDict CreateSysCallMapDict() {
   return dict;
 }
 bool InitRT(Runtime runtime) {
-
+  int i = 0;
   runtime->machine.LoadedPrograms =
       malloc(sizeof(UniVMAsm) * ProgramCountBlockSize);
   if (IsNull(runtime->machine.LoadedPrograms)) {
     Panic(ID_MALLOC_FAIL);
     return false;
   }
-  for (int i = 0; i < ProgramCountBlockSize; i++) {
+  for (; i < ProgramCountBlockSize; i++) {
     runtime->machine.LoadedPrograms[i] = null;
   }
   runtime->machine.Mem = malloc(sizeof(memoryBlock) * MemBlockSize);
@@ -125,7 +129,7 @@ bool InitRT(Runtime runtime) {
     Panic(ID_MALLOC_FAIL);
     return false;
   }
-  for (int i = 0; i < MemBlockSize; i++) {
+  for (i = 0; i < MemBlockSize; i++) {
     runtime->machine.Mem[i].IsAlloced = false;
     runtime->machine.Mem[i].length = 0;
     runtime->machine.Mem[i].Ptr = null;
@@ -162,11 +166,12 @@ bool InitSysCallMapDict(SysCallMapDict dict) {
 bool ExpandSysCallMap(SysCallMap map) {
   uint32 NewSize = map->SysCallMapBufSize + SysCallMapBlockSize;
   uint32 *newID = realloc(map->IDs, sizeof(uint32) * NewSize);
+  Syscall *Calls;
   if (IsNull(newID)) {
     Panic(ID_REALLOC_FAIL);
     return false;
   }
-  Syscall *Calls = realloc(map->Calls, sizeof(Syscall) * NewSize);
+  Calls = realloc(map->Calls, sizeof(Syscall) * NewSize);
   if (IsNull(Calls)) {
     Panic(ID_REALLOC_FAIL);
     return false;
@@ -177,13 +182,14 @@ bool ExpandSysCallMap(SysCallMap map) {
   return true;
 }
 bool ExpandSysCallMapDict(SysCallMapDict dict) {
+  SysCallMap *Maps;
   uint32 NewSize = dict->DictBufSize + SysCallMapBlockSize;
   uint32 *newID = realloc(dict->IDs, sizeof(uint32) * NewSize);
   if (IsNull(newID)) {
     Panic(ID_REALLOC_FAIL);
     return false;
   }
-  SysCallMap *Maps = realloc(dict->Maps, sizeof(SysCallMap) * NewSize);
+  Maps = realloc(dict->Maps, sizeof(SysCallMap) * NewSize);
   if (IsNull(Maps)) {
     Panic(ID_REALLOC_FAIL);
     return false;
@@ -195,7 +201,10 @@ bool ExpandSysCallMapDict(SysCallMapDict dict) {
 }
 bool SetSysCall(SysCallMapDict dict, Syscall call, uint32 Namespace,
                 uint32 ID) {
-  for (uint32 i = 0; i < dict->DictCount; i++) {
+  uint32 i = 0;
+  int CurrentIndex;
+  SysCallMap map;
+  for (; i < dict->DictCount; i++) {
     uint32 _ID = dict->IDs[i];
     if (_ID == Namespace) {
       return SetSysCallInMap(dict->Maps[i], call, ID);
@@ -206,9 +215,9 @@ bool SetSysCall(SysCallMapDict dict, Syscall call, uint32 Namespace,
       return false;
     }
   }
-  int CurrentIndex = dict->DictCount;
+  CurrentIndex = dict->DictCount;
   dict->IDs[CurrentIndex] = ID;
-  SysCallMap map = CreateSysCallMap();
+  map = CreateSysCallMap();
   if (!InitSysCallMap(map)) {
     return false;
   }
@@ -217,8 +226,11 @@ bool SetSysCall(SysCallMapDict dict, Syscall call, uint32 Namespace,
   return SetSysCallInMap(map, call, ID);
 }
 bool SetSysCallInMap(SysCallMap map, Syscall call, uint32 ID) {
-  for (uint32 i = 0; i < map->SysCallCount; i++) {
-    uint32 _ID = map->IDs[i];
+  uint32 i = 0;
+  uint32 _ID;
+  int CurrentIndex;
+  for (; i < map->SysCallCount; i++) {
+    _ID = map->IDs[i];
     if (_ID == ID) {
       map->Calls[i] = call;
       return true;
@@ -227,7 +239,7 @@ bool SetSysCallInMap(SysCallMap map, Syscall call, uint32 ID) {
   if (map->SysCallCount >= map->SysCallMapBufSize) {
     ExpandSysCallMap(map);
   }
-  int CurrentIndex = map->SysCallCount;
+  CurrentIndex = map->SysCallCount;
   map->IDs[CurrentIndex] = ID;
   map->Calls[CurrentIndex] = call;
   map->SysCallCount = CurrentIndex + 1;

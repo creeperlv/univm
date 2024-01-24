@@ -7,16 +7,16 @@ typedef struct _dispatcherInterface *DispatcherInterface;
 typedef struct _vmCore *VMCore;
 typedef struct _textItem *TextItem;
 typedef struct __instruction *Instruction;
-typedef struct _univmasm*UniVMAsm;
+typedef struct _univmasm *UniVMAsm;
 typedef struct _memoryBlock *MemoryBlock;
 typedef struct _callStackItem *CallStackItem;
 typedef struct _coreData *CoreData;
 typedef struct _machineData *MachineData;
-typedef struct _syscallMap* SysCallMap;
-typedef struct _runtime* Runtime;
-typedef struct _syscallMapDict* SysCallMapDict;
-typedef struct _vm* VM;
-typedef struct _resource* Resource;
+typedef struct _syscallMap *SysCallMap;
+typedef struct _runtime *Runtime;
+typedef struct _syscallMapDict *SysCallMapDict;
+typedef struct _vm *VM;
+typedef struct _resource *Resource;
 typedef void (*Syscall)(VMCore);
 typedef struct __instruction {
   uint32_t Inst;
@@ -31,11 +31,11 @@ typedef struct _textItem {
   byte *Data;
 } textItem;
 typedef struct _resource {
-	int DataType;
-	bool IsInited;
-	void* Data;
-	void (*Release)(Resource);
-}resource;
+  int DataType;
+  bool IsInited;
+  void *Data;
+  void (*Release)(Resource);
+} resource;
 typedef struct _univmasm {
   uint32 TextCount;
   TextItem Texts;
@@ -114,7 +114,7 @@ typedef struct _vmCore {
 } vmCore;
 Runtime CreateRT();
 UniVMAsm CreateProgram();
-bool LoadProgram(FILE *src, UniVMAsm _asm);
+bool LoadProgram(FILE *src, UniVMAsm assembly);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
 bool ExpandSysCallMapDict(SysCallMapDict dict);
