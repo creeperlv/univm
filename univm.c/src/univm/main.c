@@ -1,6 +1,6 @@
 #include "../core/core.h"
 #include "../core/vm.h"
-#include "base_syscall.h"
+#include "basesysc.h"
 int main(int argc, char **argv)
 {
     uniVMAsm *MainModule;
