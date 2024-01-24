@@ -2,15 +2,17 @@
 #define UNIVM_ADVSTR
 #include "base.h"
 #include <string.h>
-typedef struct _strPtrArr {
-  char **HEAD;
-  uint32 Count;
-  uint32 Size;
+typedef struct _strPtrArr
+{
+    char **HEAD;
+    uint32 Count;
+    uint32 Size;
 } strPtrArr;
-typedef struct _vStr {
-  char *HEAD;
-  uint32 Count;
-  uint32 Size;
+typedef struct _vStr
+{
+    char *HEAD;
+    uint32 Count;
+    uint32 Size;
 } vStr;
 typedef vStr *VStr;
 
