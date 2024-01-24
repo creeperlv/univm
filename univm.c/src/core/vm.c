@@ -7,6 +7,20 @@ bool InitVM(VM vm)
     vm->CurrentRuntime = CreateRT();
     return true;
 }
+bool ReleaseVM(VM vm)
+{
+    size_t i = 0;
+    machineData mdata = vm->CurrentRuntime->machine;
+    uint32 resCount = mdata.ResourceCount;
+    for (; i < resCount; i++)
+    {
+        if (mdata.resources[i]->IsInited && mdata.resources[i]->Data != NULL)
+        {
+            mdata.resources[i]->Release(mdata.resources[i]);
+        }
+    }
+    return true;
+}
 bool ExecuteInst(VMCore vmCore, Instruction inst)
 {
     uint32_t _inst = inst->Inst;

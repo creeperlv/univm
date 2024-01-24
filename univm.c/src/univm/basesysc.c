@@ -18,6 +18,20 @@ void InitResource_FILE(Resource resource, FILE *file)
     resource->Data = file;
     resource->Release = ReleaseFILE;
 }
+//Resource stdin_res;
+//Resource stdout_res;
+//Resource stderr_res;
+bool RedirectStdIO(VM vm){
+    Resource res = malloc(sizeof(resource));
+    InitResource_FILE(res, stdin);
+    AttachResource(vm, res);
+    res = malloc(sizeof(resource));
+    InitResource_FILE(res, stdout);
+    AttachResource(vm, res);
+    res = malloc(sizeof(resource));
+    InitResource_FILE(res, stderr);
+    AttachResource(vm, res);
+}
 void WRITE(VMCore core)
 {
 }

@@ -116,6 +116,47 @@ bool LoadProgram(FILE *src, UniVMAsm assembly)
     assembly->GlobalMemorySize = GPSize;
     return true;
 }
+bool ExpandResourceBuf(MachineData data)
+{
+    uint32 NewSize = data->ResourceBufSize + ResourceBufBlockSize;
+    void *ptr = realloc(data->resources, NewSize * sizeof(Resource));
+    if (IsNull(ptr))
+    {
+        Panic(ID_REALLOC_FAIL);
+        return false;
+    }
+    data->ResourceBufSize = NewSize;
+    data->resources = ptr;
+    return true;
+}
+uint32 AttachResource(VM vm, Resource res)
+{
+    MachineData data= &vm->CurrentRuntime->machine;
+    uint32 currentCount = data->ResourceCount;
+    uint32 i = 0;
+    Resource _res;
+    for (i = 0; i < currentCount; i++)
+    {
+        _res = data->resources[i];
+        if (_res->IsInited == false || _res->Data == NULL)
+        {
+            data->resources[i] = res;
+            return i;
+        }
+    }
+    if (data->ResourceCount >= data->ResourceBufSize)
+    {
+        if (ExpandResourceBuf(data) == false)
+        {
+            return 0xFFFFFFFF;
+        }
+    }
+    data->resources[currentCount] = res;
+    currentCount++;
+    data->ResourceCount = currentCount;
+    return currentCount - 1;
+    
+}
 SysCallMap CreateSysCallMap()
 {
     SysCallMap map = malloc(sizeof(syscallMap));

@@ -77,7 +77,9 @@ typedef struct _machineData
 {
     UniVMAsm *LoadedPrograms;
     MemoryBlock Mem;
-    Resource resources;
+    Resource* resources;
+    uint32 ResourceBufSize;
+    uint32 ResourceCount;
     CoreData Cores;
 } machineData;
 typedef struct _runtime
@@ -139,6 +141,7 @@ bool ExpandSysCallMapDict(SysCallMapDict dict);
 bool InitRT(Runtime runtime);
 bool InitSysCallMapDict(SysCallMapDict dict);
 bool InitSysCallMap(SysCallMap map);
+uint32 AttachResource(VM vm, Resource res);
 bool ExpandSysCallMap(SysCallMap map);
 bool SetSysCall(SysCallMapDict dict, Syscall call, uint32 Namespace, uint32 ID);
 bool SetSysCallInMap(SysCallMap map, Syscall call, uint32 ID);
