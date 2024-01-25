@@ -23,17 +23,10 @@ void __def_real_run(UniVMDispatcherInterface _data)
     }
 }
 
-#ifdef WIN32THREAD
-void __def_run_thread(void *data)
+UNIVM_TRETURN_TYPE __def_run_thread(void *data)
 {
-#else
-void *__def_run_thread(void *data)
-{
-#endif
     __def_real_run(data);
-#ifndef WIN32THREAD
-    return NULL;
-#endif
+    UNIVM_TRETURN;
 }
 void __def_run(UniVMDispatcherInterface _data)
 {

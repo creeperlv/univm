@@ -1,11 +1,7 @@
 #include "../core/dispatch/thread.h"
-#ifdef WIN32THREAD
-void TestFunc(void *data)
+
+UNIVM_TRETURN_TYPE TestFunc(void *data)
 {
-#else
-void *TestFunc(void *data)
-{
-#endif
     int i = 0;
     int a = 0;
     int c = 0;
@@ -17,9 +13,7 @@ void *TestFunc(void *data)
         }
         printf("%s\n", (char *)data);
     }
-#ifndef WIN32THREAD
-    return NULL;
-#endif
+    UNIVM_TRETURN;
 }
 int main()
 {

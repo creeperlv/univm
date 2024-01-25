@@ -9,13 +9,17 @@
 #define MAX_THREAD 32
 #endif
 #ifndef WIN32THREAD
+#define UNIVM_TRETURN_TYPE void *
+#define UNIVM_TRETURN return NULL
 #include <pthread.h>
-void StartNewThread(void *(*func)(void*), void* data);
 #else
 #include <windows.h>
 #include <process.h>
+#define UNIVM_TRETURN_TYPE void
+#define UNIVM_TRETURN return
 typedef void (*ThreadFunc)(void *);
-void StartNewThread(void (*func)(void *), void *data);
+//void StartNewThread(void (*func)(void *), void *data);
 #endif
+void StartNewThread(UNIVM_TRETURN_TYPE (*func)(void *), void *data);
 void ThreadPoolInit();
 #endif

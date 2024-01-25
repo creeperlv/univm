@@ -6,12 +6,8 @@ HANDLE threads[MAX_THREAD];
 pthread_t threads[MAX_THREAD];
 #endif
 uint32 CurrentThreadID;
-#ifdef WIN32THREAD
 
-void StartNewThread(void (*func)(void *), void *data)
-#else
-void StartNewThread(void *(*func)(void *), void *data)
-#endif
+void StartNewThread(UNIVM_TRETURN_TYPE (*func)(void *), void *data)
 {
 #ifdef WIN32THREAD
     threads[CurrentThreadID] = (HANDLE)_beginthread(func, 0, data);
