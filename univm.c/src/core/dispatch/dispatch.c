@@ -23,14 +23,15 @@ void __def_real_run(UniVMDispatcherInterface _data)
     }
 }
 
-UNIVM_TRETURN_TYPE __def_run_thread(void *data)
+UNIVM_TRETURN_TYPE __def_run_thread(void* _data)
 {
-    __def_real_run(data);
-    UNIVM_TRETURN;
+    UniVMThreadData data = (UniVMThreadData) _data;
+    __def_real_run(data->data);
+    UNIVM_THREAD_END
 }
 void __def_run(UniVMDispatcherInterface _data)
 {
-    StartNewThread(__def_run_thread, _data);
+    UniVMStartNewThread(__def_run_thread, _data);
 }
 UniVMDispatcherInterface ____create__dispatcher()
 {

@@ -1,7 +1,9 @@
+
 #include "../core/dispatch/thread.h"
 
-UNIVM_TRETURN_TYPE TestFunc(void *data)
+UNIVM_TRETURN_TYPE TestFunc(void *_data)
 {
+    UniVMThreadData data = (UniVMThreadData)_data;
     int i = 0;
     int a = 0;
     int c = 0;
@@ -11,16 +13,26 @@ UNIVM_TRETURN_TYPE TestFunc(void *data)
         {
             c = i * a;
         }
-        printf("%s\n", (char *)data);
+        mssleep(10);
+        printf("%s\n", (char *)data->data);
     }
-    UNIVM_TRETURN;
+    UNIVM_THREAD_END
 }
 int main()
 {
+    uint32 id0;
+    uint32 id1;
     char *str0 = "Thread0";
     char *str1 = "Thread1";
-    StartNewThread(TestFunc, str0);
-    StartNewThread(TestFunc, str1);
-    fgetc(stdin);
+    id0 = UniVMStartNewThread(TestFunc, str0);
+    id1 = UniVMStartNewThread(TestFunc, str1);
+    while (1)
+    {
+        if (!UniVMThreadIsRunning(id0)&&!UniVMThreadIsRunning(id1))
+        {
+            return 0;
+        }
+    }
+    //    fgetc(stdin);
     return 0;
 }
