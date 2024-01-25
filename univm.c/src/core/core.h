@@ -3,7 +3,8 @@
 #include "base.h"
 #include "basedata.h"
 #include "inst.h"
-typedef struct _dispatcherInterface *DispatcherInterface;
+typedef struct _dispatcherInterface *UniVMDispatcherInterface;
+typedef struct _dispatcherCreator *DispatcherCreator;
 typedef struct _vmCore *VMCore;
 typedef struct _textItem *TextItem;
 typedef struct __instruction *Instruction;
@@ -81,18 +82,24 @@ typedef struct _machineData
     MemoryBlock Mem;
     uint32 MemCount;
     uint32 MemBufSize;
-    Resource* resources;
+    Resource *resources;
     uint32 ResourceBufSize;
     uint32 ResourceCount;
     CoreData Cores;
 } machineData;
+
+struct _dispatcherCreator
+{
+    UniVMDispatcherInterface (*CreateDispatcher)();
+};
 typedef struct _runtime
 {
     machineData machine;
     VMCore *Cores;
     uint32 CoreCount;
     uint32 CoreListBufSize;
-    DispatcherInterface *Dispatchers;
+    UniVMDispatcherInterface *Dispatchers;
+    struct _dispatcherCreator DispatcherCreator;
 } runtime;
 typedef struct _memoryPtr
 {
@@ -121,10 +128,10 @@ typedef struct _genericData
 typedef struct _dispatcherInterface
 {
     genericData Data;
-    void (*Init)(genericData);
-    void (*Destory)(genericData);
-    bool (*Run)();
-    bool (*AddCore)(VMCore);
+    void (*Init)(UniVMDispatcherInterface);
+    void (*Destory)(UniVMDispatcherInterface);
+    bool (*Run)(UniVMDispatcherInterface);
+    bool (*AddCore)(UniVMDispatcherInterface, VMCore);
 } dispatcherInterface;
 typedef struct _vm
 {

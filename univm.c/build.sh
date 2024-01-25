@@ -30,7 +30,7 @@ fi
 
 if [ -z "$CORE_SRC" ];
 then
-	CORE_SRC="./src/core/*.c"
+	CORE_SRC="./src/core/*.c ./src/core/dispatch/*.c"
 fi
 
 if [ -z "$FUNC_TEST_SRC" ];
@@ -61,7 +61,7 @@ if [ -z "$OUTPUT_DIR" ];
 then
 	OUTPUT_DIR="./bin"
 fi
-
+C_FLAGS="$C_FLAGS -lpthread"
 INDEX=0
 
 if [ -z "$SKIP_FUNC_TEST" ];
