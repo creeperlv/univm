@@ -8,6 +8,7 @@ Runtime CreateRT()
         Panic(ID_MALLOC_FAIL);
         return NULL;
     }
+    rt->CoreCount = 0;
     return rt;
 }
 UniVMAsm CreateProgram()
@@ -40,7 +41,7 @@ bool InitAsms(MachineData data)
         Panic(ID_MALLOC_FAIL);
         return false;
     }
-    data->ProgramCount= 0;
+    data->ProgramCount = 0;
     data->ProgramSize = AsmBufBlockSize;
     return true;
 }
@@ -57,14 +58,16 @@ bool ExpandMemBuf(MachineData data)
     data->MemBufSize = NewSize;
     return true;
 }
-bool ExpandAsmBuf(MachineData data) {
+bool ExpandAsmBuf(MachineData data)
+{
     uint32 NewSize = data->ProgramSize + AsmBufBlockSize;
     UniVMAsm *ptr = realloc(data->LoadedPrograms, sizeof(UniVMAsm) * NewSize);
-    if (IsNull(ptr)) {
+    if (IsNull(ptr))
+    {
         Panic(ID_REALLOC_FAIL);
         return false;
     }
-    data->LoadedPrograms=ptr;
+    data->LoadedPrograms = ptr;
     data->ProgramSize = NewSize;
     return true;
 }
@@ -187,7 +190,7 @@ bool ExpandResourceBuf(MachineData data)
 }
 uint32 AttachResource(VM vm, Resource res)
 {
-    MachineData data= &vm->CurrentRuntime->machine;
+    MachineData data = &vm->CurrentRuntime->machine;
     uint32 currentCount = data->ResourceCount;
     uint32 i = 0;
     Resource _res;
@@ -211,7 +214,6 @@ uint32 AttachResource(VM vm, Resource res)
     currentCount++;
     data->ResourceCount = currentCount;
     return currentCount - 1;
-    
 }
 SysCallMap CreateSysCallMap()
 {
@@ -232,6 +234,7 @@ SysCallMapDict CreateSysCallMapDict()
         return NULL;
     }
     dict->DictBufSize = SysCallMapDictBlockSize;
+    dict->DictCount = 0;
     dict->IDs = malloc(SysCallMapDictBlockSize * sizeof(uint32));
     dict->Maps = malloc(SysCallMapDictBlockSize * sizeof(SysCallMap));
     return dict;

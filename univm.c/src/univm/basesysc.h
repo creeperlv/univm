@@ -4,6 +4,6 @@
 #define _BSD_STYLE_SYSCALL_DATA_TYPE_FILE 0x00000010
 #define _BSD_STYLE_SYSCALL_DATA_TYPE_DIRE 0x00000011
 bool RedirectStdIO(VM vm);
-void InitResource_FILE(Resource resource, FILE *file);
+void InitResource_FILE(Resource resource, FILE *file, bool Releaseable);
 bool SetupSysCall_Base_0(SysCallMapDict dict);
 #endif

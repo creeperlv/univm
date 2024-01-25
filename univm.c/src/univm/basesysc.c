@@ -1,4 +1,7 @@
 #include "basesysc.h"
+void NOP_Release(Resource res)
+{
+}
 void ReleaseFILE(Resource res)
 {
     if (res->DataType == _BSD_STYLE_SYSCALL_DATA_TYPE_FILE)
@@ -11,25 +14,29 @@ void ReleaseFILE(Resource res)
             }
     }
 }
-void InitResource_FILE(Resource resource, FILE *file)
+void InitResource_FILE(Resource resource, FILE *file, bool Releaseable)
 {
     resource->DataType = _BSD_STYLE_SYSCALL_DATA_TYPE_FILE;
     resource->IsInited = true;
     resource->Data = file;
-    resource->Release = ReleaseFILE;
+    if (Releaseable)
+        resource->Release = ReleaseFILE;
+    else
+        resource->Release = NOP_Release;
 }
-//Resource stdin_res;
-//Resource stdout_res;
-//Resource stderr_res;
-bool RedirectStdIO(VM vm){
+// Resource stdin_res;
+// Resource stdout_res;
+// Resource stderr_res;
+bool RedirectStdIO(VM vm)
+{
     Resource res = malloc(sizeof(resource));
-    InitResource_FILE(res, stdin);
+    InitResource_FILE(res, stdin, false);
     AttachResource(vm, res);
     res = malloc(sizeof(resource));
-    InitResource_FILE(res, stdout);
+    InitResource_FILE(res, stdout, false);
     AttachResource(vm, res);
     res = malloc(sizeof(resource));
-    InitResource_FILE(res, stderr);
+    InitResource_FILE(res, stderr, false);
     AttachResource(vm, res);
     return true;
 }
