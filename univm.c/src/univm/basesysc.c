@@ -31,6 +31,7 @@ bool RedirectStdIO(VM vm){
     res = malloc(sizeof(resource));
     InitResource_FILE(res, stderr);
     AttachResource(vm, res);
+    return true;
 }
 void WRITE(VMCore core)
 {

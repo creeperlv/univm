@@ -61,8 +61,13 @@
 #ifndef SysCallMapDictBlockSize
 #define SysCallMapDictBlockSize 4
 #endif
+
 #ifndef ResourceBufBlockSize
 #define ResourceBufBlockSize 4
+#endif
+
+#ifndef AsmBufBlockSize
+#define AsmBufBlockSize 4
 #endif
 
 typedef float Single;

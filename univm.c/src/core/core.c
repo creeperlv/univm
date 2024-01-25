@@ -20,6 +20,62 @@ UniVMAsm CreateProgram()
     }
     return prog;
 }
+bool InitMemBlock(MachineData data)
+{
+    data->Mem = malloc(sizeof(MemoryBlock) * MemBlockSize);
+    if (IsNull(data->Mem))
+    {
+        Panic(ID_MALLOC_FAIL);
+        return false;
+    }
+    data->MemCount = 0;
+    data->MemBufSize = MemBlockSize;
+    return true;
+}
+bool InitAsms(MachineData data)
+{
+    data->LoadedPrograms = malloc(sizeof(UniVMAsm) * AsmBufBlockSize);
+    if (IsNull(data->LoadedPrograms))
+    {
+        Panic(ID_MALLOC_FAIL);
+        return false;
+    }
+    data->ProgramCount= 0;
+    data->ProgramSize = AsmBufBlockSize;
+    return true;
+}
+bool ExpandMemBuf(MachineData data)
+{
+    uint32 NewSize = data->MemBufSize + MemBlockSize;
+    MemoryBlock ptr = realloc(data->Mem, sizeof(memoryBlock) * NewSize);
+    if (IsNull(ptr))
+    {
+        Panic(ID_REALLOC_FAIL);
+        return false;
+    }
+    data->Mem = ptr;
+    data->MemBufSize = NewSize;
+    return true;
+}
+bool ExpandAsmBuf(MachineData data) {
+    uint32 NewSize = data->ProgramSize + AsmBufBlockSize;
+    UniVMAsm *ptr = realloc(data->LoadedPrograms, sizeof(UniVMAsm) * NewSize);
+    if (IsNull(ptr)) {
+        Panic(ID_REALLOC_FAIL);
+        return false;
+    }
+    data->LoadedPrograms=ptr;
+    data->ProgramSize = NewSize;
+    return true;
+}
+void FreeCore(VMCore core)
+{
+    if (IsNull(core))
+        return;
+    core->CoreData->Machine = NULL;
+    free(core->CoreData->CallStack.HEAD);
+    free(core->CoreData);
+}
 bool ReadData(FILE *src, byte *buffer, size_t Size)
 {
     int c;

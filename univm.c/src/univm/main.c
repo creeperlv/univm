@@ -29,6 +29,7 @@ int main(int argc, char **argv)
             SetupSysCall_Base_0(_vm.CallMap);
             RedirectStdIO(&_vm);
             Log("Current resources:%d\n", _vm.CurrentRuntime->machine.ResourceCount);
+            ReleaseVM(&_vm);
         }
     }
     return 0;

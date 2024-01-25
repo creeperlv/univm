@@ -5,19 +5,41 @@ bool InitVM(VM vm)
 {
     vm->CallMap = CreateSysCallMapDict();
     vm->CurrentRuntime = CreateRT();
+    InitMachineData(&vm->CurrentRuntime->machine);
+    return true;
+}
+bool InitMachineData(MachineData mdata)
+{
+    if (InitMemBlock(mdata) == false)
+    {
+        return false;
+    }
+    if (InitAsms(mdata) == false)
+    {
+        return false;
+    }
+    mdata->ResourceBufSize = 0;
+    mdata->ResourceCount = 0;
+    mdata->resources = NULL;
     return true;
 }
 bool ReleaseVM(VM vm)
 {
     size_t i = 0;
-    machineData mdata = vm->CurrentRuntime->machine;
-    uint32 resCount = mdata.ResourceCount;
-    for (; i < resCount; i++)
+    Runtime rt = vm->CurrentRuntime;
+    machineData mdata = rt->machine;
+    uint32 Length = mdata.ResourceCount;
+    for (; i < Length; i++)
     {
         if (mdata.resources[i]->IsInited && mdata.resources[i]->Data != NULL)
         {
             mdata.resources[i]->Release(mdata.resources[i]);
         }
+    }
+    Length = rt->CoreCount;
+    for (i = 0; i < Length; i++)
+    {
+        FreeCore(rt->Cores[i]);
     }
     return true;
 }

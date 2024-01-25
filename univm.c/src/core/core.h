@@ -76,7 +76,11 @@ typedef struct _coreData
 typedef struct _machineData
 {
     UniVMAsm *LoadedPrograms;
+    uint32 ProgramCount;
+    uint32 ProgramSize;
     MemoryBlock Mem;
+    uint32 MemCount;
+    uint32 MemBufSize;
     Resource* resources;
     uint32 ResourceBufSize;
     uint32 ResourceCount;
@@ -86,6 +90,8 @@ typedef struct _runtime
 {
     machineData machine;
     VMCore *Cores;
+    uint32 CoreCount;
+    uint32 CoreListBufSize;
     DispatcherInterface *Dispatchers;
 } runtime;
 typedef struct _memoryPtr
@@ -134,6 +140,11 @@ typedef struct _vmCore
 } vmCore;
 Runtime CreateRT();
 UniVMAsm CreateProgram();
+void FreeCore(VMCore core);
+bool InitMemBlock(MachineData data);
+bool InitAsms(MachineData data);
+bool ExpandMemBuf(MachineData data);
+bool ExpandAsmBuf(MachineData data);
 bool LoadProgram(FILE *src, UniVMAsm assembly);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
