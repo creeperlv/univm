@@ -28,15 +28,15 @@
 typedef void (*ThreadFunc)(void *);
 //void StartNewThread(void (*func)(void *), void *data);
 #endif
-#define UNIVM_THREAD_END data->IsRunning=false; UNIVM_TRETURN;
 typedef struct _univm_thread_data
 {
     UniVMThreadHandle handle;
     bool IsRunning;
+    void (*func)(void *);
     void *data;
 } univm_thread_data;
 typedef univm_thread_data *UniVMThreadData;
 void mssleep(int ms);
 bool UniVMThreadIsRunning(uint32 id);
-int UniVMStartNewThread(UNIVM_TRETURN_TYPE (*func)(void *), void *data);
+int UniVMStartNewThread(void (*func)(void *), void *data);
 #endif

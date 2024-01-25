@@ -1,9 +1,8 @@
 
 #include "../core/dispatch/thread.h"
 
-UNIVM_TRETURN_TYPE TestFunc(void *_data)
+void TestFunc(void *_data)
 {
-    UniVMThreadData data = (UniVMThreadData)_data;
     int i = 0;
     int a = 0;
     int c = 0;
@@ -14,9 +13,9 @@ UNIVM_TRETURN_TYPE TestFunc(void *_data)
             c = i * a;
         }
         mssleep(10);
-        printf("%s\n", (char *)data->data);
+        printf("%s\n", (char *)_data);
     }
-    UNIVM_THREAD_END
+ 
 }
 int main()
 {

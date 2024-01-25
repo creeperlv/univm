@@ -19,7 +19,15 @@ void mssleep(int ms)
     Sleep(ms);
 #endif
 }
-int UniVMStartNewThread(UNIVM_TRETURN_TYPE (*func)(void *), void *data)
+UNIVM_TRETURN_TYPE WrapperThreadFunc(void *_data)
+{
+
+    UniVMThreadData data = (UniVMThreadData)_data;
+    data->func(data->data);
+    data->IsRunning = false;
+    UNIVM_TRETURN;
+}
+int UniVMStartNewThread(void (*func)(void *), void *data)
 {
     if (CurrentThreadID >= UNIVM_MAX_THREAD)
     {
@@ -51,11 +59,11 @@ int UniVMStartNewThread(UNIVM_TRETURN_TYPE (*func)(void *), void *data)
     }
     threads[CurrentThreadID].data = data;
     threads[CurrentThreadID].IsRunning = true;
-
+    threads[CurrentThreadID].func = func;
 #ifdef WIN32THREAD
-    threads[CurrentThreadID].handle = (HANDLE)_beginthread(func, 0, &threads[CurrentThreadID]);
+    threads[CurrentThreadID].handle = (HANDLE)_beginthread(WrapperThreadFunc, 0, &threads[CurrentThreadID]);
 #else
-    pthread_create(&threads[CurrentThreadID].handle, NULL, func, &threads[CurrentThreadID]);
+    pthread_create(&threads[CurrentThreadID].handle, NULL, WrapperThreadFunc, &threads[CurrentThreadID]);
 #endif
     CurrentThreadID++;
     return CurrentThreadID - 1;

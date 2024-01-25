@@ -23,11 +23,9 @@ void __def_real_run(UniVMDispatcherInterface _data)
     }
 }
 
-UNIVM_TRETURN_TYPE __def_run_thread(void* _data)
+void __def_run_thread(void* _data)
 {
-    UniVMThreadData data = (UniVMThreadData) _data;
-    __def_real_run(data->data);
-    UNIVM_THREAD_END
+    __def_real_run((UniVMDispatcherInterface)_data);
 }
 void __def_run(UniVMDispatcherInterface _data)
 {
