@@ -7,3 +7,5 @@ Debug
 *.ncb
 *.suo
 *.user
+*.opt
+*.plg

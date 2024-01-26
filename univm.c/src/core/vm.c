@@ -8,6 +8,54 @@ bool InitVM(VM vm)
     InitMachineData(&vm->CurrentRuntime->machine);
     return true;
 }
+
+VMCore CreateCore(VM vm)
+{
+    VMCore ptr = malloc(sizeof(vmCore));
+    CoreData cData;
+	if (IsNull(ptr))
+    {
+        Panic(ID_MALLOC_FAIL);
+        return ptr;
+    }
+    cData = malloc(sizeof(coreData));
+    if (IsNull(cData))
+    {
+        free(ptr);
+        Panic(ID_MALLOC_FAIL);
+        return NULL;
+    }
+    cData->CallStack.HEAD = malloc(sizeof(CallStackItem) * CALLSTACK_BLOCK_SIZE);
+    if (IsNull(cData->CallStack.HEAD))
+    {
+        free(cData);
+        free(ptr);
+        Panic(ID_MALLOC_FAIL);
+        return NULL;
+    }
+    cData->CallStack.StackSize = CALLSTACK_BLOCK_SIZE;
+    cData->CallStack.ItemCount = 0;
+    return ptr;
+}
+bool AddUniVMAsm(VM vm, UniVMAsm asm)
+{
+	Runtime rt=vm->CurrentRuntime;
+    MachineData mdata = &rt->machine;
+    uint32 ID;
+    if (AppenndAsm(mdata, asm, &ID) == false)
+    {
+        return false;
+    }
+	return true;
+}
+void UniVMDefaultExecutionLoop(VMCore core)
+{
+	return;
+}
+bool UniVMCallSync(VM vm, uint32 AsmID, uint32 PC)
+{
+	return true;
+}
 bool InitMachineData(MachineData mdata)
 {
     if (InitMemBlock(mdata) == false)

@@ -71,6 +71,30 @@ bool ExpandAsmBuf(MachineData data)
     data->ProgramSize = NewSize;
     return true;
 }
+bool AppenndAsm(MachineData data, UniVMAsm asm, uint32 *id)
+{
+    uint32 i = 0;
+    for (; i < data->ProgramCount; i++)
+    {
+        if (IsNull(data->LoadedPrograms))
+        {
+            id[0] = i;
+            data->LoadedPrograms[i] = asm;
+            return true;
+        }
+    }
+    if (data->ProgramCount >= data->ProgramSize)
+    {
+        if (ExpandAsmBuf(data) == false)
+        {
+            return false;
+        }
+    }
+    data->LoadedPrograms[data->ProgramCount]=asm;
+    id[0] = data->ProgramCount;
+    data->ProgramCount++;
+    return true;
+}
 void FreeCore(VMCore core)
 {
     if (IsNull(core))

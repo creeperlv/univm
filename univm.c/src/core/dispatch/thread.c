@@ -49,7 +49,7 @@ int UniVMStartNewThread(void (*func)(void *), void *data)
             if (CurrentThreadID >= UNIVM_MAX_THREAD)
             {
                 CurrentThreadID = 0;
-#ifndef WAIT_FULL_TREHAD_POOL
+#ifndef CANCEL_WHEN_FULL_TREHAD_POOL
                 mssleep(THREAD_WAIT_SLEEP);
 #else
                 return -1;

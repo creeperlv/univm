@@ -64,8 +64,8 @@ typedef struct _callStackItem
 typedef struct _callStack
 {
     CallStackItem HEAD;
-    int CurrentPos;
-    int CurrentSize;
+    uint32 ItemCount;
+    uint32 StackSize;
 } callStack;
 typedef struct _coreData
 {
@@ -98,6 +98,8 @@ typedef struct _runtime
     VMCore *Cores;
     uint32 CoreCount;
     uint32 CoreListBufSize;
+    bool UseDispatcher;
+    uint32 MaxDispatcherCount;
     UniVMDispatcherInterface *Dispatchers;
     struct _dispatcherCreator DispatcherCreator;
 } runtime;
@@ -137,7 +139,8 @@ typedef struct _vm
 {
     SysCallMapDict CallMap;
     Runtime CurrentRuntime;
-    bool (*RunAsm)(UniVMAsm);
+    bool (*Call)(VM,uint32,uint32);
+    bool (*CallAsync)(VM,uint32,uint32);
 } vm;
 typedef struct _vmCore
 {
@@ -152,6 +155,7 @@ bool InitMemBlock(MachineData data);
 bool InitAsms(MachineData data);
 bool ExpandMemBuf(MachineData data);
 bool ExpandAsmBuf(MachineData data);
+bool AppenndAsm(MachineData data,UniVMAsm asm,uint32* id);
 bool LoadProgram(FILE *src, UniVMAsm assembly);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
