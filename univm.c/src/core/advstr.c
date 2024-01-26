@@ -47,7 +47,7 @@ bool FreeVStr(VStr str)
 
 bool VStrIsEqualsToCStr(VStr L, char *R)
 {
-    uint32 RLen = strlen(R);
+    uint32 RLen = (uint32)strlen(R);
     uint32 i = 0;
     if (L->Count != RLen)
     {
@@ -62,7 +62,7 @@ bool VStrIsEqualsToCStr(VStr L, char *R)
 }
 bool VStrIsStartWithCStr(VStr L, char *R)
 {
-    uint32 RLen = strlen(R);
+    uint32 RLen = (uint32)strlen(R);
     uint32 i = 0;
     if (L->Count < RLen)
     {
@@ -129,8 +129,8 @@ bool AppendStrPtrArr(StrPtrArr arr, char *string)
 }
 bool CStrIsEqualCStr(char *L, char *R)
 {
-    uint32 LL = strlen(L);
-    uint32 RL = strlen(R);
+    uint32 LL = (uint32)strlen(L);
+    uint32 RL = (uint32)strlen(R);
     uint32 i = 0;
     if (LL != RL)
         return false;

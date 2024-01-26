@@ -304,6 +304,8 @@ bool InitSysCallMap(SysCallMap map)
         Panic(ID_REALLOC_FAIL);
         return false;
     }
+    map->SysCallCount = 0;
+    map->SysCallMapBufSize = SysCallMapBlockSize;
     return true;
 }
 bool InitSysCallMapDict(SysCallMapDict dict)
@@ -321,6 +323,8 @@ bool InitSysCallMapDict(SysCallMapDict dict)
         Panic(ID_MALLOC_FAIL);
         return false;
     }
+    dict->DictCount = 0;
+    dict->DictBufSize= SysCallMapDictBlockSize;
     return true;
 }
 bool ExpandSysCallMap(SysCallMap map)
