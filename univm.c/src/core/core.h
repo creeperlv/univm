@@ -139,8 +139,8 @@ typedef struct _vm
 {
     SysCallMapDict CallMap;
     Runtime CurrentRuntime;
-    bool (*Call)(VM,uint32,uint32);
-    bool (*CallAsync)(VM,uint32,uint32);
+    bool (*Call)(VM, uint32, uint32);
+    bool (*CallAsync)(VM, uint32, uint32);
 } vm;
 typedef struct _vmCore
 {
@@ -155,7 +155,7 @@ bool InitMemBlock(MachineData data);
 bool InitAsms(MachineData data);
 bool ExpandMemBuf(MachineData data);
 bool ExpandAsmBuf(MachineData data);
-bool AppenndAsm(MachineData data,UniVMAsm asm,uint32* id);
+bool AppenndAsm(MachineData data, UniVMAsm module, uint32 *id);
 bool LoadProgram(FILE *src, UniVMAsm assembly);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();

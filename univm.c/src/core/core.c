@@ -71,7 +71,7 @@ bool ExpandAsmBuf(MachineData data)
     data->ProgramSize = NewSize;
     return true;
 }
-bool AppenndAsm(MachineData data, UniVMAsm asm, uint32 *id)
+bool AppenndAsm(MachineData data, UniVMAsm module, uint32 *id)
 {
     uint32 i = 0;
     for (; i < data->ProgramCount; i++)
@@ -79,7 +79,7 @@ bool AppenndAsm(MachineData data, UniVMAsm asm, uint32 *id)
         if (IsNull(data->LoadedPrograms))
         {
             id[0] = i;
-            data->LoadedPrograms[i] = asm;
+            data->LoadedPrograms[i] = module;
             return true;
         }
     }
@@ -90,7 +90,7 @@ bool AppenndAsm(MachineData data, UniVMAsm asm, uint32 *id)
             return false;
         }
     }
-    data->LoadedPrograms[data->ProgramCount]=asm;
+    data->LoadedPrograms[data->ProgramCount] = module;
     id[0] = data->ProgramCount;
     data->ProgramCount++;
     return true;
@@ -324,7 +324,7 @@ bool InitSysCallMapDict(SysCallMapDict dict)
         return false;
     }
     dict->DictCount = 0;
-    dict->DictBufSize= SysCallMapDictBlockSize;
+    dict->DictBufSize = SysCallMapDictBlockSize;
     return true;
 }
 bool ExpandSysCallMap(SysCallMap map)

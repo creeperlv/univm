@@ -10,3 +10,5 @@ Debug
 *.opt
 *.plg
 Release
+ipch
+*.sdf

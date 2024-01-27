@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\univm">
+      <UniqueIdentifier>{71b2020b-9f38-4507-adf0-34a318f5c8fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{32d8f930-37b2-41a7-b302-6ee0b43d6880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\dispatch">
+      <UniqueIdentifier>{0acec7d8-5a24-4f00-9bec-f01dcfddec5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\univm">
+      <UniqueIdentifier>{d7c1780c-eb10-4429-b1c1-bd856adcdbfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{cd8d0772-18f0-4ee5-9a78-5d59b632625e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core\dispatch">
+      <UniqueIdentifier>{d328d284-5e20-4024-95b0-8d98c8c8b032}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\src\univm\basesysc.c">
+      <Filter>Source Files\univm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\univm\main.c">
+      <Filter>Source Files\univm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\advstr.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\base.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\basedata.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\core.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\coredata.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\panic.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\vm.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\vm_func.c">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\dispatch\dispatch.c">
+      <Filter>Source Files\core\dispatch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\src\core\dispatch\thread.c">
+      <Filter>Source Files\core\dispatch</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\src\core\dispatch\dispatch.h">
+      <Filter>Header Files\core\dispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\dispatch\thread.h">
+      <Filter>Header Files\core\dispatch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\advstr.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\base.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\basedata.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\basesysc.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\core.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\data.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\inst.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\instname.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\panic.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\types.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\vm.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\core\vm_func.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\src\univm\basesysc.h">
+      <Filter>Header Files\univm</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

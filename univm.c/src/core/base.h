@@ -4,7 +4,7 @@
 // #include <endian.h>
 #include <stdarg.h>
 #ifdef _MSC_VER
-#if _MSC_VER <= 1500
+#if _MSC_VER <= 1700
 #define NOSTDBOL 1
 #define NOSTDINT 1
 #endif

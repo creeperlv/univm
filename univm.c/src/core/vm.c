@@ -13,7 +13,7 @@ VMCore CreateCore(VM vm)
 {
     VMCore ptr = malloc(sizeof(vmCore));
     CoreData cData;
-	if (IsNull(ptr))
+    if (IsNull(ptr))
     {
         Panic(ID_MALLOC_FAIL);
         return ptr;
@@ -37,24 +37,24 @@ VMCore CreateCore(VM vm)
     cData->CallStack.ItemCount = 0;
     return ptr;
 }
-bool AddUniVMAsm(VM vm, UniVMAsm asm)
+bool AddUniVMAsm(VM vm, UniVMAsm module)
 {
-	Runtime rt=vm->CurrentRuntime;
+    Runtime rt = vm->CurrentRuntime;
     MachineData mdata = &rt->machine;
     uint32 ID;
-    if (AppenndAsm(mdata, asm, &ID) == false)
+    if (AppenndAsm(mdata, module, &ID) == false)
     {
         return false;
     }
-	return true;
+    return true;
 }
 void UniVMDefaultExecutionLoop(VMCore core)
 {
-	return;
+    return;
 }
 bool UniVMCallSync(VM vm, uint32 AsmID, uint32 PC)
 {
-	return true;
+    return true;
 }
 bool InitMachineData(MachineData mdata)
 {
