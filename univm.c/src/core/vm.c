@@ -42,10 +42,16 @@ bool AddUniVMAsm(VM vm, UniVMAsm module)
     Runtime rt = vm->CurrentRuntime;
     MachineData mdata = &rt->machine;
     uint32 ID;
+    uint32 PTR;
     if (AppenndAsm(mdata, module, &ID) == false)
     {
         return false;
     }
+    if (vm_func_alloc(vm, &PTR, module->GlobalMemorySize)==false)
+    {
+        return false;
+    }
+    module->GlobalMemPtr = PTR;
     return true;
 }
 void UniVMDefaultExecutionLoop(VMCore core)
@@ -54,6 +60,8 @@ void UniVMDefaultExecutionLoop(VMCore core)
 }
 bool UniVMCallSync(VM vm, uint32 AsmID, uint32 PC)
 {
+    VMCore core=CreateCore(vm);
+    
     return true;
 }
 bool InitMachineData(MachineData mdata)

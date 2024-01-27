@@ -48,6 +48,7 @@ typedef struct _univmasm
     uint32 LibCount;
     TextItem Libs;
     uint32 GlobalMemorySize;
+    uint32 GlobalMemPtr;
     code Code;
 } uniVMAsm;
 typedef struct _memoryBlock
