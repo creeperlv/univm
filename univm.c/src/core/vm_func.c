@@ -3,20 +3,20 @@
 bool vm_func_fl_alloc(VMCore core, uint32 target_register, uint32 size)
 {
     uint32 ptr = 0;
-    if (!vm_func_alloc(core->HostMachine, ptr, size))
+    if (!vm_func_alloc(core->HostMachine, &ptr, size))
     {
         return false;
     }
-    SetRegister_UInt32(core,ptr,target_register);
-    SetRegister_UInt32(core,0,target_register*sizeof(uint32));
+    SetRegister_UInt32(core->CoreData, ptr, target_register);
+    SetRegister_UInt32(core->CoreData, 0, target_register * sizeof(uint32));
     return true;
 }
 
-bool vm_func_alloc(VM vm, uint32* ptr, uint32 size)
+bool vm_func_alloc(VM vm, uint32 *ptr, uint32 size)
 {
     bool Hit = false;
     uint32 i = 0;
-    MachineData mdata=&vm->CurrentRuntime->machine;
+    MachineData mdata = &vm->CurrentRuntime->machine;
     void *mem = malloc(size);
     if (IsNull(mem))
     {
@@ -49,8 +49,8 @@ bool vm_func_alloc(VM vm, uint32* ptr, uint32 size)
             mdata->MemCount++;
         }
         mdata->Mem[ptr[0]].Ptr = mem;
-        mdata->Mem[ptr[0]].IsAlloced=true;
-        mdata->Mem[ptr[0]].length=size;
+        mdata->Mem[ptr[0]].IsAlloced = true;
+        mdata->Mem[ptr[0]].length = size;
     }
     return true;
 }

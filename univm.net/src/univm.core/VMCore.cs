@@ -14,6 +14,7 @@ namespace univm.core
         public MachineData machineData = new MachineData();
         public VM HostMachine;
         public bool JumpFlag = false;
+        public bool OverFlow = false;
         public DateTime WaitUntil;
         public bool WillWaitUntil;
         public bool IsDispatchMode;
@@ -34,169 +35,554 @@ namespace univm.core
             switch (inst.Op_Code)
             {
                 case InstOPCodes.BASE_ADD:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + coreData.GetDataFromRegister<int>(inst.Data2));
+                    try
+                    {
+                        checked { coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + coreData.GetDataFromRegister<int>(inst.Data2)); }
+                    }
+                    catch (Exception)
+                    {
+                        OverFlow = true;
+                    }
                     break;
                 case InstOPCodes.BASE_SUB:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - coreData.GetDataFromRegister<int>(inst.Data2));
+                    try
+                    {
+                        checked { coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - coreData.GetDataFromRegister<int>(inst.Data2)); }
+                    }
+                    catch (Exception)
+                    {
+                        OverFlow = true;
+                    }
                     break;
                 case InstOPCodes.BASE_MUL:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * coreData.GetDataFromRegister<int>(inst.Data2));
+                    try
+                    {
+                        checked { coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * coreData.GetDataFromRegister<int>(inst.Data2)); }
+                    }
+                    catch (Exception)
+                    {
+                        OverFlow = true;
+                    }
                     break;
                 case InstOPCodes.BASE_DIV:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / coreData.GetDataFromRegister<int>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / coreData.GetDataFromRegister<int>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) + coreData.GetDataFromRegister<uint>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) + coreData.GetDataFromRegister<uint>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) - coreData.GetDataFromRegister<uint>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) - coreData.GetDataFromRegister<uint>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) * coreData.GetDataFromRegister<uint>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) * coreData.GetDataFromRegister<uint>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) / coreData.GetDataFromRegister<uint>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) / coreData.GetDataFromRegister<uint>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) + inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) - inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) * inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + coreData.GetDataFromRegister<long>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + coreData.GetDataFromRegister<long>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_64:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - coreData.GetDataFromRegister<long>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - coreData.GetDataFromRegister<long>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_64:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * coreData.GetDataFromRegister<long>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * coreData.GetDataFromRegister<long>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / coreData.GetDataFromRegister<long>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / coreData.GetDataFromRegister<long>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) + ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_64I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) - ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_64I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) * ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_64IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_64IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / inst.Data2);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / inst.Data2);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) + coreData.GetDataFromRegister<ulong>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_64U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) - coreData.GetDataFromRegister<ulong>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_64U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) * coreData.GetDataFromRegister<ulong>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / coreData.GetDataFromRegister<ulong>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / coreData.GetDataFromRegister<ulong>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + coreData.GetDataFromRegister<short>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + coreData.GetDataFromRegister<short>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_16:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - coreData.GetDataFromRegister<short>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - coreData.GetDataFromRegister<short>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_16:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * coreData.GetDataFromRegister<short>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * coreData.GetDataFromRegister<short>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / coreData.GetDataFromRegister<short>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / coreData.GetDataFromRegister<short>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + coreData.GetDataFromRegister<ushort>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_16U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - coreData.GetDataFromRegister<ushort>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_16U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * coreData.GetDataFromRegister<ushort>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16U:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / coreData.GetDataFromRegister<ushort>(inst.Data2));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / coreData.GetDataFromRegister<ushort>(inst.Data2));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + ((short*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) + ((short*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_16I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - ((short*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) - ((short*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_16I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * ((short*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) * ((short*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16I:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / ((short*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / ((short*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + ((ushort*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) + ((ushort*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SUB_16IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - ((ushort*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) - ((ushort*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_MUL_16IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * ((ushort*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) * ((ushort*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16IU:
-                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / ((ushort*)&inst.Data2)[0]);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / ((ushort*)&inst.Data2)[0]);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SET32:
-                    coreData.SetDataToRegister(inst.Data0, inst.Data1);
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, inst.Data1);
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<int>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<int>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS_B:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<sbyte>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<sbyte>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS_D:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<double>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<double>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS_S:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<float>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<float>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS_16:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<short>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<short>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ABS_64:
-                    coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<long>(inst.Data1)));
+                    try
+                    {
+                        checked
+                        {
+                            coreData.SetDataToRegister(inst.Data0, Math.Abs(coreData.GetDataFromRegister<long>(inst.Data1)));
+                        }
+                    }
+                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_CVT8:
                     {
@@ -1183,16 +1569,16 @@ namespace univm.core
                 case InstOPCodes.BASE_SETSPOFFSET:
                     {
                         var memptr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.SP);
-                        var Offset=inst.Data0;
+                        var Offset = inst.Data0;
 
-                        var MOD = (Offset+sizeof(int)) / Constants.StackBlockSize + 1;
+                        var MOD = (Offset + sizeof(int)) / Constants.StackBlockSize + 1;
                         var size = coreData.GetMemBlockSize(memptr.MemID);
                         var FinalSize = MOD * Constants.StackBlockSize;
                         if (FinalSize != size)
                         {
                             coreData.Realloc((int)memptr.MemID, (int)FinalSize);
                         }
-                        memptr.Offset=Offset;
+                        memptr.Offset = Offset;
                         coreData.SetDataToRegister(RegisterDefinition.SP, memptr);
                     }
                     break;
@@ -1647,6 +2033,17 @@ namespace univm.core
                             default:
                                 break;
                         }
+                    }
+                    break;
+                case InstOPCodes.BASE_OFJF:
+                    if (OverFlow)
+                    {
+                        OverFlow = false;
+                        JumpFlag = true;
+                    }
+                    else
+                    {
+                        JumpFlag = false;
                     }
                     break;
                 case InstOPCodes.BASE_CJ:

@@ -186,7 +186,7 @@ CJAL	0x00001123
 CJALR	0x00001124
 CJAAL	0x00001125
 CJAALR	0x00001126
-
+OFJF	0x00001127
 SYSCALL	0x00001202
 
 ALLOC	0x00002000
@@ -342,6 +342,7 @@ cja	uint
 cjar	reg
 cjaal	reg	uint
 cjaalr	reg	reg
+ofjf
 
 alloc	reg	reg
 realloc	reg	reg	reg

@@ -47,7 +47,7 @@ bool AddUniVMAsm(VM vm, UniVMAsm module)
     {
         return false;
     }
-    if (vm_func_alloc(vm, &PTR, module->GlobalMemorySize)==false)
+    if (vm_func_alloc(vm, &PTR, module->GlobalMemorySize) == false)
     {
         return false;
     }
@@ -60,8 +60,8 @@ void UniVMDefaultExecutionLoop(VMCore core)
 }
 bool UniVMCallSync(VM vm, uint32 AsmID, uint32 PC)
 {
-    VMCore core=CreateCore(vm);
-    
+    VMCore core = CreateCore(vm);
+
     return true;
 }
 bool InitMachineData(MachineData mdata)
@@ -110,7 +110,7 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
     case HL_ALLOC: {
         uint32 register0 = inst->Data[0];
         uint32 size = inst->Data[1];
-        vm_func_fl_alloc(vm, register0, size);
+        vm_func_fl_alloc(vmCore, register0, size);
     }
     break;
     case BSAE_ADD: {

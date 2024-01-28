@@ -206,6 +206,7 @@
         public const uint BASE_CJALR = 0x00001124;
         public const uint BASE_CJAAL = 0x00001125;
         public const uint BASE_CJAALR = 0x00001126;
+        public const uint BASE_OFJF = 0x00001127;
         // ALLOC = malloc(size_t)
         // alloc $rd(64bit) $rs
         public const uint HL_ALLOC = 0x00002000;
