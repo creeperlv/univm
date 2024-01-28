@@ -1158,6 +1158,44 @@ namespace univm.core
                         coreData.SetDataToRegister(inst.Data0, ptr);
                     }
                     break;
+                case InstOPCodes.BASE_SPADD:
+                    {
+                        int Size_Offset = ((int*)&inst.Data0)[0];
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.SP);
+                        var size = coreData.GetMemBlockSize(memptr.MemID);
+                        var AssumedSize = coreData.CurrentStackSize + Size_Offset + sizeof(int);
+                        var MOD = AssumedSize / Constants.StackBlockSize + 1;
+                        var FinalSize = (uint)(MOD * Constants.StackBlockSize);
+                        if (FinalSize != size)
+                        {
+                            coreData.Realloc((int)memptr.MemID, (int)FinalSize);
+                        }
+                        memptr.Offset = (uint)(memptr.Offset + Size_Offset);
+                        coreData.SetDataToRegister(RegisterDefinition.SP, memptr);
+                    }
+                    break;
+                case InstOPCodes.BASE_GETSPOFFSET:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.SP);
+                        coreData.SetDataToRegister(inst.Data0, memptr.Offset);
+                    }
+                    break;
+                case InstOPCodes.BASE_SETSPOFFSET:
+                    {
+                        var memptr = coreData.GetDataFromRegister<MemPtr>(RegisterDefinition.SP);
+                        var Offset=inst.Data0;
+
+                        var MOD = (Offset+sizeof(int)) / Constants.StackBlockSize + 1;
+                        var size = coreData.GetMemBlockSize(memptr.MemID);
+                        var FinalSize = MOD * Constants.StackBlockSize;
+                        if (FinalSize != size)
+                        {
+                            coreData.Realloc((int)memptr.MemID, (int)FinalSize);
+                        }
+                        memptr.Offset=Offset;
+                        coreData.SetDataToRegister(RegisterDefinition.SP, memptr);
+                    }
+                    break;
                 case InstOPCodes.HL_FREE:
                     {
                         var PTR = coreData.GetDataFromRegister<MemPtr>(inst.Data0);

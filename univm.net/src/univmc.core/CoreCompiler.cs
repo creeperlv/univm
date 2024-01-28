@@ -372,6 +372,7 @@ namespace univmc.core
                             switch (item.FinalInstruction.Op_Code)
                             {
                                 case InstOPCodes.BASE_CALLE:
+                                case InstOPCodes.BASE_CALLEP:
                                     {
                                         item.FinalInstruction.Op_Code = InstOPCodes.BASE_CALL;
                                         item.FinalInstruction.Data0 = item.FinalInstruction.Data1;
@@ -379,6 +380,7 @@ namespace univmc.core
                                     }
                                     break;
                                 case InstOPCodes.BASE_CALLER:
+                                case InstOPCodes.BASE_CALLEPR:
                                     {
                                         item.FinalInstruction.Op_Code = InstOPCodes.BASE_CALLR;
                                         item.FinalInstruction.Data0 = item.FinalInstruction.Data1;

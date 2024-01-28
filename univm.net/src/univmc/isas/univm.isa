@@ -149,6 +149,10 @@ SET.64U	0x0000100F
 CALL	0x00001100
 CALLR	0x00001101
 RET	0x00001102
+SPADD	0x00001103
+ADDSP	0x00001103
+GETSPOFFSET	0x00001104
+SETSPOFFSET	0x00001105
 SETLBL	0x00001012
 CALLP	0x00001108
 CALLPR	0x00001109
@@ -303,6 +307,9 @@ setd	reg	double
 call	uint
 callr	reg
 ret
+addsp	uint
+getspoffset	uint
+setspoffset	uint
 callp	uint
 callpr	reg
 callep	uint uint

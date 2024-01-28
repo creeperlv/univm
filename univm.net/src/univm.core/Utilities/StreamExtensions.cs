@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace univm.core.Utilities
 {
@@ -68,7 +69,16 @@ namespace univm.core.Utilities
     }
     public static class UIntExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static T BitWiseConvert<T>(this uint value) where T : unmanaged
+        {
+            return ((T*)&value)[0];
+        }
+    }
+    public static class IntExtensions
+    {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static T BitWiseConvert<T>(this int value) where T : unmanaged
         {
             return ((T*)&value)[0];
         }

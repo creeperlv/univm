@@ -152,9 +152,9 @@
         public const uint BASE_CALLRR = 0x00001101;
         public const uint BASE_RET = 0x00001102;
         public const uint BASE_SPADD = 0x00001103;
-        public const uint BASE_GETSPLEN = 0x00001104;
+        public const uint BASE_GETSPOFFSET = 0x00001104;
         //
-        public const uint BASE_SETSPLEN = 0x00001105;
+        public const uint BASE_SETSPOFFSET = 0x00001105;
         //Call External Function
         //calle asm_id pc
         public const uint BASE_CALLE = 0x00001106;
