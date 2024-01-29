@@ -9,7 +9,7 @@ typedef unsigned __int8 uint8_t;
 typedef unsigned __int16 uint16_t;
 typedef unsigned __int32 uint32_t;
 typedef unsigned __int64 uint64_t;
-#define UINT32_MAX UINT_MAX
-#define INT32_MAX INT_MAX
+	#define UINT32_MAX UINT_MAX
+	#define INT32_MAX INT_MAX
 #endif
 #endif

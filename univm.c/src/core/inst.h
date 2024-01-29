@@ -186,6 +186,7 @@
 // qtext $rd(64-bit) $rs
 #define HL_QTEXT 0x00002007
 #define HL_QTEXTA 0x00002008
+#define HL_FREE 0x0000200A
 
 // Push a data to end of a memory.
 // PUSHD $SRC_REG $MEM_PTR_REG $SIZE_REG

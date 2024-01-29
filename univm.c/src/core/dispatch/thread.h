@@ -3,27 +3,27 @@
 #include "../core.h"
 
 #ifndef UNIVM_MAX_THREAD
-#define UNIVM_MAX_THREAD 32
+    #define UNIVM_MAX_THREAD 32
 #endif
 
 #ifndef THREAD_WAIT_SLEEP
-#define THREAD_WAIT_SLEEP 10
+    #define THREAD_WAIT_SLEEP 10
 #endif
 #ifdef _MSC_VER
-#define WIN32THREAD 1
+    #define WIN32THREAD 1
 #endif
 #ifndef WIN32THREAD
-#define UniVMThreadHandle pthread_t
-#define UNIVM_TRETURN_TYPE void *
-#define UNIVM_TRETURN return NULL
-#include <pthread.h>
-#include <time.h>
+    #define UniVMThreadHandle pthread_t
+    #define UNIVM_TRETURN_TYPE void *
+    #define UNIVM_TRETURN return NULL
+    #include <pthread.h>
+    #include <time.h>
 #else
-#define UniVMThreadHandle HANDLE
-#include <process.h>
-#include <windows.h>
-#define UNIVM_TRETURN_TYPE void
-#define UNIVM_TRETURN return
+    #define UniVMThreadHandle HANDLE
+    #include <process.h>
+    #include <windows.h>
+    #define UNIVM_TRETURN_TYPE void
+    #define UNIVM_TRETURN return
 typedef void (*ThreadFunc)(void *);
 // void StartNewThread(void (*func)(void *), void *data);
 #endif

@@ -1,3 +1,6 @@
 BasedOnStyle: Microsoft
 
 IndentWidth: 4
+IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
+UseTab: true

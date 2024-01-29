@@ -107,50 +107,92 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
     // Runtime RT = vm->CurrentRuntime;
     switch (_inst)
     {
-    case HL_ALLOC: {
-        uint32 register0 = inst->Data[0];
-        uint32 size = inst->Data[1];
-        vm_func_fl_alloc(vmCore, register0, size);
-    }
-    break;
-    case BSAE_ADD: {
-        uint32 R0 = inst->Data[0];
-        uint32 R1 = inst->Data[0];
-        uint32 R2 = inst->Data[0];
-        int32 L = GetRegister_Int32(cData, R1);
-        int32 R = GetRegister_Int32(cData, R2);
-        SetRegister_Int32(cData, L + R, R0);
-    }
-    break;
-    case BSAE_SUB: {
-        uint32 R0 = inst->Data[0];
-        uint32 R1 = inst->Data[0];
-        uint32 R2 = inst->Data[0];
-        int32 L = GetRegister_Int32(cData, R1);
-        int32 R = GetRegister_Int32(cData, R2);
-        SetRegister_Int32(cData, L - R, R0);
-    }
-    break;
-    case BSAE_MUL: {
-        uint32 R0 = inst->Data[0];
-        uint32 R1 = inst->Data[0];
-        uint32 R2 = inst->Data[0];
-        int32 L = GetRegister_Int32(cData, R1);
-        int32 R = GetRegister_Int32(cData, R2);
-        SetRegister_Int32(cData, L * R, R0);
-    }
-    break;
-    case BSAE_DIV: {
-        uint32 R0 = inst->Data[0];
-        uint32 R1 = inst->Data[0];
-        uint32 R2 = inst->Data[0];
-        int32 L = GetRegister_Int32(cData, R1);
-        int32 R = GetRegister_Int32(cData, R2);
-        SetRegister_Int32(cData, L / R, R0);
-    }
-    break;
-    default:
-        return false;
+        case HL_ALLOC: {
+            uint32 register0 = inst->Data[0];
+            uint32 size = inst->Data[1];
+            vm_func_alloc_reg(vmCore, register0, size);
+        }
+        break;
+		case HL_FREE: {
+			uint32 _register=inst->Data[0];
+			uint32 MemID=GetRegister_UInt32(cData, _register);
+			vm_func_free(vm, MemID);
+        }
+		break;
+		case BSAE_ADD: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			int32 L = GetRegister_Int32(cData, R1);
+			int32 R = GetRegister_Int32(cData, R2);
+			SetRegister_Int32(cData, L + R, R0);
+		}
+		break;
+		case BSAE_SUB: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			int32 L = GetRegister_Int32(cData, R1);
+			int32 R = GetRegister_Int32(cData, R2);
+			SetRegister_Int32(cData, L - R, R0);
+		}
+		break;
+		case BSAE_MUL: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			int32 L = GetRegister_Int32(cData, R1);
+			int32 R = GetRegister_Int32(cData, R2);
+			SetRegister_Int32(cData, L * R, R0);
+		}
+		break;
+		case BSAE_DIV: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			int32 L = GetRegister_Int32(cData, R1);
+			int32 R = GetRegister_Int32(cData, R2);
+			SetRegister_Int32(cData, L / R, R0);
+		}
+		break;
+		case BSAE_ADD_S: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			Single L = GetRegister_Single(cData, R1);
+			Single R = GetRegister_Int32(cData, R2);
+			SetRegister_Single(cData, L + R, R0);
+		}
+		break;
+		case BSAE_SUB_S: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			Single L = GetRegister_Single(cData, R1);
+			Single R = GetRegister_Int32(cData, R2);
+			SetRegister_Single(cData, L - R, R0);
+		}
+		break;
+		case BSAE_MUL_S: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			Single L = GetRegister_Single(cData, R1);
+			Single R = GetRegister_Int32(cData, R2);
+			SetRegister_Single(cData, L * R, R0);
+		}
+		break;
+		case BSAE_DIV_S: {
+			uint32 R0 = inst->Data[0];
+			uint32 R1 = inst->Data[0];
+			uint32 R2 = inst->Data[0];
+			Single L = GetRegister_Single(cData, R1);
+			Single R = GetRegister_Int32(cData, R2);
+			SetRegister_Single(cData, L / R, R0);
+		}
+		break;
+        default:
+            return false;
     }
     return true;
 }

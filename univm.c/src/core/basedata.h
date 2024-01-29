@@ -4,29 +4,29 @@
 #include "base.h"
 
 #ifndef DICT_BLOC_SIZE
-#define DICT_BLOC_SIZE 16
+	#define DICT_BLOC_SIZE 16
 #endif
 
 typedef struct _nameInt32Dict
 {
-    char **Names;
-    int32 *Data;
-    uint32 Size;
-    uint32 Count;
+	char **Names;
+	int32 *Data;
+	uint32 Size;
+	uint32 Count;
 } nameInt32Dict;
 typedef struct _strStrDict
 {
-    char **Keys;
-    char **Values;
-    uint32 Size;
-    uint32 Count;
+	char **Keys;
+	char **Values;
+	uint32 Size;
+	uint32 Count;
 } strStrDict;
 typedef struct _nameUInt32Dict
 {
-    char **Names;
-    uint32 *Data;
-    uint32 Size;
-    uint32 Count;
+	char **Names;
+	uint32 *Data;
+	uint32 Size;
+	uint32 Count;
 } nameUInt32Dict;
 
 typedef nameInt32Dict *NameInt32Dict;

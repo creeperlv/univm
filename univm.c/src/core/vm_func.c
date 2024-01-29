@@ -1,6 +1,6 @@
 #include "vm_func.h"
 
-bool vm_func_fl_alloc(VMCore core, uint32 target_register, uint32 size)
+bool vm_func_alloc_reg(VMCore core, uint32 target_register, uint32 size)
 {
     uint32 ptr = 0;
     if (!vm_func_alloc(core->HostMachine, &ptr, size))
@@ -12,6 +12,15 @@ bool vm_func_fl_alloc(VMCore core, uint32 target_register, uint32 size)
     return true;
 }
 
+bool vm_func_free(VM vm, uint32 memID)
+{
+    if (memID < vm->CurrentRuntime->machine.MemCount)
+    {
+        free(vm->CurrentRuntime->machine.Mem[memID].Ptr);
+        vm->CurrentRuntime->machine.Mem[memID].IsAlloced = false;
+        vm->CurrentRuntime->machine.Mem[memID].length = 0;
+    }
+}
 bool vm_func_alloc(VM vm, uint32 *ptr, uint32 size)
 {
     bool Hit = false;
