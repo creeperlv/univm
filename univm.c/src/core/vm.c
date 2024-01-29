@@ -125,7 +125,12 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
 			uint32 R2 = inst->Data[0];
 			int32 L = GetRegister_Int32(cData, R1);
 			int32 R = GetRegister_Int32(cData, R2);
-			SetRegister_Int32(cData, L + R, R0);
+			int32 V;
+			if (__of_add_int32(&V, L, R))
+			{
+				vmCore->OverFlowFlag = true;
+            }
+			SetRegister_Int32(cData, V, R0);
 		}
 		break;
 		case BSAE_SUB: {
@@ -134,7 +139,12 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
 			uint32 R2 = inst->Data[0];
 			int32 L = GetRegister_Int32(cData, R1);
 			int32 R = GetRegister_Int32(cData, R2);
-			SetRegister_Int32(cData, L - R, R0);
+			int32 V;
+			if (__of_sub_int32(&V, L, R))
+			{
+				vmCore->OverFlowFlag = true;
+			}
+			SetRegister_Int32(cData, V, R0);
 		}
 		break;
 		case BSAE_MUL: {
@@ -143,7 +153,12 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
 			uint32 R2 = inst->Data[0];
 			int32 L = GetRegister_Int32(cData, R1);
 			int32 R = GetRegister_Int32(cData, R2);
-			SetRegister_Int32(cData, L * R, R0);
+			int32 V;
+			if (__of_mul_int32(&V, L, R))
+			{
+				vmCore->OverFlowFlag = true;
+			}
+			SetRegister_Int32(cData, V, R0);
 		}
 		break;
 		case BSAE_DIV: {
@@ -152,7 +167,12 @@ bool ExecuteInst(VMCore vmCore, Instruction inst)
 			uint32 R2 = inst->Data[0];
 			int32 L = GetRegister_Int32(cData, R1);
 			int32 R = GetRegister_Int32(cData, R2);
-			SetRegister_Int32(cData, L / R, R0);
+			int32 V;
+			if (__of_div_int32(&V, L, R))
+			{
+				vmCore->OverFlowFlag = true;
+			}
+			SetRegister_Int32(cData, V, R0);
 		}
 		break;
 		case BSAE_ADD_S: {

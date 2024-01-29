@@ -1,17 +1,4 @@
-#include "../core/advstr.h"
-#include "../core/core.h"
-bool WriteOutput;
-void FunctionPass(int *Result, char *FuncName)
-{
-	if (WriteOutput)
-		Log("%s:\x1b[92m pass\x1b[0m\n", FuncName);
-}
-void FunctionFail(int *Result, char *FuncName)
-{
-	if (WriteOutput)
-		Log("%s:\x1b[91m fail\x1b[0m\n", FuncName);
-	Result[0] = 1;
-}
+#include "testbase.h"
 void TestVMCoreData(int *Result)
 {
 	coreData data;
@@ -51,21 +38,118 @@ void TestVMCoreData(int *Result)
 	}
 	FunctionPass(Result, "SetRegister_UInt32() and GetRegister_UInt32()");
 }
+void Int32Overflow(int *Result)
+{
+	int32 L;
+	int32 R;
+	int32 RET_V;
+	int32 TGT_V;
+	bool IsOF;
+	{
+		L = INT32_MAX;
+		R = 10;
+		TGT_V = L + R;
+		IsOF = __of_add_int32(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_add_int32()");
+		}
+		else
+		{
+			FunctionPass(Result, "__of_add_int32()");
+		}
+	}
+	{
+		L = INT32_MIN;
+		R = 10;
+		TGT_V = L - R;
+		IsOF = __of_sub_int32(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_sub_int32()");
+		}
+		else
+			FunctionPass(Result, "__of_sub_int32()");
+	}
+	{
+		L = INT32_MAX;
+		R = 10;
+		TGT_V = L * R;
+		IsOF = __of_mul_int32(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_mul_int32()");
+		}
+		else
+			FunctionPass(Result, "__of_mul_int32()");
+	}
+}
+void UInt8Overflow(int *Result)
+{
+	uint8 L;
+	uint8 R;
+	uint8 RET_V;
+	uint8 TGT_V;
+	bool IsOF;
+	{
+		L = UINT8_MAX;
+		R = 10;
+		TGT_V = L + R;
+		IsOF = __of_add_uint8(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_add_uint8()");
+		}
+		else
+		{
+			FunctionPass(Result, "__of_add_uint8()");
+		}
+	}
+	{
+		L = 0;
+		R = 10;
+		TGT_V = L - R;
+		IsOF = __of_sub_uint8(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_sub_uint8()");
+		}
+		else
+			FunctionPass(Result, "__of_sub_uint8()");
+	}
+	{
+		L = UINT8_MAX;
+		R = 10;
+		TGT_V = L * R;
+		IsOF = __of_mul_uint8(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_mul_uint8()");
+		}
+		else
+			FunctionPass(Result, "__of_mul_uint8()");
+	}
+}
+void OverflowTest(int *Result)
+{
+	Int32Overflow(Result);
+	UInt8Overflow(Result);
+}
 int main(int ac, char **av)
 {
 	vStr str;
 	char *output = getenv("NO_OUTPUT");
 	int Result = 0;
-	WriteOutput = true;
+	SetWriteOutput(true);
 	if (output != NULL)
 	{
 		if (output[0] == '1')
 		{
-			WriteOutput = false;
+			SetWriteOutput(false);
 		}
 		else
 		{
-			WriteOutput = true;
+			SetWriteOutput(true);
 		}
 	}
 	SetInternalOutput(stdout);
@@ -73,7 +157,7 @@ int main(int ac, char **av)
 	AppendVStr(&str, 'a');
 	AppendVStr(&str, 'b');
 	AppendVStr(&str, 'c');
-	if (WriteOutput)
+	if (IsWriteOutput())
 		WriteLine("Internal Function Test");
 	if (VStrIsEqualsToCStr(&str, "abc") && (!VStrIsEqualsToCStr(&str, "abcd")))
 	{
@@ -96,6 +180,15 @@ int main(int ac, char **av)
 	if (Result != 0)
 		return Result;
 	TestVMCoreData(&Result);
+	if (Result != 0)
+	{
+		return Result;
+	}
+	OverflowTest(&Result);
+	if (Result != 0)
+	{
+		return Result;
+	}
 	free(str.HEAD);
 	return Result;
 }

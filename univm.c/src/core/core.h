@@ -147,6 +147,8 @@ typedef struct _vmCore
 {
 	CoreData CoreData;
 	VM HostMachine;
+	bool JF;
+	bool OverFlowFlag;
 	bool (*ExecuteInst)(VMCore core, Instruction inst);
 } vmCore;
 Runtime CreateRT();
