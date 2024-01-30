@@ -62,7 +62,7 @@ bool __of_add_int8(int8_t *V, int8_t L, int8_t R)
 {
 	int16 _V = L + R;
 	V[0] = ((int8_t *)&_V)[0];
-	if (_V > INT8_MAX)
+	if (_V > INT8_MAX || _V < INT8_MIN)
 	{
 		return true;
 	}
@@ -72,7 +72,7 @@ bool __of_sub_int8(int8_t *V, int8_t L, int8_t R)
 {
 	int16 _V = L - R;
 	V[0] = ((int8_t *)&_V)[0];
-	if (_V < INT8_MIN)
+	if (_V > INT8_MAX || _V < INT8_MIN)
 	{
 		return true;
 	}
@@ -102,7 +102,7 @@ bool __of_add_uint8(uint8 *V, uint8 L, uint8 R)
 {
 	uint16 _V = L + R;
 	V[0] = ((uint8 *)&_V)[0];
-	if (_V>UINT8_MAX)
+	if (_V > UINT8_MAX)
 	{
 		return true;
 	}
@@ -133,6 +133,46 @@ bool __of_div_uint8(uint8 *V, uint8 L, uint8 R)
 	uint16 _V = L / R;
 	V[0] = ((uint8 *)&_V)[0];
 	if (_V > UINT8_MAX)
+	{
+		return true;
+	}
+	return false;
+}
+bool __of_add_int16(int16 *V, int16 L, int16 R)
+{
+	int32 _V = L + R;
+	V[0] = ((int16 *)&_V)[0];
+	if (_V > INT16_MAX || _V < INT16_MIN)
+	{
+		return true;
+	}
+	return false;
+}
+bool __of_sub_int16(int16 *V, int16 L, int16 R)
+{
+	int32 _V = L - R;
+	V[0] = ((int16 *)&_V)[0];
+	if (_V > INT16_MAX || _V < INT16_MIN)
+	{
+		return true;
+	}
+	return false;
+}
+bool __of_mul_int16(int16 *V, int16 L, int16 R)
+{
+	int32 _V = L * R;
+	V[0] = ((int16 *)&_V)[0];
+	if (_V > INT16_MAX || _V < INT16_MIN)
+	{
+		return true;
+	}
+	return false;
+}
+bool __of_div_int16(int16 *V, int16 L, int16 R)
+{
+	int32 _V = L / R;
+	V[0] = ((int16 *)&_V)[0];
+	if (_V > INT16_MAX || _V < INT16_MIN)
 	{
 		return true;
 	}
