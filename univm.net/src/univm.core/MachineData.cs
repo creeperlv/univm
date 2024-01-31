@@ -12,6 +12,7 @@ namespace univm.core
         public Dictionary<uint, Dictionary<uint, SysCall>>? SysCallDefintion;
         public List<IDisposable?> Resources = new List<IDisposable?>();
         public List<MemBlock> MemBlocks = new List<MemBlock>();
+        public List<Interrupt> InterruptTable=new List<Interrupt>();
         public int AddResource(IDisposable resource)
         {
             for (int i = 0; i < Resources.Count; i++)
@@ -115,5 +116,12 @@ namespace univm.core
                 }
             }
         }
+    }
+
+    public struct Interrupt
+    {
+        public bool IsSet;
+        public uint AsmID;
+        public uint PC;
     }
 }

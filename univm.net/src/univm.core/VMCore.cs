@@ -65,14 +65,23 @@ namespace univm.core
                     }
                     break;
                 case InstOPCodes.BASE_DIV:
-                    try
                     {
-                        checked
+
+                        int R = coreData.GetDataFromRegister<int>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / coreData.GetDataFromRegister<int>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.SysCallNotExist);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_U:
                     try
@@ -105,14 +114,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_U:
-                    try
                     {
-                        checked
+
+                        var R = coreData.GetDataFromRegister<uint>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) / coreData.GetDataFromRegister<uint>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.SysCallNotExist);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_I:
                     try

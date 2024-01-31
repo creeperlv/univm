@@ -19,6 +19,12 @@ int32 GetRegister_Int32(CoreData core, uint32 startIndex)
 	base += startIndex;
 	return ((int32 *)base)[0];
 }
+int16 GetRegister_Int16(CoreData core, uint32 startIndex)
+{
+	uint8_t *base = core->Registers;
+	base += startIndex;
+	return ((int16 *)base)[0];
+}
 int64 GetRegister_Int64(CoreData core, uint32 startIndex)
 {
 	uint8_t *base = core->Registers;
@@ -50,6 +56,13 @@ uint32 GetRegister_UInt32(CoreData core, uint32 startIndex)
 	return ((uint32 *)base)[0];
 }
 
+bool SetRegister_Int16(CoreData core, int16 Data, uint32 startIndex)
+{
+	uint8_t *base = core->Registers;
+	base += startIndex;
+	((int16 *)base)[0] = Data;
+	return true;
+}
 bool SetRegister_Int32(CoreData core, int32 Data, uint32 startIndex)
 {
 	uint8_t *base = core->Registers;

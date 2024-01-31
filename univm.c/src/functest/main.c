@@ -179,13 +179,70 @@ void Int16Overflow(int *Result)
 		L = INT16_MIN;
 		R = -1;
 		TGT_V = L / R;
-		IsOF = __of_div_int16(&RET_V, L, R);
-		if (IsOF == false || TGT_V != RET_V)
+		MathResult mr = __of_div_int16(&RET_V, L, R);
+		if (mr != MATH_RESULT_OVERFLOW || TGT_V != RET_V)
 		{
-			FunctionFail(Result, "__of_mul_int16()");
+			FunctionFail(Result, "__of_div_int16()");
 		}
 		else
-			FunctionPass(Result, "__of_mul_int16()");
+		{
+			R = 0;
+			mr = __of_div_int16(&RET_V, L, R);
+			if (mr == MATH_RESULT_BIVIDE_BY_ZERO)
+			{
+				FunctionPass(Result, "__of_div_int16()");
+			}
+			else
+			{
+				FunctionFail(Result, "__of_div_int16()");
+			}
+		}
+	}
+}
+void UInt16Overflow(int *Result)
+{
+	uint16 L;
+	uint16 R;
+	uint16 RET_V;
+	uint16 TGT_V;
+	bool IsOF;
+	{
+		L = UINT16_MAX;
+		R = 10;
+		TGT_V = L + R;
+		IsOF = __of_add_uint16(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_add_uint16()");
+		}
+		else
+		{
+			FunctionPass(Result, "__of_add_uint16()");
+		}
+	}
+	{
+		L = 0;
+		R = 10;
+		TGT_V = L - R;
+		IsOF = __of_sub_uint16(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_sub_uint16()");
+		}
+		else
+			FunctionPass(Result, "__of_sub_uint16()");
+	}
+	{
+		L = UINT16_MAX;
+		R = 10;
+		TGT_V = L * R;
+		IsOF = __of_mul_uint16(&RET_V, L, R);
+		if (IsOF == false || TGT_V != RET_V)
+		{
+			FunctionFail(Result, "__of_mul_uint16()");
+		}
+		else
+			FunctionPass(Result, "__of_mul_uint16()");
 	}
 }
 void OverflowTest(int *Result)
@@ -193,6 +250,7 @@ void OverflowTest(int *Result)
 	Int32Overflow(Result);
 	UInt8Overflow(Result);
 	Int16Overflow(Result);
+	UInt16Overflow(Result);
 }
 int main(int ac, char **av)
 {

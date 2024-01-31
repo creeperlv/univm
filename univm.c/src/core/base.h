@@ -79,6 +79,10 @@
 	#define AsmBufBlockSize 4
 #endif
 
+#define MATH_RESULT_NORMAL 0
+#define MATH_RESULT_OVERFLOW 1
+#define MATH_RESULT_DIVIDE_BY_ZERO 2
+typedef char MathResult;
 typedef float Single;
 typedef double Double;
 
@@ -103,17 +107,21 @@ void InterruptiveStdOutPanicHandler(int ID);
 bool __of_add_int8(int8_t *V, int8_t L, int8_t R);
 bool __of_sub_int8(int8_t *V, int8_t L, int8_t R);
 bool __of_mul_int8(int8_t *V, int8_t L, int8_t R);
-bool __of_div_int8(int8_t *V, int8_t L, int8_t R);
+MathResult __of_div_int8(int8_t *V, int8_t L, int8_t R);
 bool __of_add_uint8(uint8 *V, uint8 L, uint8 R);
 bool __of_sub_uint8(uint8 *V, uint8 L, uint8 R);
 bool __of_mul_uint8(uint8 *V, uint8 L, uint8 R);
-bool __of_div_uint8(uint8 *V, uint8 L, uint8 R);
+MathResult __of_div_uint8(uint8 *V, uint8 L, uint8 R);
 bool __of_add_int16(int16 *V, int16 L, int16 R);
 bool __of_sub_int16(int16 *V, int16 L, int16 R);
 bool __of_mul_int16(int16 *V, int16 L, int16 R);
-bool __of_div_int16(int16 *V, int16 L, int16 R);
+MathResult __of_div_int16(int16 *V, int16 L, int16 R);
+bool __of_add_uint16(uint16 *V, uint16 L, uint16 R);
+bool __of_sub_uint16(uint16 *V, uint16 L, uint16 R);
+bool __of_mul_uint16(uint16 *V, uint16 L, uint16 R);
+MathResult __of_div_uint16(uint16 *V, uint16 L, uint16 R);
 bool __of_add_int32(int32 *V, int32 L, int32 R);
 bool __of_sub_int32(int32 *V, int32 L, int32 R);
 bool __of_mul_int32(int32 *V, int32 L, int32 R);
-bool __of_div_int32(int32 *V, int32 L, int32 R);
+MathResult __of_div_int32(int32 *V, int32 L, int32 R);
 #endif

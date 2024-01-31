@@ -88,15 +88,18 @@ bool __of_mul_int8(int8_t *V, int8_t L, int8_t R)
 	}
 	return false;
 }
-bool __of_div_int8(int8_t *V, int8_t L, int8_t R)
+MathResult __of_div_int8(int8_t *V, int8_t L, int8_t R)
 {
-	int16 _V = L / R;
+	int16 _V;
+	if (R == 0)
+		return MATH_RESULT_DIVIDE_BY_ZERO;
+	_V = L / R;
 	V[0] = ((int8_t *)&_V)[0];
 	if (_V < INT8_MIN || _V > INT8_MAX)
 	{
-		return true;
+		return MATH_RESULT_OVERFLOW;
 	}
-	return false;
+	return MATH_RESULT_NORMAL;
 }
 bool __of_add_uint8(uint8 *V, uint8 L, uint8 R)
 {
@@ -128,15 +131,61 @@ bool __of_mul_uint8(uint8 *V, uint8 L, uint8 R)
 	}
 	return false;
 }
-bool __of_div_uint8(uint8 *V, uint8 L, uint8 R)
+MathResult __of_div_uint8(uint8 *V, uint8 L, uint8 R)
 {
-	uint16 _V = L / R;
+	uint16 _V;
+	if (R == 0)
+		return MATH_RESULT_DIVIDE_BY_ZERO;
+	_V = L / R;
 	V[0] = ((uint8 *)&_V)[0];
 	if (_V > UINT8_MAX)
+	{
+		return MATH_RESULT_OVERFLOW;
+	}
+	return MATH_RESULT_NORMAL;
+}
+bool __of_add_uint16(uint16 *V, uint16 L, uint16 R)
+{
+	uint32 _V = L + R;
+	V[0] = ((uint16 *)&_V)[0];
+	if (_V > UINT16_MAX)
 	{
 		return true;
 	}
 	return false;
+}
+bool __of_sub_uint16(uint16 *V, uint16 L, uint16 R)
+{
+	uint32 _V = L - R;
+	V[0] = _V;
+	if (_V > L)
+	{
+		return true;
+	}
+	return false;
+}
+bool __of_mul_uint16(uint16 *V, uint16 L, uint16 R)
+{
+	uint32 _V = L * R;
+	V[0] = ((uint16 *)&_V)[0];
+	if (_V > UINT16_MAX)
+	{
+		return true;
+	}
+	return false;
+}
+MathResult __of_div_uint16(uint16 *V, uint16 L, uint16 R)
+{
+	uint32 _V;
+	if (R == 0)
+		return MATH_RESULT_DIVIDE_BY_ZERO;
+	_V = L / R;
+	V[0] = ((uint16 *)&_V)[0];
+	if (_V > UINT16_MAX)
+	{
+		return MATH_RESULT_OVERFLOW;
+	}
+	return MATH_RESULT_NORMAL;
 }
 bool __of_add_int16(int16 *V, int16 L, int16 R)
 {
@@ -168,15 +217,18 @@ bool __of_mul_int16(int16 *V, int16 L, int16 R)
 	}
 	return false;
 }
-bool __of_div_int16(int16 *V, int16 L, int16 R)
+MathResult __of_div_int16(int16 *V, int16 L, int16 R)
 {
-	int32 _V = L / R;
+	int32 _V;
+	if (R == 0)
+		return MATH_RESULT_DIVIDE_BY_ZERO;
+	_V = L / R;
 	V[0] = ((int16 *)&_V)[0];
 	if (_V > INT16_MAX || _V < INT16_MIN)
 	{
-		return true;
+		return MATH_RESULT_OVERFLOW;
 	}
-	return false;
+	return MATH_RESULT_NORMAL;
 }
 bool __of_add_int32(int32 *V, int32 L, int32 R)
 {
@@ -208,13 +260,16 @@ bool __of_mul_int32(int32 *V, int32 L, int32 R)
 	return __builtin_mul_overflow(L, R, V);
 #endif
 }
-bool __of_div_int32(int32 *V, int32 L, int32 R)
+MathResult __of_div_int32(int32 *V, int32 L, int32 R)
 {
-	int64 _v = L / R;
+	int64 _v;
+	if (R == 0)
+		return MATH_RESULT_DIVIDE_BY_ZERO;
+	_v = L / R;
 	V[0] = ((int32 *)&_v)[0];
 	if (_v > INT32_MAX || _v < INT32_MIN)
-		return true;
-	return false;
+		return MATH_RESULT_OVERFLOW;
+	return MATH_RESULT_NORMAL;
 }
 bool __of_sub_int32(int32 *V, int32 L, int32 R)
 {
