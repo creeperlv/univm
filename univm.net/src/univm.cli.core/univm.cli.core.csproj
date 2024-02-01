@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LibCLCC.NET" Version="1.28.29" />
+    <PackageReference Include="LibCLCC.NET" Version="1.29.30" />
   </ItemGroup>
 
   <ItemGroup>
