@@ -20,6 +20,7 @@ bool vm_func_free(VM vm, uint32 memID)
         vm->CurrentRuntime->machine.Mem[memID].IsAlloced = false;
         vm->CurrentRuntime->machine.Mem[memID].length = 0;
     }
+	return true;
 }
 bool vm_func_alloc(VM vm, uint32 *ptr, uint32 size)
 {

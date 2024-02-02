@@ -1,6 +1,7 @@
 #include "testbase.h"
 void TestVMCoreData(int *Result)
 {
+	int _r;
 	coreData data;
 	vmCore core;
 	int Data_Int32 = 0;
@@ -13,27 +14,25 @@ void TestVMCoreData(int *Result)
 	{
 		Data_Int32 = i * Delta_Int32;
 		SetRegister_Int32(&data, Data_Int32, i);
-		if (GetRegister_Int32(&data, i) != Data_Int32)
+		_r = Assert_IsTrue_OnlyShowFail(GetRegister_Int32(&data, i) == Data_Int32,
+										"SetRegister_Int32() and GetRegister_Int32()");
+		if (_r != 0)
 		{
-			FunctionFail(Result, "SetRegister_Int32() and GetRegister_Int32()");
-			if (Result[0] != 0)
-			{
-				return;
-			}
+			Result[0] = _r;
+			return;
 		}
 	}
-	FunctionPass(Result, "SetRegister_Int32() and GetRegister_Int32()");
+	FuncPass("SetRegister_Int32() and GetRegister_Int32()");
 	for (i = 0; i < TestCount; i++)
 	{
 		Data_Int32 = i * Delta_UInt32;
 		SetRegister_UInt32(&data, Data_Int32, i);
-		if (GetRegister_UInt32(&data, i) != Data_Int32)
+		Result[0] = Assert_IsTrue_OnlyShowFail(GetRegister_UInt32(&data, i) == Data_Int32,
+											   "SetRegister_UInt32() and GetRegister_UInt32()");
+		if (_r != 0)
 		{
-			FunctionFail(Result, "SetRegister_UInt32() and GetRegister_UInt32()");
-			if (Result[0] != 0)
-			{
-				return;
-			}
+			Result[0] = _r;
+			return;
 		}
 	}
 	FunctionPass(Result, "SetRegister_UInt32() and GetRegister_UInt32()");
@@ -84,8 +83,10 @@ void Int32Overflow(int *Result)
 			FunctionPass(Result, "__of_mul_int32()");
 	}
 }
-void UInt8Overflow(int *Result)
+int UInt8Overflow()
 {
+	int Result = 0;
+	int _r;
 	uint8 L;
 	uint8 R;
 	uint8 RET_V;
@@ -96,39 +97,29 @@ void UInt8Overflow(int *Result)
 		R = 10;
 		TGT_V = L + R;
 		IsOF = __of_add_uint8(&RET_V, L, R);
-		if (IsOF == false || TGT_V != RET_V)
-		{
-			FunctionFail(Result, "__of_add_uint8()");
-		}
-		else
-		{
-			FunctionPass(Result, "__of_add_uint8()");
-		}
+		_r = Assert_IsTrue((IsOF && TGT_V == RET_V), "__of_add_uint8()");
+		if (_r != 0)
+			Result = _r;
 	}
 	{
 		L = 0;
 		R = 10;
 		TGT_V = L - R;
 		IsOF = __of_sub_uint8(&RET_V, L, R);
-		if (IsOF == false || TGT_V != RET_V)
-		{
-			FunctionFail(Result, "__of_sub_uint8()");
-		}
-		else
-			FunctionPass(Result, "__of_sub_uint8()");
+		_r =  Assert_IsTrue((IsOF && TGT_V == RET_V), "__of_sub_uint8()");
+		if (_r != 0)
+			Result = _r;
 	}
 	{
 		L = UINT8_MAX;
 		R = 10;
 		TGT_V = L * R;
 		IsOF = __of_mul_uint8(&RET_V, L, R);
-		if (IsOF == false || TGT_V != RET_V)
-		{
-			FunctionFail(Result, "__of_mul_uint8()");
-		}
-		else
-			FunctionPass(Result, "__of_mul_uint8()");
+		_r = Assert_IsTrue((IsOF && TGT_V == RET_V), "__of_mul_uint8()");
+		if (_r != 0)
+			Result = _r;
 	}
+	return Result;
 }
 void Int16Overflow(int *Result)
 {
@@ -188,7 +179,7 @@ void Int16Overflow(int *Result)
 		{
 			R = 0;
 			mr = __of_div_int16(&RET_V, L, R);
-			if (mr == MATH_RESULT_BIVIDE_BY_ZERO)
+			if (mr == MATH_RESULT_DIVIDE_BY_ZERO)
 			{
 				FunctionPass(Result, "__of_div_int16()");
 			}
@@ -248,7 +239,7 @@ void UInt16Overflow(int *Result)
 void OverflowTest(int *Result)
 {
 	Int32Overflow(Result);
-	UInt8Overflow(Result);
+	Result[0] = UInt8Overflow();
 	Int16Overflow(Result);
 	UInt16Overflow(Result);
 }
