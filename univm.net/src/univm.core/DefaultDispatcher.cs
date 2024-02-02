@@ -19,7 +19,7 @@ namespace univm.core
             return Cores;
         }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void Cycle()
+        public void Cycle()
         {
             for (int i = Cores.Count - 1; i >= 0; i--)
             {
