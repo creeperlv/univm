@@ -217,7 +217,7 @@ COREDUMP	0xFFFF0000
 COREDUMPRES	0xFFFF0001
 COREDUMPTEXT	0xFFFF0002
 COREDUMPTEXTRES	0xFFFF0003
-
+GETTHISASMID	0x00002214
 
 def:
 
@@ -374,3 +374,4 @@ coredumpres	reg
 coredump.res	reg
 coredumptextres	reg
 coredump.text.res	reg
+getthisasmid reg	int

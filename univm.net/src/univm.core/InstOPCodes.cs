@@ -207,6 +207,14 @@
         public const uint BASE_CJAAL = 0x00001125;
         public const uint BASE_CJAALR = 0x00001126;
         public const uint BASE_OFJF = 0x00001127;
+        //setint namespace id pc
+        public const uint BASE_SETINT = 0x00001300;
+        //setintr namespace id $stackframe(assembly_id,pc)
+        public const uint BASE_SETINTR = 0x00001301;
+        //rmint namespace id
+        //clear an interupt listener
+        public const uint BASE_RMINT = 0x00001302;
+        public const uint BASE_TESTINT = 0x00001303;
         // ALLOC = malloc(size_t)
         // alloc $rd(64bit) $rs
         public const uint HL_ALLOC = 0x00002000;
@@ -290,6 +298,9 @@
         // Get loadeed Assembly ID from ID in current assembly
         // getasmid AssemblyLabel $Reciver
         public const uint HL_GETASMID = 0x0000_2213;
+        // Get the asm id of currently executing assembly.
+        // getthisasmid $reciver offset
+        public const uint HL_GETTHISASMID = 0x0000_2214;
 
         // syscalltest namespace id $reciver
         public const uint BASE_SYSCALL_TEST = 0x0000_1200;

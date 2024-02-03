@@ -2191,6 +2191,22 @@ namespace univm.core
                 case InstOPCodes.BASE_SYSCALL_TESTR:
                     coreData.SetDataToRegister(inst.Data2, machineData.IsSysCallExist(coreData.GetDataFromRegister<uint>(inst.Data0), coreData.GetDataFromRegister<uint>(inst.Data0)) ? 1 : 0);
                     break;
+                case InstOPCodes.HL_GETTHISASMID:
+                    coreData.SetDataToRegister((uint)(inst.Data0 + inst.Data1.BitWiseConvert<int>()), coreData.CallStack[^1].AssemblyID);
+                    break;
+                case InstOPCodes.BASE_SETINT:
+                    machineData.SetInterrupt(inst.Data0, inst.Data1, coreData.CallStack[^1].AssemblyID, inst.Data2);
+                    break;
+                case InstOPCodes.BASE_TESTINT:
+                    coreData.SetDataToRegister(inst.Data2, machineData.IsSysCallExist(inst.Data0, inst.Data1) ? 1 : 0);
+                    break;
+                case InstOPCodes.BASE_SETINTR:
+                    {
+                        uint AsmID = coreData.GetDataFromRegister<uint>(inst.Data2);
+                        uint PC = coreData.GetDataFromRegister<uint>(inst.Data2 + 4);
+                        machineData.SetInterrupt(inst.Data0, inst.Data1, AsmID, PC);
+                    }
+                    break;
                 case InstOPCodes.DEBUG_COREDUMP:
                     {
                         using FileStream stream = File.OpenWrite("coredump");
@@ -2242,6 +2258,18 @@ namespace univm.core
         {
             coreData.CallStack.Add(frame);
             Run();
+        }
+        /// <summary>
+        /// Exposed for calling interrupt.
+        /// </summary>
+        /// <param name="AsmID"></param>
+        /// <param name="PC"></param>
+        public void AppendNewStackframe(uint AsmID, uint PC)
+        {
+            var frame = coreData.CallStack[^1];
+            frame.AssemblyID = AsmID;
+            frame.PCInAssembly = PC;
+            coreData.CallStack.Add(frame);
         }
         internal bool WillContinue = true;
 

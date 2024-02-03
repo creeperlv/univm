@@ -12,7 +12,7 @@ namespace univm.core
         public Dictionary<uint, Dictionary<uint, SysCall>>? SysCallDefintion;
         public List<IDisposable?> Resources = new List<IDisposable?>();
         public List<MemBlock> MemBlocks = new List<MemBlock>();
-        public List<Interrupt> InterruptTable=new List<Interrupt>();
+        public Dictionary<uint, Dictionary<uint, Interrupt>> InterruptTable = new Dictionary<uint, Dictionary<uint, Interrupt>>();
         public int AddResource(IDisposable resource)
         {
             for (int i = 0; i < Resources.Count; i++)
@@ -64,6 +64,62 @@ namespace univm.core
                 return true;
             }
         }
+        public bool IsInterruptExist(uint Namespace, uint ID)
+        {
+            if (InterruptTable.TryGetValue(Namespace, out var map))
+            {
+                if (map.TryGetValue(ID, out _))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void SetInterrupt(uint Namespace, uint ID, uint AsmID, uint PC)
+        {
+            if (!InterruptTable.TryGetValue(Namespace, out var table))
+            {
+                table = new Dictionary<uint, Interrupt>();
+                InterruptTable.Add(Namespace, table);
+            }
+            if (table.ContainsKey(ID))
+            {
+                table[ID] = new Interrupt() { AsmID = AsmID, PC = PC, IsSet = true };
+            }
+            else table.Add(ID, new Interrupt() { AsmID = AsmID, PC = PC, IsSet = true });
+        }
+        //Unset an interrupt
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void UnsetInterrupt(uint Namespace, uint ID)
+        {
+            if (InterruptTable.TryGetValue(Namespace, out var map))
+            {
+
+                if (map.ContainsKey(ID))
+                {
+                    map[ID] = new Interrupt() { IsSet = false };
+                }
+            }
+        }
+        /// <summary>
+        /// Cause an interrupt in a core.
+        /// </summary>
+        /// <param name="Namespace"></param>
+        /// <param name="ID"></param>
+        /// <param name="core"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Interrupt(uint Namespace, uint ID, VMCore core)
+        {
+            if (InterruptTable.TryGetValue(Namespace, out var map))
+            {
+                if (map.TryGetValue(ID, out var interrupt))
+                {
+                    if (interrupt.IsSet)
+                        core.AppendNewStackframe(interrupt.AsmID, interrupt.PC);
+                }
+            }
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public void SysCall(uint Namespace, uint ID, CoreData data)
         {
             if (SysCallDefintion is null)
