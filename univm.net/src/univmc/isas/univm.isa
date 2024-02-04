@@ -106,6 +106,16 @@ ADDMEMPTR	0x0000005A
 SUBMEMPTR	0x0000005B
 ADDMEMPTRI	0x0000005C
 SUBMEMPTRI	0x0000005D
+MOD8	0x0000005E
+MOD8U	0x0000005F
+MOD16	0x00000060
+MOD16U	0x00000061
+MOD32	0x00000062
+MOD32U	0x00000063
+MOD64	0x00000064
+MOD64U	0x00000065
+MODS	0x00000066
+MODD	0x00000067
 SW	0x00001000
 S32	0x00001000
 LW	0x00001001
@@ -282,6 +292,16 @@ addmemptr	reg	reg
 submemptr	reg	reg
 addmemptri	reg	uint
 submemptri	reg	uint
+MOD8	reg	reg	reg
+MOD8U	reg	reg	reg
+MOD16	reg	reg	reg
+MOD16U	reg	reg	reg
+MOD32	reg	reg	reg
+MOD32U	reg	reg	reg
+MOD64	reg	reg	reg
+MOD64U	reg	reg	reg
+MODS	reg	reg	reg
+MODD	reg	reg	reg
 
 S32	reg	reg	int
 L32	reg	reg	int

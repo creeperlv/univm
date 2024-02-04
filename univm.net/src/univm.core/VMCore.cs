@@ -70,7 +70,7 @@ namespace univm.core
                         int R = coreData.GetDataFromRegister<int>(inst.Data2);
                         if (R == 0)
                         {
-                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.SysCallNotExist);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
                         else
                             try
@@ -119,7 +119,7 @@ namespace univm.core
                         var R = coreData.GetDataFromRegister<uint>(inst.Data2);
                         if (R == 0)
                         {
-                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.SysCallNotExist);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
                         else
                             try
@@ -163,14 +163,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_I:
-                    try
                     {
-                        checked
+
+                        int R = inst.Data2.BitWiseConvert<int>();
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_IU:
                     try
@@ -203,14 +212,22 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_IU:
-                    try
                     {
-                        checked
+
+                        if (inst.Data2 == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / inst.Data2);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) / inst.Data2);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64:
                     try
@@ -243,14 +260,22 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64:
-                    try
                     {
-                        checked
+                        var R = coreData.GetDataFromRegister<long>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / coreData.GetDataFromRegister<long>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64I:
                     try
@@ -283,14 +308,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64I:
-                    try
                     {
-                        checked
+
+                        var R = inst.Data2.BitWiseConvert<int>();
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / ((int*)&inst.Data2)[0]);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64IU:
                     try
@@ -323,14 +357,21 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64IU:
-                    try
                     {
-                        checked
+                        if (inst.Data2 == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / inst.Data2);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / inst.Data2);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_64U:
                     try
@@ -363,14 +404,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_64U:
-                    try
                     {
-                        checked
+
+                        var R = coreData.GetDataFromRegister<ulong>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / coreData.GetDataFromRegister<ulong>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16:
                     try
@@ -403,14 +453,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16:
-                    try
                     {
-                        checked
+
+                        var R = coreData.GetDataFromRegister<short>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / coreData.GetDataFromRegister<short>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16U:
                     try
@@ -443,14 +502,22 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16U:
-                    try
                     {
-                        checked
+                        var R = coreData.GetDataFromRegister<ushort>(inst.Data2);
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / coreData.GetDataFromRegister<ushort>(inst.Data2));
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16I:
                     try
@@ -483,14 +550,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16I:
-                    try
                     {
-                        checked
+
+                        var R = (inst.Data2).BitWiseConvert<short>();
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / ((short*)&inst.Data2)[0]);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_ADD_16IU:
                     try
@@ -523,14 +599,23 @@ namespace univm.core
                     catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_DIV_16IU:
-                    try
                     {
-                        checked
+
+                        var R = inst.Data2.BitWiseConvert<ushort>();
+                        if (R == 0)
                         {
-                            coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / ((ushort*)&inst.Data2)[0]);
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
                         }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) / R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
-                    catch (Exception) { OverFlow = true; }
                     break;
                 case InstOPCodes.BASE_SET32:
                     try
@@ -1201,6 +1286,196 @@ namespace univm.core
                             default:
                                 break;
                         }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD8:
+                    {
+
+                        int R = coreData.GetDataFromRegister<sbyte>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<sbyte>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD8U:
+                    {
+
+                        int R = coreData.GetDataFromRegister<byte>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<byte>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD16:
+                    {
+
+                        int R = coreData.GetDataFromRegister<short>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD16U:
+                    {
+
+                        int R = coreData.GetDataFromRegister<ushort>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ushort>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD32:
+                    {
+
+                        int R = coreData.GetDataFromRegister<int>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD32U:
+                    {
+
+                        var R = coreData.GetDataFromRegister<uint>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<uint>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD64:
+                    {
+
+                        var R = coreData.GetDataFromRegister<long>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MOD64U:
+                    {
+
+                        var R = coreData.GetDataFromRegister<ulong>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<ulong>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MODS:
+                    {
+
+                        var R = coreData.GetDataFromRegister<float>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<float>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
+                    }
+                    break;
+                case InstOPCodes.BASE_MODD:
+                    {
+
+                        var R = coreData.GetDataFromRegister<double>(inst.Data2);
+                        if (R == 0)
+                        {
+                            coreData.SetDataToRegister<uint>(RegisterDefinition.ERRNO, ErrNos.DivideByZero);
+                        }
+                        else
+                            try
+                            {
+                                checked
+                                {
+                                    coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<double>(inst.Data1) % R);
+                                }
+                            }
+                            catch (Exception) { OverFlow = true; }
                     }
                     break;
                 case InstOPCodes.BASE_SET16:

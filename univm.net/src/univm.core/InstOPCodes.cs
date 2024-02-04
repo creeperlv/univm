@@ -103,6 +103,16 @@
         public const uint BASE_SUBMEMPTR = 0x0000005B;
         public const uint BASE_ADDMEMPTRI = 0x0000005C;
         public const uint BASE_SUBMEMPTRI = 0x0000005D;
+        public const uint BASE_MOD8 = 0x0000005E;
+        public const uint BASE_MOD8U = 0x0000005F;
+        public const uint BASE_MOD16 = 0x00000060;
+        public const uint BASE_MOD16U = 0x00000061;
+        public const uint BASE_MOD32 = 0x00000062;
+        public const uint BASE_MOD32U = 0x00000063;
+        public const uint BASE_MOD64 = 0x00000064;
+        public const uint BASE_MOD64U = 0x00000065;
+        public const uint BASE_MODS = 0x00000066;
+        public const uint BASE_MODD = 0x00000067;
         // lw/sw $rs/rd $rptr(64bit)
         // lw/sw series:
         // op $data_ptr $mem_ptr_reg offset

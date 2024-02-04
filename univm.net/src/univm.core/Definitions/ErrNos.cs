@@ -10,6 +10,7 @@
         public const uint SysCallNotExist = 0x0000_0004;
         public const uint ResourceNotFound = 0x0000_0005;
         public const uint EBADF = 9;
+        public const uint DivideByZero=0xFFFF_FFFD;
     }
     public static class ArchInfoIDs
     {
