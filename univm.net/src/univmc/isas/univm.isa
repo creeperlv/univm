@@ -217,7 +217,8 @@ PUSHDD32	0x00002112
 PUSHDD64	0x00002113
 POPD	0x00002102
 POPDI	0x00002103
-
+CP		0x00002106
+CPI		0x00002107
 QTEXT	0x00002007
 MAPGLBMEM 0x00002200
 MAP_GLBMEM 0x00002200
@@ -381,6 +382,9 @@ pushdd32	reg	int32
 pushdd64	reg	int64
 popd	reg	reg	reg
 popdi	reg	reg	uint
+
+cp		reg	reg	reg
+cpi		reg	reg	uint32
 
 qtext	reg	uint
 syscall	uint uint

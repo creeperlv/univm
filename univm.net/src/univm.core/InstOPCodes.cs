@@ -281,12 +281,15 @@
         // PPI $SRC_PTR_REGISTER $DEST_PTR_REGISTER Size
         public const uint HL_PPI = 0x0000_2105;
 
-        // Copy and push
+        // copy
         // cp $SrcMemPtr $DestMemPtr $SizePtr
         public const uint HL_CP = 0x0000_2106;
-        // Copy and push
         // cp $SrcMemPtr $DestMemPtr Size
         public const uint HL_CPI = 0x0000_2107;
+        // Copy and push
+        // cpp $SrcMemPtr $DestMemPtr $SizePtr
+        public const uint HL_CPP = 0x0000_2108;
+        public const uint HL_CPPI = 0x0000_2109;
 
         // Get the mapped global memory address of current assembly.
         // mapglbmem $reg_to_store_memptr value_additional_offset

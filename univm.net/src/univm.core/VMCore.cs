@@ -2418,6 +2418,34 @@ namespace univm.core
                         }
                     }
                     break;
+                case InstOPCodes.HL_CP:
+                    {
+                        var Src = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        var Dest = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        var size = coreData.GetDataFromRegister<uint>(inst.Data2);
+                        if (coreData.TryGetPtr(Src, true, out var src_ptr))
+                        {
+                            if (coreData.TryGetPtr(Dest, true, out var dest_ptr))
+                            {
+                                Buffer.MemoryCopy(src_ptr, dest_ptr, size, size);
+                            }
+                        }
+                    }
+                    break;
+                case InstOPCodes.HL_CPI:
+                    {
+                        var Src = coreData.GetDataFromRegister<MemPtr>(inst.Data0);
+                        var Dest = coreData.GetDataFromRegister<MemPtr>(inst.Data1);
+                        uint size = inst.Data2;
+                        if (coreData.TryGetPtr(Src, true, out var src_ptr))
+                        {
+                            if (coreData.TryGetPtr(Dest, true, out var dest_ptr))
+                            {
+                                Buffer.MemoryCopy(src_ptr, dest_ptr, size, size);
+                            }
+                        }
+                    }
+                    break;
                 case InstOPCodes.HL_MAP_GLBMEM:
                     {
                         var frame = coreData.CallStack[^1];
