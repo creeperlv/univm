@@ -18,6 +18,8 @@ typedef struct _runtime *Runtime;
 typedef struct _syscallMapDict *SysCallMapDict;
 typedef struct _vm *VM;
 typedef struct _resource *Resource;
+typedef struct _interruptMap *InterruptMap;
+typedef struct _interruptMapDict *InterruptMapDict;
 typedef void (*Syscall)(VMCore);
 typedef struct __instruction
 {
@@ -61,6 +63,7 @@ typedef struct _callStackItem
 {
 	uint32 ProgramID;
 	uint32 PC;
+	uint32 StackSize;
 } callStackItem;
 typedef struct _callStack
 {
@@ -68,12 +71,28 @@ typedef struct _callStack
 	uint32 ItemCount;
 	uint32 StackSize;
 } callStack;
+
+typedef struct _interruptMap
+{
+	uint32 *IDs;
+	uint64 *CallPoint;
+	uint32 InterruptBufSize;
+	uint32 InterruptCount;
+} interruptMap;
+typedef struct _interruptMapDict
+{
+	uint32 *IDs;
+	InterruptMap *Maps;
+	uint32 DictBufSize;
+	uint32 DictCount;
+} interruptMapDict;
 typedef struct _coreData
 {
 	uint8_t Registers[MAX_REGISTER_COUNT * 8];
 	int ProgramBufferSize;
 	callStack CallStack;
 	MachineData Machine;
+	InterruptMapDict Interrupts;
 } coreData;
 typedef struct _machineData
 {
@@ -162,6 +181,10 @@ bool AppenndAsm(MachineData data, UniVMAsm module, uint32 *id);
 bool LoadProgram(FILE *src, UniVMAsm assembly);
 SysCallMap CreateSysCallMap();
 SysCallMapDict CreateSysCallMapDict();
+InterruptMap CreateInterruptMap();
+InterruptMapDict CreateInterruptMapDict();
+bool InitInterruptMap(InterruptMap map);
+bool InitInterruptMapDict(InterruptMapDict dict);
 bool ExpandSysCallMapDict(SysCallMapDict dict);
 bool InitRT(Runtime runtime);
 bool InitSysCallMapDict(SysCallMapDict dict);
