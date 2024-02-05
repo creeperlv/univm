@@ -247,11 +247,37 @@ SysCallMap CreateSysCallMap()
 		Panic(ID_MALLOC_FAIL);
 		return NULL;
 	}
+	map->SysCallMapBufSize = 0;
+	map->SysCallCount = 0;
 	return map;
 }
 SysCallMapDict CreateSysCallMapDict()
 {
 	SysCallMapDict dict = malloc(sizeof(syscallMapDict));
+	if (IsNull(dict))
+	{
+		Panic(ID_MALLOC_FAIL);
+		return NULL;
+	}
+	dict->DictBufSize = SysCallMapDictBlockSize;
+	dict->DictCount = 0;
+	dict->IDs = malloc(SysCallMapDictBlockSize * sizeof(uint32));
+	dict->Maps = malloc(SysCallMapDictBlockSize * sizeof(SysCallMap));
+	return dict;
+}
+InterruptMap CreateInterruptMap()
+{
+	InterruptMap map = malloc(sizeof(interruptMap));
+	if (IsNull(map))
+	{
+		Panic(ID_MALLOC_FAIL);
+		return NULL;
+	}
+	return map;
+}
+InterruptMapDict CreateInterruptMapDict()
+{
+	InterruptMapDict dict = malloc(sizeof(interruptMapDict));
 	if (IsNull(dict))
 	{
 		Panic(ID_MALLOC_FAIL);
