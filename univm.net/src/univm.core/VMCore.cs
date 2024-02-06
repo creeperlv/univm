@@ -1288,6 +1288,74 @@ namespace univm.core
                         }
                     }
                     break;
+                case InstOPCodes.BASE_AND8:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<byte>(inst.Data1)
+                            & coreData.GetDataFromRegister<byte>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_AND16:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1)
+                            & coreData.GetDataFromRegister<short>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_AND32:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1)
+                            & coreData.GetDataFromRegister<int>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_AND64:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1)
+                            & coreData.GetDataFromRegister<long>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_OR8:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<byte>(inst.Data1)
+                            & coreData.GetDataFromRegister<byte>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_OR16:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<short>(inst.Data1)
+                            | coreData.GetDataFromRegister<short>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_OR32:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<int>(inst.Data1)
+                            | coreData.GetDataFromRegister<int>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_OR64:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, coreData.GetDataFromRegister<long>(inst.Data1)
+                            | coreData.GetDataFromRegister<long>(inst.Data2));
+                    }
+                    break;
+                case InstOPCodes.BASE_NOT8:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, ~coreData.GetDataFromRegister<byte>(inst.Data1));
+                    }
+                    break;
+                case InstOPCodes.BASE_NOT16:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, ~coreData.GetDataFromRegister<short>(inst.Data1));
+                    }
+                    break;
+                case InstOPCodes.BASE_NOT32:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, ~coreData.GetDataFromRegister<int>(inst.Data1));
+                    }
+                    break;
+                case InstOPCodes.BASE_NOT64:
+                    {
+                        coreData.SetDataToRegister(inst.Data0, ~coreData.GetDataFromRegister<long>(inst.Data1));
+                    }
+                    break;
                 case InstOPCodes.BASE_MOD8:
                     {
 

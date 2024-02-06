@@ -113,6 +113,26 @@
         public const uint BASE_MOD64U = 0x00000065;
         public const uint BASE_MODS = 0x00000066;
         public const uint BASE_MODD = 0x00000067;
+        public const uint BASE_AND8 = 0x00000068;
+        public const uint BASE_AND16 = 0x00000069;
+        public const uint BASE_AND32 = 0x0000006A;
+        public const uint BASE_AND64 = 0x0000006B;
+        public const uint BASE_OR8 = 0x0000006C;
+        public const uint BASE_OR16 = 0x0000006D;
+        public const uint BASE_OR32 = 0x0000006E;
+        public const uint BASE_OR64 = 0x0000006F;
+        public const uint BASE_XOR8 = 0x00000070;
+        public const uint BASE_XOR16 = 0x00000071;
+        public const uint BASE_XOR32 = 0x00000072;
+        public const uint BASE_XOR64 = 0x00000073;
+        public const uint BASE_NOT8 = 0x00000074;
+        public const uint BASE_NOT16 = 0x00000075;
+        public const uint BASE_NOT32 = 0x00000076;
+        public const uint BASE_NOT64 = 0x00000077;
+        public const uint BASE_LSHF = 0x00000078;
+        public const uint BASE_LSHFU = 0x00000079;
+        public const uint BASE_RSHF = 0x0000007A;
+        public const uint BASE_RSHFU = 0x0000007B;
         // lw/sw $rs/rd $rptr(64bit)
         // lw/sw series:
         // op $data_ptr $mem_ptr_reg offset
