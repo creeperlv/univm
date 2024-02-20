@@ -237,6 +237,8 @@
         public const uint BASE_CJAAL = 0x00001125;
         public const uint BASE_CJAALR = 0x00001126;
         public const uint BASE_OFJF = 0x00001127;
+        public const uint BASE_RESETOF = 0x00001128;
+        public const uint BASE_RESETJF = 0x00001129;
         //setint namespace id pc
         public const uint BASE_SETINT = 0x00001300;
         //setintr namespace id $stackframe(assembly_id,pc)

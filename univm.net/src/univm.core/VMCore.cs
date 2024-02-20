@@ -2407,6 +2407,12 @@ namespace univm.core
                         JumpFlag = false;
                     }
                     break;
+                case InstOPCodes.BASE_RESETJF:
+                    JumpFlag = false;
+                    break;
+                case InstOPCodes.BASE_RESETOF:
+                    OverFlow = false;
+                    break;
                 case InstOPCodes.BASE_CJ:
                     if (JumpFlag)
                     {
