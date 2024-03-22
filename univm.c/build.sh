@@ -63,7 +63,7 @@ then
 fi
 C_FLAGS="$C_FLAGS -lpthread"
 INDEX=0
-
+mkdir $OUTPUT_DIR -p
 if [ -z "$SKIP_FUNC_TEST" ];
 then
 	COMPILE="$CC $C_FLAGS $CORE_SRC $FUNC_TEST_SRC -o $OUTPUT_DIR/$FUNC_TEST_EXE"
